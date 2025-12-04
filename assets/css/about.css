@@ -1,0 +1,479 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Poppins:wght@300;400;500;600&display=swap");
+
+:root {
+  --dark-brown: #6a4e3b;
+  --button-hero: #eed6b7;
+  --color-white: #ffffff;
+  --cream-bg: #e9dfd2;
+  --text-collor-primary: #ffffff;
+  --text-collor-secondary: #faf8f5;
+  --font-main: "Poppins";
+  --font-secondary: sans-serif;
+  --font-syjura: "Lora";
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ul,
+li,
+a {
+  list-style: none;
+  text-decoration: none;
+}
+
+.hero_about {
+  height: 500px;
+  width: 100%;
+  background-image: url("../img/about/hero-about.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.hero_about h1 {
+  position: absolute;
+  right: 50px;
+  top: 50px;
+  color: var(--text-collor-primary);
+  font-family: var(--font-main);
+}
+.top-contain {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 20px;
+  background-color: var(--cream-bg);
+}
+
+.container-visi-misi {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+}
+
+.container-left {
+  padding: 50px;
+  width: 50%;
+  background-color: #f4efea;
+}
+
+.container-left h1 {
+  text-align: right;
+  right: 10px;
+  margin-bottom: 20px;
+  color: var(--dark-brown);
+}
+.container-left p {
+  margin-left: 60px;
+  color: var(--dark-brown);
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.container-right {
+  padding: 50px;
+  width: 50%;
+}
+
+.container-right h1 {
+  margin-bottom: 20px;
+  color: var(--dark-brown);
+}
+.container-right ul li {
+  color: var(--dark-brown);
+  font-weight: bold;
+  font-size: 18px;
+  list-style: outside;
+}
+
+/* =========================================
+   SECTION 3: STRUKTUR & TIM (ULTRA COMPACT)
+   ========================================= */
+
+.section-3 {
+  background-color: #ebe1d3;
+  padding: 50px 0;
+  width: 100%;
+  font-family: "Poppins", sans-serif;
+  overflow-x: hidden;
+}
+
+/* Container Utama */
+.main-container {
+  width: 95%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* -- HEADER JUDUL -- */
+.row-header {
+  display: grid;
+  /* Memberikan ruang lebih besar (70%) untuk struktur agar tidak nabrak */
+  grid-template-columns: 60% 37%;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.col-title-left h2,
+.col-title-right h2 {
+  text-align: center;
+  color: #5e4b35;
+  font-weight: 700;
+  font-size: 24px;
+  margin: 0;
+}
+
+/* -- CONTENT WRAPPER -- */
+.content-wrapper {
+  display: grid;
+  /* Rasio 70:30 agar Struktur punya banyak ruang */
+  grid-template-columns: 60% 40%;
+  align-items: flex-start;
+}
+
+/* =========================================
+   CSS TREE (STRUKTUR ORGANISASI)
+   ========================================= */
+.org-chart-area {
+  width: 100%;
+  /* Mengizinkan scroll horizontal hanya jika layar sangat kecil */
+  overflow-x: auto;
+  padding-bottom: 20px;
+  display: flex;
+  justify-content: center; /* Menengahkan chart */
+}
+
+.tree {
+  display: table; /* Menggunakan table agar lebar fit content */
+  margin: 0 auto;
+}
+
+.tree ul {
+  position: relative;
+  padding-top: 20px; /* Memperpendek jarak vertikal */
+  transition: all 0.5s;
+  display: flex;
+  justify-content: center;
+}
+
+.tree li {
+  float: left;
+  text-align: center;
+  list-style-type: none;
+  position: relative;
+  /* PADDING ULTRA TIPIS: Ini kunci agar elemen berdempetan */
+  padding: 20px 2px 0 2px;
+  transition: all 0.5s;
+}
+
+/* --- GARIS PENGHUBUNG (CONNECTORS) --- */
+.tree li::before,
+.tree li::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 50%;
+  border-top: 1px solid #7d6e63;
+  width: 51%; /* Sedikit lebih lebar untuk menghindari celah piksel */
+  height: 20px; /* Garis vertikal lebih pendek */
+}
+
+.tree li::after {
+  right: auto;
+  left: 50%;
+  border-left: 1px solid #7d6e63;
+}
+
+/* Menghapus garis untuk elemen tunggal/ujung */
+.tree li:only-child::after,
+.tree li:only-child::before {
+  display: none;
+}
+.tree li:only-child {
+  padding-top: 0;
+}
+.tree li:first-child::before,
+.tree li:last-child::after {
+  border: 0 none;
+}
+
+.tree li:last-child::before {
+  border-right: 1px solid #7d6e63;
+  border-radius: 0 5px 0 0;
+}
+
+.tree li:first-child::after {
+  border-radius: 5px 0 0 0;
+}
+
+.tree ul ul::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  border-left: 1px solid #7d6e63;
+  width: 0;
+  height: 20px;
+}
+
+.card-box {
+  background-color: #5e4b35;
+  color: #ffffff;
+  padding: 8px 10px;
+  text-decoration: none;
+  border-radius: 4px;
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  /* Min-width kecil agar rapat */
+  min-width: 100px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
+  position: relative;
+  z-index: 1;
+  white-space: nowrap;
+  transition: transform 0.3s ease;
+}
+
+.card-box:hover {
+  transform: scale(1.05);
+  background-color: #4a3b2a;
+  z-index: 10;
+}
+
+/* KHUSUS LEVEL STAFF (PALING BAWAH) - LEBIH KECIL LAGI */
+.tree ul ul ul ul li .card-box {
+  font-size: 10px;
+  padding: 6px 5px;
+  min-width: 75px; /* Sangat kecil agar berderet rapi */
+}
+
+/* KHUSUS LEVEL STAFF PADDING */
+.tree ul ul ul ul li {
+  padding: 20px 1px 0 1px; /* Jarak antar staff sangat rapat */
+}
+
+/* =========================================
+   BAGIAN KANAN: FOTO TIM
+   ========================================= */
+.team-area {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 20px; /* Menyamakan tinggi visual dengan chart */
+}
+
+.image-frame {
+  position: relative;
+  width: 100%;
+  max-width: 400px; /* Membatasi lebar gambar agar tidak mendominasi */
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  border: 3px solid #6a4e3b;
+}
+
+.image-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* =========================================
+   RESPONSIVE DESIGN
+   ========================================= */
+@media (max-width: 1100px) {
+  .row-header,
+  .content-wrapper {
+    grid-template-columns: 1fr; /* Stack vertikal di layar kecil */
+    gap: 30px;
+  }
+
+  .col-title-right {
+    order: 3;
+    margin-top: 20px;
+  }
+
+  .team-area {
+    order: 4;
+    justify-content: center;
+  }
+
+  .org-chart-area {
+    justify-content: flex-start; /* Biarkan scroll ke kanan */
+  }
+}
+/* =========================================
+   SECTION 4: INFO AREA (Fixed Layout)
+   ========================================= */
+
+.section-4 {
+  background-color: #faf8f5; /* Background section utama (Putih Gading) */
+  padding: 50px 0;
+  width: 100%;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+/* Grid Utama: Membagi Kiri (60%) dan Kanan (40%) */
+.content-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr; /* Kiri lebih lebar untuk akomodasi gambar+tabel */
+  gap: 60px;
+  align-items: center; /* Vertikal center */
+  width: 100%;
+}
+
+/* --- BAGIAN KIRI --- */
+.left-panel {
+  display: flex;
+  align-items: flex-end; /* Gambar dan tabel rata bawah */
+  gap: 20px;
+}
+
+.character-wrapper img {
+  width: 160px; /* Ukuran karakter yang pas */
+  height: auto;
+  display: block;
+  /* Agar gambar tidak melayang */
+  margin-bottom: -5px;
+  filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.15));
+}
+
+.schedule-wrapper {
+  flex: 1; /* Mengambil sisa ruang di sebelah gambar */
+  margin-bottom: 50px;
+}
+
+.schedule-wrapper h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 15px;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Tabel Kustom */
+.custom-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #c4a484; /* Border Coklat Muda */
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.custom-table th {
+  background-color: #e9dfd2; /* Warna Krem (Header) */
+  color: #3c2f23;
+  padding: 15px 20px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 15px;
+  border-bottom: 1px solid #c4a484;
+}
+
+.custom-table td {
+  background-color: #ffffff; /* Warna Putih (Isi) */
+  padding: 15px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1px solid #eae5e0;
+}
+
+.custom-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* --- BAGIAN KANAN --- */
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 20px; /* Sedikit turun agar sejajar visual */
+}
+
+/* Badge Judul */
+.info-badge {
+  display: inline-flex;
+  align-items: center;
+  background-color: #e9dfd2; /* Warna Krem */
+  padding: 8px 20px;
+  border-radius: 8px;
+  width: fit-content;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.info-badge img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.info-badge span {
+  font-weight: 700;
+  font-size: 16px;
+  color: #000;
+}
+
+/* Kotak Konten */
+.info-content-box {
+  background-color: #e9dfd2; /* Warna Krem (Sama dengan header tabel) */
+  padding: 30px;
+  border-radius: 8px;
+  color: #000;
+  font-size: 14px;
+  line-height: 1.8;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.info-content-box p {
+  margin-bottom: 15px;
+}
+
+.info-content-box p:last-child {
+  margin-bottom: 0;
+}
+
+/* =========================================
+   RESPONSIVE DESIGN (HP & Tablet)
+   ========================================= */
+@media (max-width: 992px) {
+  .content-grid {
+    grid-template-columns: 1fr; /* Stack vertikal */
+    gap: 50px;
+  }
+
+  .left-panel {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .left-panel {
+    flex-direction: column; /* Gambar di atas tabel pada HP */
+    align-items: center;
+  }
+
+  .character-wrapper img {
+    width: 140px;
+    margin-bottom: 20px;
+  }
+
+  .schedule-wrapper {
+    width: 100%;
+  }
+
+  .schedule-wrapper h3 {
+    text-align: center;
+  }
+}

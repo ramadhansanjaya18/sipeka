@@ -1,0 +1,496 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Lora:wght@400;600&display=swap');
+
+:root{
+  --dark-brown :#6A4E3B;
+  --button-hero: #EED6B7;
+  --color-white:#FFFFFF;
+  --cream-bg:#E9DFD2;
+  --font-header:'Poppins';
+  --font-detail: sans-serif;
+  --font-secondary:'Lora';
+}
+
+/* --- HERO SECTION --- */
+.hero-section {
+  height: 500px;
+  width: 100%;
+  background-image: url('../img/beranda/hero-bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.title-hero{
+  top: 40%;
+  right: 10%;
+  position: absolute;
+  text-align: center;
+}
+
+.title-hero h1{
+  font-family: var(--font-header);
+  color:var(--color-white) ;
+  font-weight: bold;
+}
+
+.hero-section p {
+  font-family: var(--font-secondary);
+  color: var(--dark-brown);
+  width: 300px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  height: 40px;
+  border-radius: 10px;
+  vertical-align: middle;
+  text-align: center;
+  background-color: var(--button-hero);
+  /* Tambahkan flex untuk perataan vertikal yang lebih baik */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-section p:hover {
+  background-color: #E9DFD2;
+}
+
+/* --- TENTANG SYJURA (top-contain & contain-syjura) --- */
+.top-contain{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding:5px 20px;
+  background-color: var(--cream-bg);
+}
+
+.top-contain h1{
+  font-family: var(--font-secondary);
+  font-weight: bold;
+  color: var(--dark-brown);
+}
+
+.contain-syjura{
+  display: flex;
+  justify-content: space-between;
+}
+.container-left{
+  padding: 50px;
+  width: 50%;
+  background-color: #F4EFEA;
+}
+
+.container-left img {
+  width: 100%;
+  height: auto;
+}
+
+.container-right{
+  padding: 50px ;
+  width: 50%; /* Tambahkan width untuk desktop */
+}
+
+.contain-syjura .container-right h1{
+  font-size: 1.8rem;
+    font-family: var(--font-header);
+    color: var(--dark-brown);
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+.contain-syjura .container-right p{
+   font-size: 1.1rem;
+   color: var(--dark-brown);
+   font-family: var(--font-detail);
+   font-weight: bold;
+   margin-bottom: 20px;
+}
+.button-lamar-sekarang{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  width: 180px;
+  height: 50px;
+  background-color: var(--dark-brown);
+}
+
+.button-lamar-sekarang:hover {
+  background-color: var(--button-hero);
+}
+
+.button-lamar-sekarang a {
+  color: var(--color-white);
+  font-family: var(--font-header);
+  font-weight: bold;
+}
+
+/* --- LOWONGAN TERBARU (new_job_container) --- */
+.new_job_container{
+  padding: 50px;
+  background-color: var(--cream-bg);
+}
+
+.new_job_container h1{
+  font-family: var(--font-header);
+  font-weight: bold;
+  color: var(--dark-brown);
+  margin-bottom: 30px;
+  text-align: center; /* Tambahkan text-align: center untuk konsistensi */
+}
+
+.container_job {
+  display: flex;
+  justify-content: center; /* Gunakan center agar kartu tetap di tengah */
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 20px; /* Tambahkan gap antar kartu */
+}
+.card_job_new{
+  padding: 30px;
+  border-radius: 3px;
+  display: flex;
+  height: 250px;
+  max-width: 380px; /* Gunakan max-width agar lebih fleksibel */
+  background-color: var(--color-white);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Tambahkan shadow ringan */
+  flex-grow: 1; /* Biarkan kartu mengisi ruang yang tersedia */
+}
+
+.contain_job{
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-weight: bold;
+  font-family: var(--font-detail);
+  font-size: 1rem;
+}
+
+
+.contain_job h2{
+  margin-top: 10px;
+  font-family: var(--font-header);
+
+}
+
+.button_job_new {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black; /* Ganti dari black ke dark-brown */
+  width: 100%; /* Ubah menjadi 100% untuk mengisi ruang */
+  max-width: 220px; /* Batasi max-width jika terlalu lebar */
+  height: 40px;
+  border-radius:5px;
+}
+
+.button_job_new:hover {
+  background-color: #69645f;
+}
+
+.button_job_new a {
+    color: var(--color-white);
+}
+
+/* --- RECRUITMENT STEPS (container_recruitmen) --- */
+.container_recruitmen{
+  display: flex;
+}
+.left_recruitmen{
+  padding: 30px 70px 30px 130px;
+  width: 50%;
+  background-color: var(--color-white);
+}
+
+ .left_recruitmen h1{
+  font-family: var(--font-header);
+  color: var(--dark-brown);
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.recruitmen_list{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  list-style: none; /* Hilangkan numbering bawaan karena sudah ada di teks */
+}
+
+.recruitment-items{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Ganti dari center ke flex-start agar teks tidak di tengah */
+  padding-left: 20px; /* Tambahkan padding agar ada ruang */
+  width: 450px;
+  height: 54px;
+  border-radius: 10px;
+  background-color: var(--dark-brown);
+  color: var(--color-white); /* Atur warna teks agar terlihat */
+  font-weight: 500;
+  font-family: var(--font-detail);
+}
+
+.recruitment-items:hover {
+  background-color: var(--button-hero);
+}
+
+.right_recruitmen{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+  width: 50%;
+  background-color: #F4EFEA;
+  position: relative;
+}
+
+.card_recruit{
+  width: 372px;
+  height: 400px;
+  border-radius: 10px;
+  position: absolute;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+  position: absolute;
+}
+
+#recruit_1{
+  margin-bottom: 30px;
+  margin-right: 30px;
+  background-color: var(--dark-brown);
+}
+#recruit_2{
+  margin-top: 30px;
+  margin-left: 30px;
+  background-color: var(--dark-brown);
+}
+#recruit_3{
+  /* background-image diset di file index.php */
+  background-image: url('../img/beranda/gambar-barista2.png');
+}
+
+#recruit_1:hover,
+#recruit_2:hover{
+  background-color: var(--button-hero);
+  transform: scale(1.03);
+}
+
+/* ============================================= */
+/* ATURAN CSS RESPONSIVE                         */
+/* ============================================= */
+
+/* --- Media Query untuk Tablet (Max 1024px) --- */
+@media (max-width: 1024px) {
+    
+    /* Hero Section */
+    .title-hero {
+        right: 50%;
+        transform: translateX(50%);
+        text-align: center;
+    }
+
+    /* Tentang Syjura */
+    .contain-syjura {
+        flex-direction: column;
+    }
+    
+    .container-left,
+    .container-right {
+        width: 100%;
+        padding: 30px;
+    }
+
+    .container-right {
+        text-align: center;
+    }
+
+    .contain-syjura .container-right p {
+        /* Hapus margin-bottom agar tidak terlalu jauh */
+        margin-bottom: 15px;
+    }
+
+    .button-lamar-sekarang {
+        margin: 0 auto;
+    }
+
+    /* Lowongan Terbaru */
+    .container_job {
+        flex-wrap: wrap; /* Izinkan wrap */
+        justify-content: center;
+    }
+    
+    .card_job_new {
+        width: 100%;
+        max-width: 45%; /* Ambil sekitar setengah lebar */
+        height: auto;
+        flex-direction: column; /* Ubah tata letak kartu menjadi vertikal */
+        align-items: center;
+        text-align: center;
+    }
+
+    .card_job_new .icons_job {
+        margin-bottom: 10px;
+    }
+
+    .contain_job {
+        margin-left: 0;
+        gap: 10px;
+    }
+    
+    .button_job_new {
+        width: 100%; /* Penuh di dalam kartu */
+        max-width: none;
+    }
+
+    /* Recruitment Steps */
+    .container_recruitmen {
+        flex-direction: column;
+    }
+
+    .left_recruitmen,
+    .right_recruitmen {
+        width: 100%;
+        padding: 30px;
+        text-align: center;
+    }
+    
+    .left_recruitmen h1 {
+        text-align: center;
+    }
+
+    .recruitmen_list {
+        align-items: center;
+    }
+
+    .recruitment-items {
+        width: 80%; /* Batasi lebar item */
+        max-width: 450px;
+        justify-content: center; /* Ratakan teks di tengah */
+        padding-left: 0;
+    }
+    
+    .right_recruitmen {
+        height: 450px; /* Atur tinggi tetap di tablet */
+    }
+
+    .card_recruit {
+        width: 250px;
+        height: 300px;
+        /* Hapus margin agar gambar lebih simetris di tengah */
+        margin: 0 !important;
+    }
+
+    #recruit_1 {
+        transform: translateX(-60px) translateY(-20px);
+    }
+    #recruit_2 {
+        transform: translateX(60px) translateY(20px);
+    }
+    #recruit_3 {
+        transform: translateX(0) translateY(0);
+        z-index: 10;
+    }
+    
+    #recruit_1:hover,
+    #recruit_2:hover {
+        transform: scale(1.05) translate(var(--hover-x), var(--hover-y));
+    }
+    #recruit_1:hover { --hover-x: -60px; --hover-y: -20px; }
+    #recruit_2:hover { --hover-x: 60px; --hover-y: 20px; }
+    
+}
+
+
+/* --- Media Query untuk Ponsel (Max 600px) --- */
+@media (max-width: 600px) {
+
+    /* Hero Section */
+    .hero-section {
+        height: 300px;
+    }
+    
+    .title-hero {
+        top: 30%;
+        right: 50%;
+        transform: translateX(50%);
+    }
+
+    .title-hero h1 {
+        font-size: 1.5rem;
+    }
+
+    .hero-section p {
+        width: 200px;
+        font-size: 1.2rem;
+        height: 35px;
+    }
+
+    /* Tentang Syjura */
+    .container-left,
+    .container-right {
+        padding: 20px;
+    }
+    
+    .contain-syjura .container-right h1 {
+        font-size: 1.5rem;
+    }
+    
+    .contain-syjura .container-right p {
+        font-size: 1rem;
+    }
+
+    /* Lowongan Terbaru */
+    .new_job_container {
+        padding: 30px 20px;
+    }
+
+    .new_job_container h1 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+    
+    .container_job {
+        gap: 15px;
+    }
+
+    .card_job_new {
+        max-width: 100%; /* Satu kartu per baris di ponsel */
+        height: auto;
+    }
+
+    /* Recruitment Steps */
+    .left_recruitmen {
+        padding: 20px;
+    }
+    
+    .left_recruitmen h1 {
+        font-size: 1.6rem;
+    }
+
+    .recruitment-items {
+        width: 100%; 
+        height: 45px;
+        font-size: 0.9rem;
+    }
+
+    .right_recruitmen {
+        height: 350px; 
+    }
+
+    .card_recruit {
+        width: 200px;
+        height: 250px;
+    }
+
+    #recruit_1 {
+        transform: translateX(-40px) translateY(-15px);
+    }
+    #recruit_2 {
+        transform: translateX(40px) translateY(15px);
+    }
+    
+    #recruit_1:hover { --hover-x: -40px; --hover-y: -15px; }
+    #recruit_2:hover { --hover-x: 40px; --hover-y: 15px; }
+}

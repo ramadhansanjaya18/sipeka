@@ -1,0 +1,251 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Poppins:wght@300;400;500;600&display=swap');
+
+/* Reset dasar */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Layout utama */
+main {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f4efea;
+}
+
+/* Container utama */
+.container {
+  width: 1100px;
+  height: 500px;
+  position: relative;
+  display: flex;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Background diagonal */
+.container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #6a4e3b;
+  clip-path: polygon(60% 0, 100% 0, 100% 100%, 40% 100%);
+  z-index: 0;
+}
+
+/* Bagian kiri (logo) */
+.left-side {
+  width: 50%;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #7a5c3e;
+  position: relative;
+  z-index: 1;
+}
+
+.logo-box {
+  text-align: center;
+}
+
+
+
+.left-side h2 {
+  font-size: 25px;
+  letter-spacing: 1px;
+  font-family: lora;
+  color: #f1c27d;
+}
+
+/* Bagian kanan (form login) */
+.right-side {
+  width: 50%;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+/* Kotak login */
+.login-box {
+  width: 80%;
+  max-width: 320px;
+}
+
+/* Label input */
+label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #f4efea;
+  font-weight:bold ;
+}
+
+fieldset{
+  display: flex;
+  flex-direction: column;
+  gap: -15px;
+  border: none;
+}
+
+/* Grup input dengan ikon */
+.input-group {
+  position: relative;
+  margin-bottom: 18px;
+}
+
+.input-group img {
+  width: 20px;
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  opacity: 0.7;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px 10px 10px 40px; /* ruang kiri agar placeholder tidak tertindih ikon */
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: #333;
+}
+
+
+.btn-login-register {
+  width: 100%;
+  background-color: #d7bfa6;
+  color: #333;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.btn-login-register:hover {
+  background-color: #c4a989;
+}
+
+/* Teks daftar */
+.register-text {
+  font-size: 13px;
+  color: #ddd;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.register-text a {
+  color: #f1c27d;
+  text-decoration: none;
+}
+
+  .register-text a:hover {
+  text-decoration: underline;
+}
+
+/* Style untuk notifikasi */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    width: 300px;
+    animation: fadeIn 0.5s, fadeOut 0.5s 2.5s forwards;
+}
+
+.message {
+    position: relative;
+    padding: 15px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 14px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.message.success {
+    background-color: #28a745;
+}
+
+.message.error {
+    background-color: #dc3545;
+}
+
+.close-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: #eee;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+
+/* Responsif */@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+    width: 90%;
+  }
+
+  .container::before {
+    clip-path: none;
+    background: #6a4e3b;
+  }
+
+  .left-side,
+  .right-side {
+    width: 100%;
+    padding: 30px 0;
+  }
+
+  .left-side {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .login-box {
+    max-width: 100%;
+    width: 80%;
+  }
+}

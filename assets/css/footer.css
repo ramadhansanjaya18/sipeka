@@ -1,0 +1,249 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Poppins:wght@300;400;500;600&display=swap');
+
+:root {
+    --prymary-color: #6A4E3B;
+    --secondary-color: #E9DFD2;
+    --accent-color: #F4EFEA;
+    --text-collor-primary: #ffffff;
+    --text-collor-secondary: #FAF8F5;
+    --syjura-text-color: #AF8136;
+    --button-color: #EED6B7;
+    --font-main: 'Poppins';
+    --font-secondary: sans-serif;
+    --font-syjura: 'Lora';
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+ul,
+li,
+a {
+    list-style: none;
+    text-decoration: none;
+}
+
+.main-footer {
+    display: flex;
+    justify-content: space-between;
+    height: 450px;
+    background-color: var(--prymary-color);
+}
+
+.wrapper-left {
+    position: relative;
+    width: 50%;
+}
+
+.element-left {
+    position: absolute;
+    border-radius: 0 0 200px 0;
+    width: 550px;
+    height: 110px;
+    background-color: var(--secondary-color);
+}
+
+#left2 {
+    position: relative;
+    top: 10px;
+    left: 10px;
+    background-color: transparent;
+    border: 1px solid var(--accent-color);
+    /* Menggunakan Flexbox untuk perataan */
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+}
+
+#left2 .logo-footer {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0; /* Mencegah logo menyusut */
+}
+
+#left2 h2 {
+    /* Menghapus position absolute */
+    margin-left: 10px; /* Jarak antara logo dan teks */
+    font-family: var(--font-syjura);
+    font-size: 24px;
+    color: var(--prymary-color);
+}
+
+.contain-left-footer {
+    font-family: var(--font-secondary);
+    font-size: 15px;
+    font-weight: bold;
+    padding: 30px 30px 5px 30px;
+    color: var(--text-collor-primary);
+}
+
+.sosmed-footer {
+    margin-left: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 125px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: var(--secondary-color);
+}
+
+.sosmed-footer .icon-sosmed {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+}
+
+.wrapper-right {
+    position: relative;
+    width: 50%;
+
+}
+
+.contain-right-footer {
+    display: flex;
+    gap: 30px;
+    font-family: var(--font-secondary);
+    font-size: 15px;
+    font-weight: bold;
+    padding: 70px 70px;
+    color: var(--text-collor-primary);
+}
+
+.footer-list p,
+.footer-list ul li {
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--text-collor-primary);
+}
+
+.element-right {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    border-radius: 200px 0 0 0;
+    width: 550px;
+    height: 110px;
+    background-color: var(--secondary-color);
+}
+
+#right2 {
+    position: relative;
+    bottom: 10px;
+    right: 10px;
+    background-color: transparent;
+    border: 1px solid var(--accent-color);
+}
+
+
+/* ============================================= */
+/* ATURAN CSS RESPONSIVE                         */
+/* ============================================= */
+
+/* Untuk Tablet (Lebar layar maks 992px) */
+@media (max-width: 992px) {
+    .main-footer {
+        flex-direction: column; /* Mengubah layout jadi vertikal */
+        height: auto; /* Biarkan tinggi footer menyesuaikan konten */
+    }
+
+    .wrapper-left,
+    .wrapper-right {
+        width: 100%; /* Buat setiap wrapper selebar layar */
+    }
+
+    .wrapper-right {
+        /* Memastikan elemen dekoratif kanan tetap di bawah */
+        position: relative;
+    }
+
+    /* Mengurangi ukuran elemen dekoratif agar tidak pecah */
+    .element-left,
+    .element-right {
+        width: 450px;
+        height: 100px;
+    }
+
+    #left2,
+    #right2 {
+        /* Sesuaikan posisi border dalam */
+        top: 8px;
+        left: 8px;
+    }
+    
+    #right2 {
+        bottom: 8px;
+        right: 8px;
+        left: auto;
+        top: auto;
+    }
+    
+    #left2 .logo-footer {
+        width: 90px;
+        height: 90px;
+    }
+
+    #left2 h2 {
+        font-size: 22px;
+    }
+
+    .contain-right-footer {
+        /* Sesuaikan padding untuk tablet */
+        padding: 40px 70px 70px 70px; 
+    }
+}
+
+/* Untuk Ponsel (Lebar layar maks 576px) */
+@media (max-width: 576px) {
+    
+    /* Perkecil lagi elemen dekoratif untuk ponsel */
+    .element-left,
+    .element-right {
+        width: 300px;
+        height: 90px;
+    }
+
+    #left2,
+    #right2 {
+        top: 6px;
+        left: 6px;
+    }
+
+    #right2 {
+        bottom: 6px;
+        right: 6px;
+        left: auto;
+        top: auto;
+    }
+
+    #left2 .logo-footer {
+        width: 70px;
+        height: 70px;
+    }
+
+    #left2 h2 {
+        font-size: 18px;
+    }
+
+    /* Sesuaikan padding dan font di konten kiri */
+    .contain-left-footer {
+        padding: 20px 30px 5px 30px;
+        font-size: 14px;
+    }
+
+    /* Atur ulang posisi kotak sosmed */
+    .sosmed-footer {
+        margin: 15px 30px 20px 30px;
+    }
+
+    /* Susun daftar menu di kanan secara vertikal */
+    .contain-right-footer {
+        flex-direction: column;
+        gap: 20px;
+        padding: 30px 30px 120px 30px; /* Beri ruang ekstra di bawah untuk elemen dekoratif */
+        font-size: 14px;
+    }
+}

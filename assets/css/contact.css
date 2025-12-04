@@ -1,0 +1,199 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Lora:wght@400;600&display=swap');
+
+:root {
+    --primary-color: #6A4E3B;
+    --secondary-color: #E9DFD2;
+    --accent-color: #FAF8F5;
+    --text-primary: #3c2f23;
+    --button-submit: #6A4E3B;
+    --white: #FFFFFF;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--secondary-color);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+}
+
+/* Header Bagian Atas */
+.contact-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.contact-header {
+    background-color: var(--accent-color);
+    width: 100%;
+    padding: 40px 0;
+}
+
+.contact-header h1 {
+    font-size: 28px;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+}
+
+.contact-header p {
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 14px;
+}
+
+/* Kontainer Utama */
+.contact-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 60px;
+    padding: 30px;
+    background-color: var(--secondary-color);
+    flex-wrap: wrap;
+}
+
+/* Kiri - Info Kontak */
+.contact-info {
+    background-color: var(--accent-color);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 30px;
+    width: 500px;
+    height: 450px;
+    text-align: left;
+}
+
+.contact-info h2 {
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    font-size: 25px;
+}
+
+.contact-info p {
+    font-size: 14px;
+    margin-bottom: 25px;
+    color: var(--text-primary);
+    font-weight: bold;
+}
+
+.contact-list div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    gap: 10px;
+}
+
+.contact-list img {
+    width: 22px;
+    height: 22px;
+}
+
+.contact-list span {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Kanan - Formulir */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    padding: 30px;
+    text-align: left;
+}
+
+.contact-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #333;
+}
+
+.contact-form input,
+.contact-form textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: var(--primary-color);
+}
+
+.contact-form .button-submit {
+    margin-top: 10px;
+    background-color: var(--button-submit);
+    color: var(--white);
+    border: none;
+    padding: 10px 0;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.contact-form .button-submit:hover {
+    background-color: #53392b;
+}
+
+/* ====================== */
+/* 📱 RESPONSIVE SETTINGS */
+/* ====================== */
+
+/* Tablet (maksimal lebar 992px) */
+@media (max-width: 992px) {
+    .contact-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+    }
+
+    .contact-info,
+    .contact-form {
+        width: 90%;
+    }
+}
+
+/* Mobile (maksimal lebar 600px) */
+@media (max-width: 600px) {
+    .contact-header h1 {
+        font-size: 22px;
+    }
+
+    .contact-header p {
+        font-size: 13px;
+    }
+
+    .contact-info,
+    .contact-form {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .contact-info h2 {
+        font-size: 18px;
+    }
+
+    .contact-list span {
+        font-size: 13px;
+    }
+
+    .contact-form label,
+    .contact-form input,
+    .contact-form textarea {
+        font-size: 13px;
+    }
+
+    .contact-form .button-submit {
+        padding: 8px 0;
+        border-radius: 15px;
+        font-size: 13px;
+    }
+}
