@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Poppins:wght@300;400;500;600&display=swap");
+@import url("[https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Poppins:wght@300;400;500;600&display=swap](https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Poppins:wght@300;400;500;600&display=swap)");
 
 /* Reset dasar */
 * {
@@ -7,16 +7,22 @@
   box-sizing: border-box;
 }
 
-/* Layout utama */
-main {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* ☕️ Body dan Font Global */
+body {
+  font-family: "Poppins", sans-serif;
   background-color: #f4efea;
 }
 
-/* Container utama */
+/* 💻 Layout utama (Desktop & Mobile) */
+main {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+/* 📦 Container utama */
 .container {
   width: 1100px;
   height: 500px;
@@ -25,9 +31,10 @@ main {
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  margin: 120px 0; /* Memberikan jarak atas dan bawah yang cukup */
 }
 
-/* Background diagonal */
+/* 📐 Background diagonal (Hanya untuk Desktop) */
 .container::before {
   content: "";
   position: absolute;
@@ -35,9 +42,10 @@ main {
   background: #6a4e3b;
   clip-path: polygon(60% 0, 100% 0, 100% 100%, 40% 100%);
   z-index: 0;
+  transition: clip-path 0.3s ease;
 }
 
-/* Bagian kiri (logo) */
+/* 🖼️ Bagian kiri (logo) */
 .left-side {
   width: 50%;
   background-color: transparent;
@@ -48,6 +56,7 @@ main {
   color: #7a5c3e;
   position: relative;
   z-index: 1;
+  padding: 20px;
 }
 
 .logo-box {
@@ -57,11 +66,11 @@ main {
 .left-side h2 {
   font-size: 25px;
   letter-spacing: 1px;
-  font-family: lora;
+  font-family: "Lora", serif;
   color: #f1c27d;
 }
 
-/* Bagian kanan (form login) */
+/* 👤 Bagian kanan (form login) */
 .right-side {
   width: 50%;
   position: relative;
@@ -70,6 +79,7 @@ main {
   justify-content: center;
   align-items: center;
   color: #fff;
+  padding: 20px;
 }
 
 /* Kotak login */
@@ -84,13 +94,13 @@ label {
   font-size: 14px;
   margin-bottom: 6px;
   color: #f4efea;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 fieldset {
   display: flex;
   flex-direction: column;
-  gap: -15px;
+  gap: 0px;
   border: none;
 }
 
@@ -111,7 +121,7 @@ fieldset {
 
 .input-group input {
   width: 100%;
-  padding: 10px 10px 10px 40px; /* ruang kiri agar placeholder tidak tertindih ikon */
+  padding: 10px 10px 10px 40px;
   border-radius: 6px;
   border: none;
   outline: none;
@@ -127,9 +137,9 @@ fieldset {
   padding: 10px;
   border-radius: 6px;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 600;
   margin-top: 10px;
-  transition: 0.3s;
+  transition: background-color 0.3s;
 }
 
 .btn-login-register:hover {
@@ -140,21 +150,22 @@ fieldset {
 .register-text {
   font-size: 13px;
   color: #ddd;
-  margin-bottom: 10px;
+  margin-top: 15px;
   text-align: center;
-  font-weight: bold;
+  font-weight: 400;
 }
 
 .register-text a {
   color: #f1c27d;
   text-decoration: none;
+  font-weight: 600;
 }
 
 .register-text a:hover {
   text-decoration: underline;
 }
 
-/* Style untuk notifikasi */
+/* --- Style Notifikasi --- */
 .notification {
   position: fixed;
   top: 20px;
@@ -218,31 +229,74 @@ fieldset {
   }
 }
 
-/* Responsif */
+/* 📱 RESPONSIVE (Media Queries) */
 @media (max-width: 768px) {
   .container {
+    /* Ubah arah flex menjadi kolom (vertical stack) */
     flex-direction: column;
-    height: auto;
-    width: 90%;
+    height: auto; /* Biarkan tinggi menyesuaikan konten */
+    width: 90%; /* Ambil 90% lebar layar */
+    margin: 50px auto; /* Margin atas/bawah yang lebih kecil dan rata tengah */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
   }
 
+  /* Hapus background diagonal untuk tampilan mobile, ganti dengan warna solid */
   .container::before {
-    clip-path: none;
-    background: #6a4e3b;
-  }
-
-  .left-side,
-  .right-side {
-    width: 100%;
-    padding: 30px 0;
+    clip-path: none; /* Nonaktifkan clip-path */
+    background: #6a4e3b; /* Warna latar belakang solid */
+    height: 100%; /* Pastikan menutupi seluruh container */
   }
 
   .left-side {
+    width: 100%; /* Ambil 100% lebar */
+    padding: 30px 20px;
+    /* Tambahkan garis pemisah visual di bagian bawah */
     border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    background-color: #f4efea; /* Atur background solid untuk left-side */
+  }
+
+  .left-side h2 {
+    color: #6a4e3b; /* Ubah warna teks logo agar terlihat di latar putih */
+  }
+
+  /* Form login (right-side) */
+  .right-side {
+    width: 100%; /* Ambil 100% lebar */
+    padding: 30px 20px;
+    background-color: #6a4e3b; /* Pastikan background warna form tetap gelap */
+  }
+
+  /* Perbaikan: Atur warna label agar terlihat di latar gelap mobile */
+  .right-side label {
+    color: #f4efea;
   }
 
   .login-box {
-    max-width: 100%;
-    width: 80%;
+    max-width: 100%; /* Gunakan lebar penuh dari right-side */
+    width: 100%;
+  }
+
+  /* Sesuaikan tampilan input untuk mobile */
+  .input-group input {
+    padding: 12px 10px 12px 45px; /* Padding lebih besar untuk sentuhan */
+  }
+
+  .input-group {
+    margin-bottom: 20px;
+  }
+}
+
+/* Opsional: Penyesuaian untuk layar yang sangat kecil (misalnya, lebar di bawah 480px) */
+@media (max-width: 480px) {
+  .left-side img {
+    width: 80px; /* Perkecil logo sedikit */
+  }
+
+  .left-side h2 {
+    font-size: 20px;
+  }
+
+  .login-box {
+    padding: 0 10px; /* Padding horizontal agar tidak terlalu mepet */
   }
 }
