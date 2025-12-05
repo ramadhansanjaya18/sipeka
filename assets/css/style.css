@@ -126,7 +126,7 @@
 
 /* --- LOWONGAN TERBARU (new_job_container) --- */
 .new_job_container {
-  padding: 50px;
+  padding: 50px 20px;
   background-color: var(--cream-bg);
 }
 
@@ -141,8 +141,7 @@
 .container_job {
   display: flex;
   justify-content: center; /* Gunakan center agar kartu tetap di tengah */
-  align-items: center;
-  margin-bottom: 20px;
+  flex-wrap: wrap;
   gap: 20px; /* Tambahkan gap antar kartu */
 }
 .card_job_new {
@@ -180,7 +179,7 @@
   max-width: 220px; /* Batasi max-width jika terlalu lebar */
   height: 40px;
   border-radius: 5px;
-  margin-top: auto; 
+  margin-top: auto;
 }
 
 .button_job_new:hover {

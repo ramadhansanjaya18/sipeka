@@ -259,6 +259,7 @@ if (!empty($pelamar['foto_profil']) && file_exists($upload_dir_foto . $pelamar['
                     <textarea id="keahlian" name="keahlian" rows="3" placeholder="Contoh: Latte Art, Customer Service, Microsoft Office"><?php echo htmlspecialchars($pelamar['keahlian'] ?? '', ENT_QUOTES, 'UTF-8'); ?></textarea>
                 </div>
                     <button type="submit" name="update_profil" class="btn_apply">Simpan Perubahan</button>
+                        <a href="logout.php" class="btn_logout"><img src="https://img.icons8.com/ios-filled/50/exit.png" alt=""> Logout</a>
             </form>
         </div>
 

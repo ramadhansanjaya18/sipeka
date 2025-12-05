@@ -42,13 +42,15 @@
                     <?php endif; ?>
                 </ul>
             </div>
+            <?php if (!isset($_SESSION['id_user'])): ?>
             <div class="footer-list">
                 <p>Halaman</p>
-                <ul>
-                    <li><a href="login.php">Login</a></li>
-                    <li><a href="register.php">Daftar</a></li>
-                </ul>
+                    <ul>
+                        <li><a href="login.php">Login</a></li>
+                        <li><a href="register.php">Daftar</a></li>
+                    </ul>
             </div>
+            <?php endif; ?>
         </div>
         <div class="bottom-footer">
             <div class="element-right" id="right1">
