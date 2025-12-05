@@ -56,7 +56,7 @@ if (isset($_GET['id_lamaran']) && !empty($_GET['id_lamaran'])) {
     // [PERBAIKAN] Baris 'u.ijasah,' telah dihapus dari query di bawah ini
     $query = "SELECT 
                 l.id_lamaran, l.id_pelamar, l.id_lowongan, l.status_lamaran,
-                u.dokumen_cv, u.surat_lamaran, u.sertifikat_pendukung, 
+                u.dokumen_cv, u.surat_lamaran, u.sertifikat_pendukung, u.ijasah,
                 u.nama_lengkap, u.email, u.no_telepon, u.alamat, u.tempat_tanggal_lahir,
                 u.riwayat_pendidikan, u.pengalaman_kerja, u.keahlian, u.ringkasan_pribadi, u.foto_profil,
                 lw.posisi_lowongan
