@@ -1,192 +1,380 @@
 /* ===================================================================
- * SIPEKA STATUS LAMARAN STYLESHEET
+ * SIPEKA STATUS LAMARAN STYLESHEET (Refined & Clean)
  * =================================================================== */
 
-/* --- 1. Root Variables & General --- */
+/* --- 1. Root Variables --- */
 :root {
-    /* Base Colors */
-    --dark-brown: #3D352F;
-    --cream-bg: #FAF6F0;
-    --card-bg: #FBF9F6;
-    --border-color: #EAE5E0;
-    --text-muted: #8A7E73;
-    --button-primary: #B99C7D;
+  --dark-brown: #3d352f;
+  --btn-brown: #5d4037;
+  --cream-bg: #faf6f0;
+  --card-bg: #fbf9f6;
+  --border-color: #eae5e0;
+  --text-muted: #8a7e73;
 
-    /* Status Colors */
-    --status-diproses-bg: #eef3f8;
-    --status-diproses-text: #366091;
-    --status-wawancara-bg: #fff8e1;
-    --status-wawancara-text: #f57f17;
-    --status-diterima-bg: #e8f5e9;
-    --status-diterima-text: #2e7d32;
-    --status-ditolak-bg: #ffebee;
-    --status-ditolak-text: #c62828;
+  /* Modal Specific */
+  --modal-input-bg: #f9f9f9;
+  --modal-input-border: #e0e0e0;
+  --modal-label: #333333;
+
+  /* Status Colors */
+  --bg-diproses: #eef3f8;
+  --text-diproses: #366091;
+  --bg-wawancara: #fff8e1;
+  --text-wawancara: #f57f17;
+  --bg-diterima: #e8f5e9;
+  --text-diterima: #2e7d32;
+  --bg-ditolak: #ffebee;
+  --text-ditolak: #c62828;
 }
 
 /* --- 2. Page Header --- */
-.status-container{
-    padding: 30px;
+.status-container {
+  padding: 40px 20px;
+  background-color: var(--cream-bg);
+  min-height: 80vh;
 }
+
 .status-container h1 {
-    margin-bottom: 0.5rem;
-    font-family: var(--font-secondary);
-    font-size: 2.5rem;
-    text-align: center;
+  font-family: "Lora", serif;
+  font-size: 2.2rem;
+  text-align: center;
+  color: var(--dark-brown);
+  margin-bottom: 5px;
 }
 
-.status-container>p {
-    margin-bottom: 3rem;
-    color: var(--text-muted);
-    text-align: center;
+.status-container > p {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 40px;
 }
 
-/* --- 3. Timeline Layout --- */
+/* --- 3. Timeline Components --- */
 .timeline-container {
-    position: relative;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem 0;
+  position: relative;
+  max-width: 850px;
+  margin: 0 auto;
 }
 
 .timeline-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 19px;
-    /* Center of the icon (40px width / 2) - (4px line width / 2) = 18px, adjusted to 19px for visual alignment */
-    width: 4px;
-    height: 100%;
-    background: var(--border-color);
-    border-radius: 2px;
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 20px;
+  width: 3px;
+  background: #e0e0e0;
 }
 
 .timeline-item {
-    position: relative;
-    margin-bottom: 2rem;
-    padding-left: 50px;
+  position: relative;
+  margin-bottom: 25px;
+  padding-left: 60px;
 }
 
-/* --- 4. Timeline Components --- */
 .timeline-icon {
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    font-size: 1.2rem;
-    background-color: var(--border-color);
-    border: 4px solid var(--cream-bg);
-    border-radius: 50%;
+  position: absolute;
+  top: 25px;
+  left: 6px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  z-index: 2;
+  border: 4px solid var(--cream-bg);
 }
 
+/* Status Icon Colors */
+.timeline-icon.status-diproses {
+  background-color: var(--text-diproses);
+}
+.timeline-icon.status-wawancara {
+  background-color: var(--text-wawancara);
+}
+.timeline-icon.status-diterima {
+  background-color: var(--text-diterima);
+}
+.timeline-icon.status-ditolak {
+  background-color: var(--text-ditolak);
+}
+
+/* Content Card */
 .timeline-content {
-    padding: 1.5rem;
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
 }
 
 .timeline-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 5px;
 }
 
 .job-title {
-    font-size: 1.4rem;
-    font-weight: 600;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--dark-brown);
+  margin: 0;
 }
 
 .application-date {
-    font-size: 0.9rem;
-    color: var(--text-muted);
+  font-size: 0.85rem;
+  color: var(--text-muted);
 }
 
 .company-name {
-    margin-bottom: 1rem;
-    color: var(--text-muted);
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-bottom: 20px;
 }
 
-.btn-detail-timeline {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--button-primary);
-    text-decoration: none;
+/* Footer Layout */
+.timeline-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* --- 5. Status Badges & Colors --- */
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
 .status-badge {
-    display: inline-block;
-    margin-bottom: 1rem;
-    padding: 0.4rem 0.8rem;
-    font-size: 0.9rem;
-    font-weight: 500;
-    border-radius: 20px;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
 }
-
 .status-badge.status-diproses {
-    color: var(--status-diproses-text);
-    background-color: var(--status-diproses-bg);
+  background: var(--bg-diproses);
+  color: var(--text-diproses);
 }
-
-.timeline-item.status-diproses .timeline-icon {
-    background-color: var(--status-diproses-text);
-}
-
 .status-badge.status-wawancara {
-    color: var(--status-wawancara-text);
-    background-color: var(--status-wawancara-bg);
+  background: var(--bg-wawancara);
+  color: var(--text-wawancara);
 }
-
-.timeline-item.status-wawancara .timeline-icon {
-    background-color: var(--status-wawancara-text);
-}
-
 .status-badge.status-diterima {
-    color: var(--status-diterima-text);
-    background-color: var(--status-diterima-bg);
+  background: var(--bg-diterima);
+  color: var(--text-diterima);
 }
-
-.timeline-item.status-diterima .timeline-icon {
-    background-color: var(--status-diterima-text);
-}
-
 .status-badge.status-ditolak {
-    color: var(--status-ditolak-text);
-    background-color: var(--status-ditolak-bg);
+  background: var(--bg-ditolak);
+  color: var(--text-ditolak);
 }
 
-.timeline-item.status-ditolak .timeline-icon {
-    background-color: var(--status-ditolak-text);
+.link-detail-text {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.link-detail-text:hover {
+  color: var(--dark-brown);
+  text-decoration: underline;
 }
 
-/* --- 6. Empty State --- */
-.no-applications {
-    padding: 3rem;
-    text-align: center;
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
+.btn-jadwal {
+  background-color: var(--btn-brown);
+  color: #ffffff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.btn-jadwal:hover {
+  background-color: #4a332a;
 }
 
-.no-applications p {
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
+/* --- 4. MODAL STYLING (Clean & Modern) --- */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
 }
 
-/* --- 7. Responsive Design --- */
+.modal-card {
+  background: #fff;
+  width: 90%;
+  max-width: 800px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: slideDown 0.3s ease;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Header Modal */
+.modal-header {
+  padding: 20px 30px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--dark-brown);
+  font-weight: 600;
+}
+
+.close-modal {
+  font-size: 28px;
+  color: #999;
+  cursor: pointer;
+  line-height: 1;
+}
+.close-modal:hover {
+  color: #333;
+}
+
+/* Body Modal Grid */
+.modal-body {
+  padding: 30px;
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 Kolom Presisi */
+  gap: 40px; /* Jarak antar kolom yang pas */
+}
+
+.grid-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group-modal {
+  margin-bottom: 20px;
+}
+
+.form-group-modal label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--modal-label);
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* Input Styling - Clean Look */
+.modal-input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid var(--modal-input-border);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #555;
+  background-color: var(--modal-input-bg); /* Sedikit abu */
+  outline: none;
+  font-family: "Poppins", sans-serif;
+  transition: border-color 0.2s;
+}
+
+.modal-input:focus {
+  border-color: #bbb;
+}
+
+.modal-textarea {
+  height: 120px;
+  resize: none;
+}
+
+/* Icon Wrapper */
+.input-icon-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.input-icon-wrapper .modal-input {
+  padding-right: 40px; /* Ruang untuk icon */
+}
+
+.icon-suffix {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* Footer Modal */
+.modal-footer {
+  padding: 15px 30px;
+  border-top: 1px solid #eee;
+  text-align: right;
+  background: #fff;
+}
+
+.btn-close-modal {
+  background-color: #e0e0e0;
+  color: #333;
+  border: none;
+  padding: 10px 35px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-close-modal:hover {
+  background-color: #d0d0d0;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* --- Responsive --- */
 @media (max-width: 768px) {
-    .timeline-header {
-        align-items: flex-start;
-        flex-direction: column;
-    }
+  .timeline-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .footer-left,
+  .footer-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .btn-jadwal {
+    width: 100%;
+  }
 
-    .application-date {
-        margin-top: 0.5rem;
-    }
+  /* Modal Responsif */
+  .modal-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
 }
