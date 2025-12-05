@@ -1,14 +1,5 @@
 <?php
-/**
- * Halaman Login Pengguna.
- *
- * File ini menangani:
- * - Menampilkan form login.
- * - Memproses data login yang dikirimkan (email & password).
- * - Memverifikasi kredensial pengguna dengan data di database.
- * - Membuat session jika login berhasil dan mengarahkan ke halaman yang sesuai (HRD atau Pelamar).
- * - Menampilkan pesan error jika login gagal atau pesan sukses setelah registrasi.
- */
+
 
 // 1. Memanggil init.php (yang sudah memulai session dan koneksi database)
 include_once __DIR__ . '/config/init.php';
