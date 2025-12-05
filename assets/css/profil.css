@@ -4,216 +4,234 @@
 
 /* --- 1. Root Variables & General --- */
 :root {
-    /* Colors */
-    --dark-brown: #3D352F;
-    --cream-bg: #FAF6F0;
-    --card-bg: #FBF9F6;
-    --border-color: #EAE5E0;
-    --border-color-light: #DCD6CD;
-    --text-muted: #8A7E73;
-    --button-primary: #B99C7D;
-    --button-primary-text: #FFFFFF;
-    --success-bg: #E8F5E9;
-    --success-text: #388E3C;
-    --error-bg: #FFEBEE;
-    --error-text: #D32F2F;
+  /* Colors */
+  --dark-brown: #3d352f;
+  --cream-bg: #faf6f0;
+  --card-bg: #fbf9f6;
+  --border-color: #eae5e0;
+  --border-color-light: #dcd6cd;
+  --text-muted: #8a7e73;
+  --button-primary: #b99c7d;
+  --button-primary-text: #ffffff;
+  --success-bg: #e8f5e9;
+  --success-text: #388e3c;
+  --error-bg: #ffebee;
+  --error-text: #d32f2f;
 
-    /* Sizing & Spacing */
-    --base-font-size: 1rem;
-    --border-radius-md: 6px;
-    --border-radius-lg: 12px;
+  /* Sizing & Spacing */
+  --base-font-size: 1rem;
+  --border-radius-md: 6px;
+  --border-radius-lg: 12px;
 }
 
 /* --- 2. Layout & Grid --- */
-.profile-container{
-    padding: 30px;
+.profile-container {
+  padding: 30px;
 }
 .profile-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 2rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+.logout {
+  margin-top: 24px;
 }
 
 .right-column {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 /* --- 3. Cards --- */
 .profile-card {
-    padding: 2rem;
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-lg);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .photo-card {
-    text-align: center;
+  text-align: center;
 }
 
 /* --- 4. Typography & Content --- */
 .profile-container h1 {
-    margin-bottom: 0.5rem;
-    font-family: var(--font-secondary);
-    font-size: 2.5rem;
-    text-align: center;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-secondary);
+  font-size: 2.5rem;
+  text-align: center;
 }
 
-.profile-container>p {
-    margin-bottom: 3rem;
-    color: var(--text-muted);
-    text-align: center;
+.profile-container > p {
+  margin-bottom: 3rem;
+  color: var(--text-muted);
+  text-align: center;
 }
 
 .profile-card h2 {
-    padding-bottom: 1rem;
-    margin-bottom: 1.5rem;
-    font-family: var(--font-secondary);
-    font-size: 1.8rem;
-    border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  font-family: var(--font-secondary);
+  font-size: 1.8rem;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .cv-card hr {
-    margin: 2rem 0;
-    border: 0;
-    border-top: 1px solid var(--border-color);
+  margin: 2rem 0;
+  border: 0;
+  border-top: 1px solid var(--border-color);
 }
 
 .cv-card h3 {
-    margin-bottom: 1rem;
-    font-size: 1.4rem;
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
 }
 
 .cv-status {
-    margin-top: 1rem;
+  margin-top: 1rem;
 }
 
 .cv-exists a {
-    font-weight: 600;
-    color: var(--dark-brown);
-    text-decoration: underline;
+  font-weight: 600;
+  color: var(--dark-brown);
+  text-decoration: underline;
 }
 
 .cv-exists .cv-icon {
-    margin-right: 0.5rem;
-    font-size: 1.5rem;
+  margin-right: 0.5rem;
+  font-size: 1.5rem;
 }
 
 .cv-not-exists {
-    font-style: italic;
-    color: var(--text-muted);
+  font-style: italic;
+  color: var(--text-muted);
 }
 
 .upload-instructions {
-    margin-bottom: 1rem;
-    font-size: 0.9rem;
-    color: var(--text-muted);
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
 }
 
 /* --- 5. Forms & Buttons --- */
 .form-group {
-    margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
 }
 
 .form-group input[type="text"],
 .form-group input[type="email"],
 .form-group input[type="tel"],
 .form-group textarea {
-    width: 100%;
-    padding: 0.8rem 1rem;
-    font-size: var(--base-font-size);
-    background-color: #fff;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-md);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-size: var(--base-font-size);
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
-    outline: none;
-    border-color: var(--button-primary);
-    box-shadow: 0 0 0 3px rgba(185, 156, 125, 0.2);
+  outline: none;
+  border-color: var(--button-primary);
+  box-shadow: 0 0 0 3px rgba(185, 156, 125, 0.2);
 }
 
 .form-group textarea {
-    min-height: 80px;
-    resize: vertical;
+  min-height: 80px;
+  resize: vertical;
 }
 
 .btn {
-    display: inline-block;
-    padding: 0.8rem 1.5rem;
-    cursor: pointer;
-    font-size: var(--base-font-size);
-    font-weight: 600;
-    color: var(--button-primary-text);
-    background-color: var(--button-primary);
-    border: none;
-    border-radius: var(--border-radius-md);
-    transition: background-color 0.3s ease;
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  cursor: pointer;
+  font-size: var(--base-font-size);
+  font-weight: 600;
+  color: var(--button-primary-text);
+  background-color: var(--button-primary);
+  border: none;
+  border-radius: var(--border-radius-md);
+  transition: background-color 0.3s ease;
+}
+
+.btn_apply {
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  cursor: pointer;
+  font-size: var(--base-font-size);
+  font-weight: 600;
+  color: var(--button-primary-text);
+  background-color: var(--button-primary);
+  border: none;
+  border-radius: var(--border-radius-md);
+  transition: background-color 0.3s ease;
+  float: right;
 }
 
 .btn:hover {
-    background-color: #a88e70;
+  background-color: #a88e70;
 }
 
 .photo-card .form-group {
-    margin-bottom: 1rem;
-    text-align: left;
+  margin-bottom: 1rem;
+  text-align: left;
 }
 
 .photo-card .btn {
-    width: 100%;
+  width: 100%;
 }
 
 /* --- 6. Images & Placeholders --- */
 .profile-picture-preview {
-    width: 150px;
-    height: 150px;
-    margin-bottom: 1.5rem;
-    object-fit: cover;
-    background-color: #f0f0f0;
-    border: 3px solid var(--border-color);
-    border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  margin-bottom: 1.5rem;
+  object-fit: cover;
+  background-color: #f0f0f0;
+  border: 3px solid var(--border-color);
+  border-radius: 50%;
 }
 
 /* --- 7. Messages --- */
 .message {
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    text-align: center;
-    border-radius: 8px;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  text-align: center;
+  border-radius: 8px;
 }
 
 .message.success {
-    color: var(--success-text);
-    background-color: var(--success-bg);
-    border: 1px solid var(--success-text);
+  color: var(--success-text);
+  background-color: var(--success-bg);
+  border: 1px solid var(--success-text);
 }
 
 .message.error {
-    color: var(--error-text);
-    background-color: var(--error-bg);
-    border: 1px solid var(--error-text);
+  color: var(--error-text);
+  background-color: var(--error-bg);
+  border: 1px solid var(--error-text);
 }
 
 /* --- 8. Responsive Design --- */
 @media (max-width: 992px) {
-    .profile-grid {
-        display: flex;
-        flex-direction: column-reverse;
-        grid-template-columns: 1fr;
-    }
+  .profile-grid {
+    display: flex;
+    flex-direction: column-reverse;
+    grid-template-columns: 1fr;
+  }
 
-    .right-column {
-        flex-direction: column-reverse;
-    }
+  .right-column {
+    flex-direction: column-reverse;
+  }
 }

@@ -258,7 +258,7 @@ if (!empty($pelamar['foto_profil']) && file_exists($upload_dir_foto . $pelamar['
                     <label for="keahlian">Keahlian</label>
                     <textarea id="keahlian" name="keahlian" rows="3" placeholder="Contoh: Latte Art, Customer Service, Microsoft Office"><?php echo htmlspecialchars($pelamar['keahlian'] ?? '', ENT_QUOTES, 'UTF-8'); ?></textarea>
                 </div>
-                <button type="submit" name="update_profil" class="btn">Simpan Perubahan</button>
+                    <button type="submit" name="update_profil" class="btn_apply">Simpan Perubahan</button>
             </form>
         </div>
 
