@@ -30,7 +30,7 @@ a {
   display: flex;
   justify-content: space-between;
   height: 450px;
-  background-color: red;
+  background-color: var(--prymary-color);
 }
 
 .wrapper-left {
