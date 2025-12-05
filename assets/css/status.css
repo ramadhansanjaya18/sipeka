@@ -1,5 +1,5 @@
 /* ===================================================================
- * SIPEKA STATUS LAMARAN STYLESHEET (Refined & Clean)
+ * SIPEKA STATUS LAMARAN STYLESHEET (Final Fix)
  * =================================================================== */
 
 /* --- 1. Root Variables --- */
@@ -11,7 +11,7 @@
   --border-color: #eae5e0;
   --text-muted: #8a7e73;
 
-  /* Modal Specific */
+  /* Modal Specific Colors */
   --modal-input-bg: #f9f9f9;
   --modal-input-border: #e0e0e0;
   --modal-label: #333333;
@@ -49,13 +49,14 @@
   margin-bottom: 40px;
 }
 
-/* --- 3. Timeline Components --- */
+/* --- 3. Timeline Layout --- */
 .timeline-container {
   position: relative;
   max-width: 850px;
   margin: 0 auto;
 }
 
+/* Garis Vertikal Timeline */
 .timeline-container::before {
   content: "";
   position: absolute;
@@ -72,6 +73,7 @@
   padding-left: 60px;
 }
 
+/* Ikon Bulat Timeline */
 .timeline-icon {
   position: absolute;
   top: 25px;
@@ -83,7 +85,6 @@
   border: 4px solid var(--cream-bg);
 }
 
-/* Status Icon Colors */
 .timeline-icon.status-diproses {
   background-color: var(--text-diproses);
 }
@@ -97,7 +98,7 @@
   background-color: var(--text-ditolak);
 }
 
-/* Content Card */
+/* Kartu Konten */
 .timeline-content {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
@@ -133,7 +134,7 @@
   margin-bottom: 20px;
 }
 
-/* Footer Layout */
+/* --- Footer Kartu (Flexbox Kiri-Kanan) --- */
 .timeline-footer {
   display: flex;
   justify-content: space-between;
@@ -146,6 +147,7 @@
   gap: 15px;
 }
 
+/* Badge Status */
 .status-badge {
   padding: 5px 12px;
   border-radius: 6px;
@@ -169,6 +171,7 @@
   color: var(--text-ditolak);
 }
 
+/* Link Detail */
 .link-detail-text {
   font-size: 0.85rem;
   color: var(--text-muted);
@@ -181,6 +184,7 @@
   text-decoration: underline;
 }
 
+/* Tombol Jadwal */
 .btn-jadwal {
   background-color: var(--btn-brown);
   color: #ffffff;
@@ -197,7 +201,7 @@
   background-color: #4a332a;
 }
 
-/* --- 4. MODAL STYLING (Clean & Modern) --- */
+/* --- 4. MODAL STYLING (FIXED Z-INDEX & LAYOUT) --- */
 .modal-overlay {
   display: none;
   position: fixed;
@@ -206,7 +210,10 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 9999;
+
+  /* Z-Index sangat tinggi agar di atas Header */
+  z-index: 999999;
+
   justify-content: center;
   align-items: center;
 }
@@ -249,15 +256,15 @@
   color: #333;
 }
 
-/* Body Modal Grid */
+/* Body Modal (Grid System) */
 .modal-body {
   padding: 30px;
 }
 
 .modal-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* 2 Kolom Presisi */
-  gap: 40px; /* Jarak antar kolom yang pas */
+  grid-template-columns: 1fr 1fr; /* 2 Kolom Seimbang */
+  gap: 40px;
 }
 
 .grid-column {
@@ -277,7 +284,7 @@
   display: block;
 }
 
-/* Input Styling - Clean Look */
+/* Input Styling */
 .modal-input {
   width: 100%;
   padding: 12px 15px;
@@ -285,14 +292,9 @@
   border-radius: 8px;
   font-size: 0.95rem;
   color: #555;
-  background-color: var(--modal-input-bg); /* Sedikit abu */
+  background-color: var(--modal-input-bg);
   outline: none;
   font-family: "Poppins", sans-serif;
-  transition: border-color 0.2s;
-}
-
-.modal-input:focus {
-  border-color: #bbb;
 }
 
 .modal-textarea {
@@ -300,14 +302,14 @@
   resize: none;
 }
 
-/* Icon Wrapper */
+/* Icon Wrapper untuk Input */
 .input-icon-wrapper {
   position: relative;
   width: 100%;
 }
 
 .input-icon-wrapper .modal-input {
-  padding-right: 40px; /* Ruang untuk icon */
+  padding-right: 40px; /* Ruang untuk ikon */
 }
 
 .icon-suffix {
@@ -356,7 +358,7 @@
   }
 }
 
-/* --- Responsive --- */
+/* --- Responsive Mobile --- */
 @media (max-width: 768px) {
   .timeline-footer {
     flex-direction: column;
@@ -372,7 +374,7 @@
     width: 100%;
   }
 
-  /* Modal Responsif */
+  /* Modal jadi 1 kolom di HP */
   .modal-grid {
     grid-template-columns: 1fr;
     gap: 20px;

@@ -8,6 +8,7 @@ $id_pelamar = $_SESSION['id_user'];
 $nama_pelamar = $_SESSION['nama_lengkap']; 
 
 // 3. Query Database
+// Mengambil data lamaran beserta jadwal wawancara (jika ada)
 $query = "SELECT 
             l.judul AS judul_lowongan,
             l.posisi_lowongan,
@@ -37,13 +38,14 @@ $result = $stmt->get_result();
     <div class="timeline-container">
         <?php if ($result->num_rows > 0): ?>
             <?php while ($lamaran = $result->fetch_assoc()):
+                // Menentukan kelas CSS untuk warna status
                 $status_clean = strtolower(str_replace(' ', '-', $lamaran['status_lamaran']));
                 $status_class = 'status-' . $status_clean;
                 
-                // Format Tanggal Pelamaran
+                // Format Tanggal Pelamaran untuk tampilan kartu
                 $tgl_lamar = date('d M Y, H:i', strtotime($lamaran['tanggal_lamaran']));
 
-                // Data Modal
+                // Persiapan Data untuk Modal (jika ada jadwal)
                 $jadwal_db = $lamaran['jadwal'];
                 $tgl_modal = !empty($jadwal_db) ? date('d/m/Y', strtotime($jadwal_db)) : '-';
                 $jam_modal = !empty($jadwal_db) ? date('H.i', strtotime($jadwal_db)) : '-';
@@ -165,9 +167,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const btnCloseBottom = document.querySelector('.btn-close-modal');
     const jadwalButtons = document.querySelectorAll('.btn-jadwal');
 
+    // Event saat tombol 'Lihat Jadwal' diklik
     jadwalButtons.forEach(btn => {
         btn.addEventListener('click', function() {
-            // Ambil data
+            // Ambil data dari atribut data-* tombol
             const idLamaran = this.dataset.id;
             const nama = this.dataset.nama;
             const posisi = this.dataset.posisi;
@@ -176,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const jam = this.dataset.jam;
             const catatan = this.dataset.catatan;
 
-            // Set Data ke Input
+            // Masukkan data ke dalam input modal
             document.getElementById('modalPelamar').value = `${nama} (${posisi}) (ID:${idLamaran})`;
             document.getElementById('modalPosisi').value = posisi;
             document.getElementById('modalCatatan').value = catatan;
@@ -184,10 +187,12 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('modalTanggal').value = tanggal;
             document.getElementById('modalJam').value = jam;
             
+            // Tampilkan modal (ubah display jadi flex)
             modal.style.display = 'flex';
         });
     });
 
+    // Fungsi menutup modal
     function closeModal() {
         modal.style.display = 'none';
     }
@@ -195,6 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if(closeBtn) closeBtn.addEventListener('click', closeModal);
     if(btnCloseBottom) btnCloseBottom.addEventListener('click', closeModal);
 
+    // Tutup modal jika area gelap di luar modal diklik
     window.addEventListener('click', function(e) {
         if (e.target == modal) closeModal();
     });
