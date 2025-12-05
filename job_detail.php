@@ -2,13 +2,11 @@
 /**
  * Halaman Detail Lowongan.
  *
- * Menampilkan informasi lengkap dari satu lowongan pekerjaan, termasuk deskripsi,
- * persyaratan, dan status. Halaman ini juga berisi logika untuk menampilkan
- * tombol "Lamar" yang sesuai dengan kondisi pengguna (sudah login, peran, 
- * status lamaran, dan kelengkapan profil).
+ * Menampilkan informasi lengkap dari satu lowongan pekerjaan.
+ * Memastikan pelamar melengkapi data wajib sebelum bisa melamar.
  */
 
-// 1. Memanggil header (yang juga menginisialisasi session dan koneksi database)
+// 1. Memanggil header (init session & koneksi)
 include_once 'templates/header.php';
 
 $lowongan = null;
@@ -20,7 +18,7 @@ if (!isset($_GET['id']) || !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
 } else {
     $id_lowongan = (int) $_GET['id'];
 
-    // 3. Query untuk mengambil detail lowongan beserta nama HRD yang memposting
+    // 3. Query untuk mengambil detail lowongan
     $query = "SELECT 
                 l.id_lowongan, l.judul, l.posisi_lowongan, l.deskripsi, l.persyaratan, 
                 DATE_FORMAT(l.tanggal_buka, '%d %M %Y') AS tgl_buka_formatted, 
@@ -50,18 +48,18 @@ if (!isset($_GET['id']) || !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     $stmt->close();
 }
 
-// 4. --- LOGIKA UNTUK TOMBOL APPLY ---
-// Inisialisasi variabel status untuk tombol "Lamar"
+// 4. --- LOGIKA VALIDASI KELENGKAPAN PROFIL ---
 $user_has_applied = false;
-$user_cv_exists = false;
+$profile_is_complete = false;
+$missing_fields = []; // Array untuk menampung data yang kurang
 $status_lowongan_aktif = false;
 
-// Lakukan pengecekan hanya jika tidak ada error dan pengguna adalah pelamar
+// Cek hanya jika user login sebagai pelamar
 if (!$error_message && isset($_SESSION['id_user']) && $_SESSION['role'] == 'pelamar') {
     $id_pelamar = $_SESSION['id_user'];
     $status_lowongan_aktif = ($lowongan['status_lowongan_realtime'] == 'Aktif');
 
-    // Cek 1: Apakah pelamar sudah pernah melamar lowongan ini?
+    // A. Cek apakah sudah pernah melamar di lowongan ini
     $stmt_check_lamaran = $koneksi->prepare("SELECT id_lamaran FROM lamaran WHERE id_pelamar = ? AND id_lowongan = ?");
     $stmt_check_lamaran->bind_param("ii", $id_pelamar, $id_lowongan);
     $stmt_check_lamaran->execute();
@@ -70,17 +68,39 @@ if (!$error_message && isset($_SESSION['id_user']) && $_SESSION['role'] == 'pela
     }
     $stmt_check_lamaran->close();
 
-    // Cek 2: Apakah pelamar sudah mengunggah CV di profilnya?
-    $stmt_check_cv = $koneksi->prepare("SELECT dokumen_cv FROM user WHERE id_user = ?");
-    $stmt_check_cv->bind_param("i", $id_pelamar);
-    $stmt_check_cv->execute();
-    $user_data = $stmt_check_cv->get_result()->fetch_assoc();
-    if (!empty($user_data['dokumen_cv'])) {
-        $user_cv_exists = true;
-    }
-    $stmt_check_cv->close();
-}
+    // B. Ambil data profil pelamar untuk validasi kelengkapan
+    $stmt_profile = $koneksi->prepare("SELECT * FROM user WHERE id_user = ?");
+    $stmt_profile->bind_param("i", $id_pelamar);
+    $stmt_profile->execute();
+    $pelamar = $stmt_profile->get_result()->fetch_assoc();
+    $stmt_profile->close();
 
+    // C. Definisi Data Wajib (Key Database => Label yang Tampil)
+    $required_fields = [
+        'nama_lengkap'       => 'Nama Lengkap',
+        'email'              => 'Email',
+        'no_telepon'         => 'Nomor Telepon',
+        'alamat'             => 'Alamat',
+        'ringkasan_pribadi'  => 'Ringkasan Pribadi',
+        'riwayat_pendidikan' => 'Riwayat Pendidikan',
+        'foto_profil'        => 'Foto Profil',
+        'dokumen_cv'         => 'Curriculum Vitae (CV)',
+        'surat_lamaran'      => 'Surat Lamaran',
+        'ijasah'             => 'Ijazah'
+    ];
+
+    // D. Loop cek kelengkapan
+    foreach ($required_fields as $db_column => $label) {
+        // Cek jika kolom kosong atau null
+        if (empty($pelamar[$db_column])) {
+            $missing_fields[] = $label;
+        }
+    }
+
+    if (empty($missing_fields)) {
+        $profile_is_complete = true;
+    }
+}
 ?>
 
 <div class="container job-detail-container">
@@ -117,8 +137,7 @@ if (!$error_message && isset($_SESSION['id_user']) && $_SESSION['role'] == 'pela
                         <li><strong>Tanggal Tutup:</strong>
                             <?php echo htmlspecialchars($lowongan['tgl_tutup_formatted'], ENT_QUOTES, 'UTF-8'); ?></li>
                         <li><strong>Status:</strong>
-                            <span
-                                class="status-<?php echo strtolower(htmlspecialchars($lowongan['status_lowongan_realtime'], ENT_QUOTES, 'UTF-8')); ?>">
+                            <span class="status-<?php echo strtolower(htmlspecialchars($lowongan['status_lowongan_realtime'], ENT_QUOTES, 'UTF-8')); ?>">
                                 <?php echo htmlspecialchars($lowongan['status_lowongan_realtime'], ENT_QUOTES, 'UTF-8'); ?>
                             </span>
                         </li>
@@ -130,21 +149,29 @@ if (!$error_message && isset($_SESSION['id_user']) && $_SESSION['role'] == 'pela
 
                                 <?php if ($user_has_applied): ?>
                                     <button class="btn-disabled" disabled>Anda Sudah Melamar</button>
+
                                 <?php elseif (!$status_lowongan_aktif): ?>
                                     <button class="btn-disabled" disabled>Lowongan Ditutup</button>
-                                <?php elseif (!$user_cv_exists): ?>
-                                    <a href="profil.php" class="btn-apply" style="background-color: #dc3545;">Upload CV Dulu</a>
-                                    <p class="info-text" style="font-size: 0.9rem; margin-top: 0.5rem;">Anda harus upload CV di profil
-                                        sebelum melamar.</p>
+
+                                <?php elseif (!$profile_is_complete): ?>
+                                    <button type="button" class="btn-apply" style="background-color: #dc3545;" onclick="showIncompleteAlert()">
+                                        Lamar Sekarang
+                                    </button>
+                                    <p class="info-text" style="font-size: 0.85rem; margin-top: 0.5rem; color: #dc3545;">
+                                        *Data profil Anda belum lengkap.
+                                    </p>
+
                                 <?php else: ?>
                                     <a href="apply.php?id=<?php echo htmlspecialchars($id_lowongan, ENT_QUOTES, 'UTF-8'); ?>"
-                                        class="btn-apply">Lamar Sekarang</a>
+                                        class="btn-apply" onclick="return confirm('Apakah Anda yakin ingin melamar posisi ini? Pastikan data profil sudah benar.');">
+                                        Lamar Sekarang
+                                    </a>
                                 <?php endif; ?>
 
-                            <?php else:   // Jika role adalah HRD ?>
+                            <?php else: ?>
                                 <p class="info-text">Anda login sebagai HRD.</p>
                             <?php endif; ?>
-                        <?php else:   // Jika belum login ?>
+                        <?php else: ?>
                             <a href="login.php?pesan=Login+untuk+melamar" class="btn-apply">Login untuk Melamar</a>
                         <?php endif; ?>
                     </div>
@@ -154,8 +181,28 @@ if (!$error_message && isset($_SESSION['id_user']) && $_SESSION['role'] == 'pela
     <?php endif; ?>
 </div>
 
+<script>
+function showIncompleteAlert() {
+    // Mengambil data array PHP ke Javascript
+    const missingItems = <?php echo json_encode($missing_fields); ?>;
+    
+    let listText = "";
+    missingItems.forEach(function(item) {
+        listText += "- " + item + "\n";
+    });
+
+    const message = "Maaf, Anda belum dapat melamar.\n\n" +
+                    "Mohon lengkapi data berikut di halaman Profil:\n" + 
+                    listText + 
+                    "\nKlik OK untuk menuju halaman Profil.";
+
+    if (confirm(message)) {
+        window.location.href = "profil.php";
+    }
+}
+</script>
+
 <?php
-// Tutup koneksi dan panggil footer
 if (isset($koneksi) && $koneksi) {
     $koneksi->close();
 }
