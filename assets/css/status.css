@@ -1,192 +1,203 @@
 /* ===================================================================
- * SIPEKA STATUS LAMARAN STYLESHEET
+ * SIPEKA STATUS LAMARAN STYLESHEET (Final Fix)
  * =================================================================== */
 
-/* --- 1. Root Variables & General --- */
+/* --- 1. Root Variables --- */
 :root {
-  /* Base Colors */
-  --dark-brown: #3d352f;
-  --cream-bg: #faf6f0;
-  --card-bg: #fbf9f6;
-  --border-color: #eae5e0;
-  --text-muted: #8a7e73;
-  --button-primary: #b99c7d;
+    /* Base Colors */
+    --dark-brown: #3D352F;
+    --cream-bg: #FAF6F0;
+    --card-bg: #FBF9F6;
+    --border-color: #EAE5E0;
+    --text-muted: #8A7E73;
+    --button-primary: #B99C7D;
 
-  /* Status Colors */
-  --status-diproses-bg: #eef3f8;
-  --status-diproses-text: #366091;
-  --status-wawancara-bg: #fff8e1;
-  --status-wawancara-text: #f57f17;
-  --status-diterima-bg: #e8f5e9;
-  --status-diterima-text: #2e7d32;
-  --status-ditolak-bg: #ffebee;
-  --status-ditolak-text: #c62828;
+    /* Status Colors */
+    --status-diproses-bg: #eef3f8;
+    --status-diproses-text: #366091;
+    --status-wawancara-bg: #fff8e1;
+    --status-wawancara-text: #f57f17;
+    --status-diterima-bg: #e8f5e9;
+    --status-diterima-text: #2e7d32;
+    --status-ditolak-bg: #ffebee;
+    --status-ditolak-text: #c62828;
 }
 
 /* --- 2. Page Header --- */
-.status-container {
-  padding: 30px;
+.status-container{
+    padding: 30px;
 }
 .status-container h1 {
-  margin-bottom: 0.5rem;
-  font-family: var(--font-secondary);
-  font-size: 2.5rem;
-  text-align: center;
+    margin-bottom: 0.5rem;
+    font-family: var(--font-secondary);
+    font-size: 2.5rem;
+    text-align: center;
 }
 
-.status-container > p {
-  margin-bottom: 3rem;
-  color: var(--text-muted);
-  text-align: center;
+.status-container>p {
+    margin-bottom: 3rem;
+    color: var(--text-muted);
+    text-align: center;
 }
 
 /* --- 3. Timeline Layout --- */
 .timeline-container {
-  position: relative;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem 0;
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 0;
 }
 
+/* Garis Vertikal Timeline */
 .timeline-container::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 19px;
-  /* Center of the icon (40px width / 2) - (4px line width / 2) = 18px, adjusted to 19px for visual alignment */
-  width: 4px;
-  height: 100%;
-  background: var(--border-color);
-  border-radius: 2px;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 19px;
+    /* Center of the icon (40px width / 2) - (4px line width / 2) = 18px, adjusted to 19px for visual alignment */
+    width: 4px;
+    height: 100%;
+    background: var(--border-color);
+    border-radius: 2px;
 }
 
 .timeline-item {
-  position: relative;
-  margin-bottom: 2rem;
-  padding-left: 50px;
+    position: relative;
+    margin-bottom: 2rem;
+    padding-left: 50px;
 }
 
-/* --- 4. Timeline Components --- */
+/* Ikon Bulat Timeline */
 .timeline-icon {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  font-size: 1.2rem;
-  background-color: var(--border-color);
-  border: 4px solid var(--cream-bg);
-  border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    background-color: var(--border-color);
+    border: 4px solid var(--cream-bg);
+    border-radius: 50%;
 }
 
+/* Kartu Konten */
 .timeline-content {
-  padding: 1.5rem;
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    padding: 1.5rem;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
 .timeline-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
 }
 
 .job-title {
-  font-size: 1.4rem;
-  font-weight: 600;
+    font-size: 1.4rem;
+    font-weight: 600;
 }
 
 .application-date {
-  font-size: 0.9rem;
-  color: var(--text-muted);
+    font-size: 0.9rem;
+    color: var(--text-muted);
 }
 
 .company-name {
-  margin-bottom: 1rem;
-  color: var(--text-muted);
+    margin-bottom: 1rem;
+    color: var(--text-muted);
 }
 
 .btn-detail-timeline {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--button-primary);
-  text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--button-primary);
+    text-decoration: none;
 }
 
-/* --- 5. Status Badges & Colors --- */
+/* --- Footer Kartu (Flexbox Kiri-Kanan) --- */
+.timeline-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Badge Status */
 .status-badge {
-  display: inline-block;
-  margin-bottom: 1rem;
-  padding: 0.4rem 0.8rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-  border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 20px;
 }
-
 .status-badge.status-diproses {
-  color: var(--status-diproses-text);
-  background-color: var(--status-diproses-bg);
+    color: var(--status-diproses-text);
+    background-color: var(--status-diproses-bg);
 }
 
 .timeline-item.status-diproses .timeline-icon {
-  background-color: var(--status-diproses-text);
+    background-color: var(--status-diproses-text);
 }
-
 .status-badge.status-wawancara {
-  color: var(--status-wawancara-text);
-  background-color: var(--status-wawancara-bg);
+    color: var(--status-wawancara-text);
+    background-color: var(--status-wawancara-bg);
 }
 
 .timeline-item.status-wawancara .timeline-icon {
-  background-color: var(--status-wawancara-text);
+    background-color: var(--status-wawancara-text);
 }
-
 .status-badge.status-diterima {
-  color: var(--status-diterima-text);
-  background-color: var(--status-diterima-bg);
+    color: var(--status-diterima-text);
+    background-color: var(--status-diterima-bg);
 }
 
 .timeline-item.status-diterima .timeline-icon {
-  background-color: var(--status-diterima-text);
+    background-color: var(--status-diterima-text);
 }
-
 .status-badge.status-ditolak {
-  color: var(--status-ditolak-text);
-  background-color: var(--status-ditolak-bg);
+    color: var(--status-ditolak-text);
+    background-color: var(--status-ditolak-bg);
 }
 
 .timeline-item.status-ditolak .timeline-icon {
-  background-color: var(--status-ditolak-text);
+    background-color: var(--status-ditolak-text);
 }
 
 /* --- 6. Empty State --- */
 .no-applications {
-  padding: 3rem;
-  text-align: center;
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
+    padding: 3rem;
+    text-align: center;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
 }
 
 .no-applications p {
-  margin-bottom: 1.5rem;
-  font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
 }
 
-/* --- 7. Responsive Design --- */
+/* --- Responsive Mobile --- */
 @media (max-width: 768px) {
-  .timeline-header {
-    align-items: flex-start;
-    flex-direction: column;
-  }
+    .timeline-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
 
-  .application-date {
-    margin-top: 0.5rem;
-  }
+    .application-date {
+        margin-top: 0.5rem;
+    }
 }
