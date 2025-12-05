@@ -1,7 +1,4 @@
 <?php
-
-
-// 1. Memanggil init.php (yang sudah memulai session dan koneksi database)
 include_once __DIR__ . '/config/init.php';
 include_once 'templates/header.php';
 
@@ -19,7 +16,6 @@ if (isset($_SESSION['id_user'])) {
 $error_message = "";
 $success_message = "";
 
-// 3. Menampilkan pesan sukses dari registrasi (Flash Message).
 if (isset($_SESSION['register_success'])) {
     $success_message = $_SESSION['register_success'];
     // Hapus session agar pesan tidak muncul lagi setelah di-refresh.
