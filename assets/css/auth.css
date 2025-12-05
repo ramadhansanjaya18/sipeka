@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Poppins:wght@300;400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Poppins:wght@300;400;500;600&display=swap");
 
 /* Reset dasar */
 * {
@@ -54,8 +54,6 @@ main {
   text-align: center;
 }
 
-
-
 .left-side h2 {
   font-size: 25px;
   letter-spacing: 1px;
@@ -86,10 +84,10 @@ label {
   font-size: 14px;
   margin-bottom: 6px;
   color: #f4efea;
-  font-weight:bold ;
+  font-weight: bold;
 }
 
-fieldset{
+fieldset {
   display: flex;
   flex-direction: column;
   gap: -15px;
@@ -120,7 +118,6 @@ fieldset{
   font-size: 14px;
   color: #333;
 }
-
 
 .btn-login-register {
   width: 100%;
@@ -153,76 +150,76 @@ fieldset{
   text-decoration: none;
 }
 
-  .register-text a:hover {
+.register-text a:hover {
   text-decoration: underline;
 }
 
 /* Style untuk notifikasi */
 .notification {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-    width: 300px;
-    animation: fadeIn 0.5s, fadeOut 0.5s 2.5s forwards;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  width: 300px;
+  animation: fadeIn 0.5s, fadeOut 0.5s 2.5s forwards;
 }
 
 .message {
-    position: relative;
-    padding: 15px;
-    border-radius: 5px;
-    color: #fff;
-    font-size: 14px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  padding: 15px;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 14px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .message.success {
-    background-color: #28a745;
+  background-color: #28a745;
 }
 
 .message.error {
-    background-color: #dc3545;
+  background-color: #dc3545;
 }
 
 .close-btn {
-    position: absolute;
-    top: 5px;
-    right: 10px;
-    font-size: 20px;
-    font-weight: bold;
-    color: #fff;
-    cursor: pointer;
-    transition: color 0.2s;
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  transition: color 0.2s;
 }
 
 .close-btn:hover {
-    color: #eee;
+  color: #eee;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeOut {
-    from {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
 }
 
-
-/* Responsif */@media (max-width: 768px) {
+/* Responsif */
+@media (max-width: 768px) {
   .container {
     flex-direction: column;
     height: auto;

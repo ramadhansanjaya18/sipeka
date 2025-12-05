@@ -52,13 +52,13 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         Kami</a></li>
                 <li><a href="job.php" class="<?php echo ($current_page == 'job.php') ? 'active' : ''; ?>">Lowongan</a>
                 </li>
-                <li><a href="contact.php"
-                        class="<?php echo ($current_page == 'contact.php') ? 'active' : ''; ?>">Kontak</a></li>
                 <?php if (isset($_SESSION['id_user']) && $_SESSION['role'] == 'pelamar'): ?>
                     <li><a href="status_lamaran.php"
                             class="<?php echo ($current_page == 'status_lamaran.php') ? 'active' : ''; ?>">Status
                             Lamaran</a></li>
                 <?php endif; ?>
+                <li><a href="contact.php"
+                        class="<?php echo ($current_page == 'contact.php') ? 'active' : ''; ?>">Kontak</a></li>
             </ul>
 
             <div class="user-menu">

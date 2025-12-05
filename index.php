@@ -74,7 +74,7 @@ include_once 'templates/header.php';
                     echo '    </div>';
                     echo '    <div class="contain_job">';
                     echo '        <h2>' . $posisi_lowongan . '</h2>';
-                    echo '        <p>' . htmlspecialchars(substr($row['deskripsi'], 0, 100)) . '...</p>';
+                    echo '        <p>' . htmlspecialchars(substr($row['deskripsi_singkat'], 0, 100)) . '...</p>';
                     echo '        <div class="button_job_new">';
                     echo '            <a href="job_detail.php?id=' . htmlspecialchars($row['id_lowongan']) . '">Lamar Sekarang</a>';
                     echo '        </div>';

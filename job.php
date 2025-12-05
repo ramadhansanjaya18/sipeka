@@ -18,7 +18,7 @@ $query_base = "SELECT
                     id_lowongan, 
                     judul, 
                     posisi_lowongan, 
-                    deskripsi, 
+                    deskripsi_singkat, 
                     DATE_FORMAT(tanggal_tutup, '%d %M %Y') AS tanggal_tutup_formatted
                 FROM 
                     lowongan 
@@ -63,7 +63,7 @@ if (!empty($search)) {
                         <h3><?php echo htmlspecialchars($row['posisi_lowongan'], ENT_QUOTES, 'UTF-8'); ?></h3>
                         <p class="company-name">Syjura Coffee</p>
                         <p class="job-description">
-                            <?php echo htmlspecialchars(substr($row['deskripsi'], 0, 100), ENT_QUOTES, 'UTF-8'); ?>...
+                            <?php echo htmlspecialchars(substr($row['deskripsi_singkat'], 0, 100), ENT_QUOTES, 'UTF-8'); ?>...
                         </p>
                         <div class="job-card-footer">
                             <span class="deadline">Tutup pada: <?php echo htmlspecialchars($row['tanggal_tutup_formatted'], ENT_QUOTES, 'UTF-8'); ?></span>
