@@ -60,7 +60,7 @@ $result = $stmt->get_result();
         <?php else: ?>
                 <div class="no-applications">
                     <p>Anda belum pernah melamar pekerjaan apapun.</p>
-                    <a href="index.php" class="btn">Cari Lowongan Sekarang</a>
+                        <a href="index.php" class="btn"> Cari Lowongan Sekarang</a>
                 </div>
         <?php endif; ?>
     </div>
