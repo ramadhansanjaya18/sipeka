@@ -6,14 +6,12 @@
  * - Menampilkan daftar semua lowongan dengan status (Aktif/Tutup) yang dihitung real-time.
  * - Pencarian lowongan berdasarkan posisi atau status.
  * - CRUD (Create, Read, Update, Delete) lowongan melalui modal form.
- * - Saat menghapus lowongan, semua data lamaran dan wawancara terkait juga akan terhapus (menggunakan transaksi database).
+ * - [BARU] Menambahkan input untuk Deskripsi Singkat.
  */
 
 $page = 'lowongan';
 // 1. Panggil Header
-include '../templates/hrd_header.php'; // Sudah memanggil init.php (session & koneksi)
-
-
+include '../templates/hrd_header.php'; 
 
 // 3. --- LOGIKA CRUD (CREATE, UPDATE, DELETE) ---
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
@@ -24,15 +22,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     if ($_POST['action'] == 'create') {
         $judul = $_POST['judul'];
         $posisi = $_POST['posisi_lowongan'];
+        $deskripsi_singkat = $_POST['deskripsi_singkat']; // [BARU] Ambil deskripsi singkat
         $deskripsi = $_POST['deskripsi'];
         $persyaratan = $_POST['persyaratan'];
         $tgl_buka = $_POST['tanggal_buka'];
         $tgl_tutup = $_POST['tanggal_tutup'];
 
-        $query = "INSERT INTO lowongan (id_hrd, judul, posisi_lowongan, deskripsi, persyaratan, tanggal_buka, tanggal_tutup) 
-                  VALUES (?, ?, ?, ?, ?, ?, ?)";
+        // [BARU] Tambahkan deskripsi_singkat ke query INSERT
+        $query = "INSERT INTO lowongan (id_hrd, judul, posisi_lowongan, deskripsi_singkat, deskripsi, persyaratan, tanggal_buka, tanggal_tutup) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $koneksi->prepare($query);
-        $stmt->bind_param("issssss", $id_hrd, $judul, $posisi, $deskripsi, $persyaratan, $tgl_buka, $tgl_tutup);
+        // [BARU] Update tipe data bind_param (tambah satu 's' untuk deskripsi_singkat)
+        $stmt->bind_param("isssssss", $id_hrd, $judul, $posisi, $deskripsi_singkat, $deskripsi, $persyaratan, $tgl_buka, $tgl_tutup);
 
         if ($stmt->execute()) {
             $_SESSION['message'] = ['type' => 'success', 'text' => 'Lowongan baru berhasil ditambahkan.'];
@@ -50,21 +51,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $id_lowongan = $_POST['id_lowongan'];
         $judul = $_POST['judul'];
         $posisi = $_POST['posisi_lowongan'];
+        $deskripsi_singkat = $_POST['deskripsi_singkat']; // [BARU] Ambil deskripsi singkat
         $deskripsi = $_POST['deskripsi'];
         $persyaratan = $_POST['persyaratan'];
         $tgl_buka = $_POST['tanggal_buka'];
         $tgl_tutup = $_POST['tanggal_tutup'];
 
+        // [BARU] Tambahkan deskripsi_singkat ke query UPDATE
         $query = "UPDATE lowongan SET 
                     judul = ?, 
                     posisi_lowongan = ?, 
+                    deskripsi_singkat = ?,
                     deskripsi = ?, 
                     persyaratan = ?, 
                     tanggal_buka = ?, 
                     tanggal_tutup = ? 
                   WHERE id_lowongan = ?";
         $stmt = $koneksi->prepare($query);
-        $stmt->bind_param("ssssssi", $judul, $posisi, $deskripsi, $persyaratan, $tgl_buka, $tgl_tutup, $id_lowongan);
+        // [BARU] Update tipe data bind_param
+        $stmt->bind_param("sssssssi", $judul, $posisi, $deskripsi_singkat, $deskripsi, $persyaratan, $tgl_buka, $tgl_tutup, $id_lowongan);
 
         if ($stmt->execute()) {
             $_SESSION['message'] = ['type' => 'success', 'text' => 'Lowongan berhasil diperbarui.'];
@@ -81,10 +86,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     if ($_POST['action'] == 'delete') {
         $id_lowongan = $_POST['id_lowongan'];
 
-        // Gunakan transaksi untuk memastikan semua data terkait terhapus dengan aman.
         $koneksi->begin_transaction();
         try {
-            // Ambil semua id_lamaran yang terkait dengan lowongan ini
+            // ... (Logika hapus sama seperti sebelumnya) ...
             $stmt_get_lamaran = $koneksi->prepare("SELECT id_lamaran FROM lamaran WHERE id_lowongan = ?");
             $stmt_get_lamaran->bind_param("i", $id_lowongan);
             $stmt_get_lamaran->execute();
@@ -96,28 +100,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             $stmt_get_lamaran->close();
 
             if (!empty($lamaran_ids)) {
-                // Hapus wawancara terkait (jika ada)
                 $id_placeholders = implode(',', array_fill(0, count($lamaran_ids), '?'));
                 $stmt_delete_wawancara = $koneksi->prepare("DELETE FROM wawancara WHERE id_lamaran IN ({$id_placeholders})");
                 $stmt_delete_wawancara->bind_param(str_repeat('i', count($lamaran_ids)), ...$lamaran_ids);
                 $stmt_delete_wawancara->execute();
                 $stmt_delete_wawancara->close();
 
-                // Hapus lamaran terkait
                 $stmt_delete_lamaran = $koneksi->prepare("DELETE FROM lamaran WHERE id_lowongan = ?");
                 $stmt_delete_lamaran->bind_param("i", $id_lowongan);
                 $stmt_delete_lamaran->execute();
                 $stmt_delete_lamaran->close();
             }
 
-            // Hapus lowongan itu sendiri
             $stmt_delete_lowongan = $koneksi->prepare("DELETE FROM lowongan WHERE id_lowongan = ?");
             $stmt_delete_lowongan->bind_param("i", $id_lowongan);
             $stmt_delete_lowongan->execute();
 
             if ($stmt_delete_lowongan->affected_rows > 0) {
                 $koneksi->commit();
-                $_SESSION['message'] = ['type' => 'success', 'text' => 'Lowongan dan data terkait (lamaran, wawancara) berhasil dihapus.'];
+                $_SESSION['message'] = ['type' => 'success', 'text' => 'Lowongan dan data terkait berhasil dihapus.'];
             } else {
                 throw new Exception("Lowongan tidak ditemukan atau sudah dihapus.");
             }
@@ -132,15 +133,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     }
 }
 
-// 4. --- LOGIKA READ (Mengambil data lowongan untuk ditampilkan) ---
+// 4. --- LOGIKA READ (Mengambil data lowongan) ---
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 
-// Query dinamis untuk menghitung status secara real-time dan melakukan pencarian
+// [BARU] Tambahkan deskripsi_singkat ke SELECT
 $query = "SELECT 
-            id_lowongan, judul, posisi_lowongan, deskripsi, persyaratan, 
+            id_lowongan, judul, posisi_lowongan, deskripsi_singkat, deskripsi, persyaratan, 
             DATE_FORMAT(tanggal_buka, '%d - %m - %Y') AS tgl_buka_formatted, 
             DATE_FORMAT(tanggal_tutup, '%d - %m - %Y') AS tgl_tutup_formatted,
-            tanggal_buka, tanggal_tutup, -- Ambil format asli untuk form edit
+            tanggal_buka, tanggal_tutup, 
             (CASE 
                 WHEN CURDATE() >= tanggal_buka AND CURDATE() <= tanggal_tutup THEN 'Aktif'
                 ELSE 'Tutup'
@@ -149,7 +150,6 @@ $query = "SELECT
 
 if (!empty($search)) {
     $search_param = "%{$search}%";
-    // Tambahkan klausa WHERE untuk mencari berdasarkan posisi atau status
     $query .= " WHERE posisi_lowongan LIKE ? OR 
               (CASE WHEN CURDATE() >= tanggal_buka AND CURDATE() <= tanggal_tutup THEN 'Aktif' ELSE 'Tutup' END) LIKE ?";
     $query .= " ORDER BY tanggal_buka DESC";
@@ -161,7 +161,6 @@ if (!empty($search)) {
     $query .= " ORDER BY tanggal_buka DESC";
     $result = $koneksi->query($query);
 }
-
 ?>
 
 <div class="page-title">
@@ -187,22 +186,21 @@ if (!empty($search)) {
     </div>
 </div>
 
-
-
 <div class="table-wrapper">
     <table class="table">
         <thead>
             <tr>
                 <th>Posisi</th>
-                <th class="col-status">Status (Real-time)</th> <th>Tanggal Buka</th>
+                <th class="col-status">Status (Real-time)</th> 
+                <th>Tanggal Buka</th>
                 <th>Tanggal Tutup</th>
-                <th class="col-aksi">Aksi</th> </tr>
+                <th class="col-aksi">Aksi</th> 
+            </tr>
         </thead>
         <tbody>
             <?php if ($result && $result->num_rows > 0) : ?>
                 <?php while ($row = $result->fetch_assoc()) : ?>
                     <?php
-                    // Tentukan class CSS berdasarkan status
                     $status_class = $row['status_lowongan_realtime'] == 'Aktif' ? 'status-aktif' : 'status-ditutup';
                     ?>
                     <tr>
@@ -218,7 +216,15 @@ if (!empty($search)) {
                         <td data-label="Tanggal Tutup"><?php echo htmlspecialchars($row['tgl_tutup_formatted'], ENT_QUOTES, 'UTF-8'); ?></td>
                         
                         <td data-label="Aksi" class="col-aksi action-buttons">
-                            <button class="btn-edit" data-id="<?php echo htmlspecialchars($row['id_lowongan'], ENT_QUOTES, 'UTF-8'); ?>" data-judul="<?php echo htmlspecialchars($row['judul'], ENT_QUOTES, 'UTF-8'); ?>" data-posisi="<?php echo htmlspecialchars($row['posisi_lowongan'], ENT_QUOTES, 'UTF-8'); ?>" data-deskripsi="<?php echo htmlspecialchars($row['deskripsi'], ENT_QUOTES, 'UTF-8'); ?>" data-persyaratan="<?php echo htmlspecialchars($row['persyaratan'], ENT_QUOTES, 'UTF-8'); ?>" data-tgl_buka="<?php echo htmlspecialchars($row['tanggal_buka'], ENT_QUOTES, 'UTF-8'); ?>" data-tgl_tutup="<?php echo htmlspecialchars($row['tanggal_tutup'], ENT_QUOTES, 'UTF-8'); ?>">
+                            <button class="btn-edit" 
+                                data-id="<?php echo htmlspecialchars($row['id_lowongan'], ENT_QUOTES, 'UTF-8'); ?>" 
+                                data-judul="<?php echo htmlspecialchars($row['judul'], ENT_QUOTES, 'UTF-8'); ?>" 
+                                data-posisi="<?php echo htmlspecialchars($row['posisi_lowongan'], ENT_QUOTES, 'UTF-8'); ?>" 
+                                data-deskripsi_singkat="<?php echo htmlspecialchars($row['deskripsi_singkat'], ENT_QUOTES, 'UTF-8'); ?>"
+                                data-deskripsi="<?php echo htmlspecialchars($row['deskripsi'], ENT_QUOTES, 'UTF-8'); ?>" 
+                                data-persyaratan="<?php echo htmlspecialchars($row['persyaratan'], ENT_QUOTES, 'UTF-8'); ?>" 
+                                data-tgl_buka="<?php echo htmlspecialchars($row['tanggal_buka'], ENT_QUOTES, 'UTF-8'); ?>" 
+                                data-tgl_tutup="<?php echo htmlspecialchars($row['tanggal_tutup'], ENT_QUOTES, 'UTF-8'); ?>">
                                 <i class="fas fa-edit"></i>
                             </button>
 
@@ -229,7 +235,7 @@ if (!empty($search)) {
                             </form>
                         </td>
                     </tr>
-                <?php endwhile; // Akhir while loop ?>
+                <?php endwhile; ?>
             <?php else : ?>
                 <tr>
                     <td colspan="5" style="text-align:center;">
@@ -240,11 +246,10 @@ if (!empty($search)) {
                         <?php endif; ?>
                     </td>
                 </tr>
-            <?php endif; // Akhir if ($result) ?>
+            <?php endif; ?>
         </tbody>
     </table>
 </div>
-
 
 <div id="modalLowongan" class="modal">
     <div class="modal-content">
@@ -272,8 +277,13 @@ if (!empty($search)) {
                     </div>
 
                     <div class="form-group">
-                        <label for="formDeskripsi">Deskripsi</label>
-                        <textarea id="formDeskripsi" name="deskripsi" placeholder="Deskripsikan Lowongan Yang Tersedia..."></textarea>
+                        <label for="formDeskripsiSingkat">Deskripsi Singkat</label>
+                        <input type="text" id="formDeskripsiSingkat" name="deskripsi_singkat" placeholder="Ringkasan singkat untuk tampilan kartu (Max 255 char)" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="formDeskripsi">Deskripsi Lengkap</label>
+                        <textarea id="formDeskripsi" name="deskripsi" placeholder="Deskripsikan Lowongan Yang Tersedia Secara Detail..."></textarea>
                     </div>
 
                     <div class="form-group">
@@ -308,7 +318,6 @@ if (!empty($search)) {
     </div>
 </div>
 
-
 <script>
     $(document).ready(function() {
 
@@ -323,21 +332,21 @@ if (!empty($search)) {
 
         // --- Tombol Edit di Tabel ---
         $(".btn-edit").click(function() {
-            // Ambil data dari atribut data-* yang sudah di-escape
             var id = $(this).data("id");
             var judul = $(this).data("judul");
             var posisi = $(this).data("posisi");
+            var deskripsi_singkat = $(this).data("deskripsi_singkat"); // [BARU] Ambil data deskripsi singkat
             var deskripsi = $(this).data("deskripsi");
             var persyaratan = $(this).data("persyaratan");
             var tgl_buka = $(this).data("tgl_buka");
             var tgl_tutup = $(this).data("tgl_tutup");
 
-            // Isi form modal dengan data
             $("#modalTitle").text("Edit Lowongan");
             $("#formAction").val("update");
             $("#formIdLowongan").val(id);
             $("#formJudul").val(judul);
             $("#formPosisi").val(posisi);
+            $("#formDeskripsiSingkat").val(deskripsi_singkat); // [BARU] Isi input deskripsi singkat
             $("#formDeskripsi").val(deskripsi);
             $("#formPersyaratan").val(persyaratan);
             $("#formTglBuka").val(tgl_buka);
@@ -360,7 +369,6 @@ if (!empty($search)) {
 
     });
 </script>
-
 
 <?php
 // 8. Panggil Footer
