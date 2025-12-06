@@ -79,8 +79,8 @@ $result = $stmt->get_result();
                                         data-status="<?php echo htmlspecialchars($lamaran['status_lamaran']); ?>"
                                         data-tanggal="<?php echo $tgl_modal; ?>"
                                         data-jam="<?php echo $jam_modal; ?>"
-                                        data-lokasi="<?php echo htmlspecialchars($lamaran['lokasi'] ?? '-'); ?>"
-                                        data-catatan="<?php echo htmlspecialchars($lamaran['catatan'] ?? '-'); ?>">
+                                        data-lokasi="<?php echo htmlspecialchars(!empty($lamaran['lokasi']) ? $lamaran['lokasi'] : '-'); ?>"
+                                        data-catatan="<?php echo htmlspecialchars(!empty($lamaran['catatan']) ? $lamaran['catatan'] : '-'); ?>">
                                         Lihat Jadwal
                                     </button>
                                 <?php endif; ?>
