@@ -31,6 +31,8 @@ $stmt->execute();
 $result = $stmt->get_result();
 ?>
 
+<link rel="stylesheet" href="assets/css/status.css">
+
 <div class="status-container">
     <h1>Status Lamaran Saya</h1>
     <p>Lacak status semua lamaran yang telah Anda kirimkan.</p>
@@ -42,168 +44,147 @@ $result = $stmt->get_result();
                 $status_clean = strtolower(str_replace(' ', '-', $lamaran['status_lamaran']));
                 $status_class = 'status-' . $status_clean;
                 
-                // Format Tanggal Pelamaran untuk tampilan kartu
+                // Format Tanggal Pelamaran
                 $tgl_lamar = date('d M Y, H:i', strtotime($lamaran['tanggal_lamaran']));
 
-                // Persiapan Data untuk Modal (jika ada jadwal)
+                // Persiapan Data untuk Modal
                 $jadwal_db = $lamaran['jadwal'];
-                $tgl_modal = !empty($jadwal_db) ? date('d/m/Y', strtotime($jadwal_db)) : '-';
+                $tgl_modal = !empty($jadwal_db) ? date('d-m-Y', strtotime($jadwal_db)) : '-';
                 $jam_modal = !empty($jadwal_db) ? date('H.i', strtotime($jadwal_db)) : '-';
+                $lokasi_modal = !empty($lamaran['lokasi']) ? $lamaran['lokasi'] : '-';
+                $catatan_modal = !empty($lamaran['catatan']) ? $lamaran['catatan'] : 'Tidak ada catatan tambahan.';
             ?>
-                <div class="timeline-item">
-                    <div class="timeline-icon <?php echo $status_class; ?>"></div>
+                <div class="timeline-item <?php echo $status_class; ?>">
+                    <div class="timeline-icon">
+                        <?php if($lamaran['status_lamaran'] == 'Diterima') echo '&#10003;'; 
+                              else if($lamaran['status_lamaran'] == 'Ditolak') echo '&#10005;'; 
+                              else echo '&#9679;'; ?>
+                    </div>
                     
                     <div class="timeline-content">
-                        
                         <div class="timeline-header">
                             <h3 class="job-title"><?php echo htmlspecialchars($lamaran['posisi_lowongan']); ?></h3>
-                            <span class="application-date">Dilamar pada: <?php echo $tgl_lamar; ?></span>
+                            <span class="application-date"><?php echo $tgl_lamar; ?> WIB</span>
                         </div>
                         
                         <p class="company-name">Syjura Coffee - <?php echo htmlspecialchars($lamaran['judul_lowongan']); ?></p>
                         
                         <div class="timeline-footer">
                             <div class="footer-left">
-                                <div class="status-badge <?php echo $status_class; ?>">
-                                    Status: <strong><?php echo htmlspecialchars($lamaran['status_lamaran']); ?></strong>
-                                </div>
-                                <a href="job_detail.php?id=<?php echo $lamaran['id_lowongan']; ?>" class="link-detail-text">Lihat Detail Lowongan</a>
+                                <span class="status-badge <?php echo $status_class; ?>">
+                                    <?php echo htmlspecialchars($lamaran['status_lamaran']); ?>
+                                </span>
+                                <a href="job_detail.php?id=<?php echo $lamaran['id_lowongan']; ?>" class="link-detail-text">Lihat Lowongan</a>
                             </div>
 
                             <div class="footer-right">
                                 <?php if ($lamaran['status_lamaran'] == 'Wawancara'): ?>
                                     <button type="button" class="btn-jadwal" 
-                                        data-id="<?php echo $lamaran['id_lamaran']; ?>"
-                                        data-nama="<?php echo htmlspecialchars($nama_pelamar); ?>"
                                         data-posisi="<?php echo htmlspecialchars($lamaran['posisi_lowongan']); ?>"
-                                        data-status="<?php echo htmlspecialchars($lamaran['status_lamaran']); ?>"
                                         data-tanggal="<?php echo $tgl_modal; ?>"
                                         data-jam="<?php echo $jam_modal; ?>"
-                                        data-lokasi="<?php echo htmlspecialchars(!empty($lamaran['lokasi']) ? $lamaran['lokasi'] : '-'); ?>"
-                                        data-catatan="<?php echo htmlspecialchars(!empty($lamaran['catatan']) ? $lamaran['catatan'] : '-'); ?>">
+                                        data-lokasi="<?php echo htmlspecialchars($lokasi_modal); ?>"
+                                        data-catatan="<?php echo htmlspecialchars($catatan_modal); ?>">
                                         Lihat Jadwal
                                     </button>
                                 <?php endif; ?>
                             </div>
                         </div>
-
                     </div>
                 </div>
             <?php endwhile; ?>
         <?php else: ?>
-                <div class="no-applications">
-                    <p>Anda belum pernah melamar pekerjaan apapun.</p>
-                    <a href="index.php" class="btn">Cari Lowongan Sekarang</a>
-                </div>
+            <div class="no-applications">
+                <p>Anda belum melamar pekerjaan apapun.</p>
+                <a href="index.php" class="btn-jadwal" style="text-decoration: none;">Cari Lowongan</a>
+            </div>
         <?php endif; ?>
     </div>
 </div>
 
-<div id="modalJadwal" class="modal-overlay">
-    <div class="modal-card">
+<div id="modalJadwal" class="modal">
+    <div class="modal-content">
         <div class="modal-header">
             <h2>Jadwal Wawancara</h2>
-            <span class="close-modal">&times;</span>
+            <span class="close-btn">&times;</span>
         </div>
         
         <div class="modal-body">
-            <div class="modal-grid">
-                <div class="grid-column">
-                    <div class="form-group-modal">
-                        <label>Pelamar (ID Lamaran)</label>
-                        <input type="text" id="modalPelamar" class="modal-input" readonly>
-                    </div>
-                    
-                    <div class="form-group-modal">
-                        <label>Posisi</label>
-                        <input type="text" id="modalPosisi" class="modal-input" readonly>
-                    </div>
+            <div class="modal-row">
+                <span class="modal-label">Posisi Dilamar</span>
+                <span class="modal-value" id="modalPosisi"></span>
+            </div>
+            
+            <div class="modal-row">
+                <span class="modal-label">Tanggal</span>
+                <span class="modal-value" id="modalTanggal"></span>
+            </div>
 
-                    <div class="form-group-modal" style="flex-grow: 1;">
-                        <label>Tambahkan Catatan</label>
-                        <textarea id="modalCatatan" class="modal-input modal-textarea" readonly></textarea>
-                    </div>
-                </div>
+            <div class="modal-row">
+                <span class="modal-label">Jam</span>
+                <span class="modal-value"><span id="modalJam"></span> WIB</span>
+            </div>
 
-                <div class="grid-column">
-                    <div class="form-group-modal">
-                        <label>Status</label>
-                        <input type="text" id="modalStatus" class="modal-input" readonly>
-                    </div>
+            <div class="modal-row">
+                <span class="modal-label">Lokasi</span>
+                <span class="modal-value" id="modalLokasi"></span>
+            </div>
 
-                    <div class="form-group-modal">
-                        <label>Tanggal</label>
-                        <div class="input-icon-wrapper">
-                            <input type="text" id="modalTanggal" class="modal-input" readonly>
-                            <span class="icon-suffix">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="form-group-modal">
-                        <label>Jam</label>
-                        <div class="input-icon-wrapper">
-                            <input type="text" id="modalJam" class="modal-input" readonly>
-                            <span class="icon-suffix">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                            </span>
-                        </div>
-                    </div>
-                </div>
+            <div class="modal-note">
+                <strong>Catatan HRD:</strong><br>
+                <span id="modalCatatan"></span>
             </div>
         </div>
 
         <div class="modal-footer">
-            <button class="btn-close-modal">Tutup</button>
+            <button class="btn-tutup-modal">Tutup</button>
         </div>
     </div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById('modalJadwal');
-    const closeBtn = document.querySelector('.close-modal');
-    const btnCloseBottom = document.querySelector('.btn-close-modal');
-    const jadwalButtons = document.querySelectorAll('.btn-jadwal');
+    var modal = document.getElementById("modalJadwal");
+    var closeSpan = document.getElementsByClassName("close-btn")[0];
+    var closeBtn = document.getElementsByClassName("btn-tutup-modal")[0];
 
-    // Event saat tombol 'Lihat Jadwal' diklik
-    jadwalButtons.forEach(btn => {
+    // Fungsi Buka Modal
+    var buttons = document.querySelectorAll('.btn-jadwal');
+    buttons.forEach(function(btn) {
         btn.addEventListener('click', function() {
-            // Ambil data dari atribut data-* tombol
-            const idLamaran = this.dataset.id;
-            const nama = this.dataset.nama;
-            const posisi = this.dataset.posisi;
-            const status = this.dataset.status;
-            const tanggal = this.dataset.tanggal;
-            const jam = this.dataset.jam;
-            const catatan = this.dataset.catatan;
+            // Ambil data dari atribut tombol
+            var posisi = this.getAttribute('data-posisi');
+            var tanggal = this.getAttribute('data-tanggal');
+            var jam = this.getAttribute('data-jam');
+            var lokasi = this.getAttribute('data-lokasi');
+            var catatan = this.getAttribute('data-catatan');
 
-            // Masukkan data ke dalam input modal
-            document.getElementById('modalPelamar').value = `${nama} (${posisi}) (ID:${idLamaran})`;
-            document.getElementById('modalPosisi').value = posisi;
-            document.getElementById('modalCatatan').value = catatan;
-            document.getElementById('modalStatus').value = status;
-            document.getElementById('modalTanggal').value = tanggal;
-            document.getElementById('modalJam').value = jam;
-            
-            // Tampilkan modal (ubah display jadi flex)
-            modal.style.display = 'flex';
+            // Isi data ke dalam modal
+            document.getElementById('modalPosisi').textContent = posisi;
+            document.getElementById('modalTanggal').textContent = tanggal;
+            document.getElementById('modalJam').textContent = jam;
+            document.getElementById('modalLokasi').textContent = lokasi;
+            document.getElementById('modalCatatan').textContent = catatan;
+
+            // Tampilkan modal dengan display flex agar centered
+            modal.style.display = "flex";
         });
     });
 
-    // Fungsi menutup modal
-    function closeModal() {
-        modal.style.display = 'none';
+    // Fungsi Tutup Modal
+    function tutupModal() {
+        modal.style.display = "none";
     }
 
-    if(closeBtn) closeBtn.addEventListener('click', closeModal);
-    if(btnCloseBottom) btnCloseBottom.addEventListener('click', closeModal);
+    closeSpan.onclick = tutupModal;
+    closeBtn.onclick = tutupModal;
 
-    // Tutup modal jika area gelap di luar modal diklik
-    window.addEventListener('click', function(e) {
-        if (e.target == modal) closeModal();
-    });
+    // Tutup jika klik di luar area modal content
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            tutupModal();
+        }
+    }
 });
 </script>
 

@@ -4,121 +4,121 @@
 
 /* --- 1. Root Variables --- */
 :root {
-    /* Base Colors */
-    --dark-brown: #3D352F;
-    --cream-bg: #FAF6F0;
-    --card-bg: #FBF9F6;
-    --border-color: #EAE5E0;
-    --text-muted: #8A7E73;
-    --button-primary: #B99C7D;
+  /* Base Colors */
+  --dark-brown: #3d352f;
+  --cream-bg: #faf6f0;
+  --card-bg: #fbf9f6;
+  --border-color: #eae5e0;
+  --text-muted: #8a7e73;
+  --button-primary: #b99c7d;
 
-    /* Status Colors */
-    --status-diproses-bg: #eef3f8;
-    --status-diproses-text: #366091;
-    --status-wawancara-bg: #fff8e1;
-    --status-wawancara-text: #f57f17;
-    --status-diterima-bg: #e8f5e9;
-    --status-diterima-text: #2e7d32;
-    --status-ditolak-bg: #ffebee;
-    --status-ditolak-text: #c62828;
+  /* Status Colors */
+  --status-diproses-bg: #eef3f8;
+  --status-diproses-text: #366091;
+  --status-wawancara-bg: #fff8e1;
+  --status-wawancara-text: #f57f17;
+  --status-diterima-bg: #e8f5e9;
+  --status-diterima-text: #2e7d32;
+  --status-ditolak-bg: #ffebee;
+  --status-ditolak-text: #c62828;
 }
 
 /* --- 2. Page Header --- */
-.status-container{
-    padding: 30px;
+.status-container {
+  padding: 30px;
 }
 .status-container h1 {
-    margin-bottom: 0.5rem;
-    font-family: var(--font-secondary);
-    font-size: 2.5rem;
-    text-align: center;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-secondary);
+  font-size: 2.5rem;
+  text-align: center;
 }
 
-.status-container>p {
-    margin-bottom: 3rem;
-    color: var(--text-muted);
-    text-align: center;
+.status-container > p {
+  margin-bottom: 3rem;
+  color: var(--text-muted);
+  text-align: center;
 }
 
 /* --- 3. Timeline Layout --- */
 .timeline-container {
-    position: relative;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem 0;
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 0;
 }
 
 /* Garis Vertikal Timeline */
 .timeline-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 19px;
-    /* Center of the icon (40px width / 2) - (4px line width / 2) = 18px, adjusted to 19px for visual alignment */
-    width: 4px;
-    height: 100%;
-    background: var(--border-color);
-    border-radius: 2px;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 19px;
+  /* Center of the icon (40px width / 2) - (4px line width / 2) = 18px, adjusted to 19px for visual alignment */
+  width: 4px;
+  height: 100%;
+  background: var(--border-color);
+  border-radius: 2px;
 }
 
 .timeline-item {
-    position: relative;
-    margin-bottom: 2rem;
-    padding-left: 50px;
+  position: relative;
+  margin-bottom: 2rem;
+  padding-left: 50px;
 }
 
 /* Ikon Bulat Timeline */
 .timeline-icon {
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    font-size: 1.2rem;
-    background-color: var(--border-color);
-    border: 4px solid var(--cream-bg);
-    border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  background-color: var(--border-color);
+  border: 4px solid var(--cream-bg);
+  border-radius: 50%;
 }
 
 /* Kartu Konten */
 .timeline-content {
-    padding: 1.5rem;
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  padding: 1.5rem;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
 .timeline-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
 }
 
 .job-title {
-    font-size: 1.4rem;
-    font-weight: 600;
+  font-size: 1.4rem;
+  font-weight: 600;
 }
 
 .application-date {
-    font-size: 0.9rem;
-    color: var(--text-muted);
+  font-size: 0.9rem;
+  color: var(--text-muted);
 }
 
 .company-name {
-    margin-bottom: 1rem;
-    color: var(--text-muted);
+  margin-bottom: 1rem;
+  color: var(--text-muted);
 }
 
 .btn-detail-timeline {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--button-primary);
-    text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--button-primary);
+  text-decoration: none;
 }
 
 /* --- Footer Kartu (Flexbox Kiri-Kanan) --- */
@@ -136,68 +136,239 @@
 
 /* Badge Status */
 .status-badge {
-    display: inline-block;
-    margin-bottom: 1rem;
-    padding: 0.4rem 0.8rem;
-    font-size: 0.9rem;
-    font-weight: 500;
-    border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 1rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 20px;
 }
 .status-badge.status-diproses {
-    color: var(--status-diproses-text);
-    background-color: var(--status-diproses-bg);
+  color: var(--status-diproses-text);
+  background-color: var(--status-diproses-bg);
 }
 
 .timeline-item.status-diproses .timeline-icon {
-    background-color: var(--status-diproses-text);
+  background-color: var(--status-diproses-text);
 }
 .status-badge.status-wawancara {
-    color: var(--status-wawancara-text);
-    background-color: var(--status-wawancara-bg);
+  color: var(--status-wawancara-text);
+  background-color: var(--status-wawancara-bg);
 }
 
 .timeline-item.status-wawancara .timeline-icon {
-    background-color: var(--status-wawancara-text);
+  background-color: var(--status-wawancara-text);
 }
 .status-badge.status-diterima {
-    color: var(--status-diterima-text);
-    background-color: var(--status-diterima-bg);
+  color: var(--status-diterima-text);
+  background-color: var(--status-diterima-bg);
 }
 
 .timeline-item.status-diterima .timeline-icon {
-    background-color: var(--status-diterima-text);
+  background-color: var(--status-diterima-text);
 }
 .status-badge.status-ditolak {
-    color: var(--status-ditolak-text);
-    background-color: var(--status-ditolak-bg);
+  color: var(--status-ditolak-text);
+  background-color: var(--status-ditolak-bg);
 }
 
 .timeline-item.status-ditolak .timeline-icon {
-    background-color: var(--status-ditolak-text);
+  background-color: var(--status-ditolak-text);
 }
 
 /* --- 6. Empty State --- */
 .no-applications {
-    padding: 3rem;
-    text-align: center;
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
+  padding: 3rem;
+  text-align: center;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
 }
 
 .no-applications p {
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
 }
 
 /* --- Responsive Mobile --- */
 @media (max-width: 768px) {
-    .timeline-header {
-        align-items: flex-start;
-        flex-direction: column;
-    }
+  .timeline-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 
-    .application-date {
-        margin-top: 0.5rem;
-    }
+  .application-date {
+    margin-top: 0.5rem;
+  }
+}
+
+/* ===================================================================
+ * MODAL DETAIL WAWANCARA STYLESHEET (NEW - MIRIP GAMBAR)
+ * =================================================================== */
+
+/* Overlay Latar Belakang */
+.modal-overlay {
+  display: none; /* Sembunyi default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparan hitam */
+  z-index: 9999; /* Paling depan */
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(3px); /* Efek blur */
+}
+
+/* Kartu Modal */
+.modal-card {
+  background: #fff;
+  width: 90%;
+  max-width: 700px; /* Lebar mirip gambar */
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Header Modal */
+.modal-header {
+  padding: 20px 25px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.close-modal {
+  font-size: 28px;
+  color: #aaa;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s;
+}
+.close-modal:hover {
+  color: #333;
+}
+
+/* Body Modal (Grid 2 Kolom) */
+.modal-body {
+  padding: 25px;
+  background-color: #f9f9f9;
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Dua kolom sama lebar */
+  gap: 25px;
+}
+
+.grid-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Form Group Styles */
+.form-group-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group-modal label {
+  font-weight: 600;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+/* Input & Textarea Styles */
+.modal-input,
+.modal-textarea {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 1rem;
+  color: #333;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+/* Textarea khusus */
+.modal-textarea {
+  resize: none;
+  height: 120px; /* Tinggi mirip gambar */
+}
+
+/* Input dengan Ikon (Tanggal & Jam) */
+.input-icon-wrapper {
+  position: relative;
+}
+
+.input-icon-wrapper .modal-input {
+  padding-right: 40px; /* Ruang untuk ikon */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.icon-suffix {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  pointer-events: none; /* Agar klik tembus ke input */
+}
+
+/* Footer Modal */
+.modal-footer {
+  padding: 15px 25px;
+  border-top: 1px solid #eee;
+  text-align: right;
+  background: #fff;
+}
+
+.btn-close-modal {
+  padding: 10px 25px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-close-modal:hover {
+  background-color: #5a6268;
+}
+
+/* Responsive Modal */
+@media (max-width: 600px) {
+  .modal-grid {
+    grid-template-columns: 1fr; /* Satu kolom di layar kecil */
+    gap: 15px;
+  }
+  .modal-textarea {
+    height: 100px;
+  }
 }
