@@ -1,127 +1,139 @@
 /* ===================================================================
- * SIPEKA STATUS LAMARAN STYLESHEET (Final Fix)
+ * SIPEKA STATUS LAMARAN STYLESHEET (Refined & Clean)
  * =================================================================== */
 
 /* --- 1. Root Variables --- */
 :root {
-  /* Base Colors */
   --dark-brown: #3d352f;
+  --btn-brown: #5d4037;
   --cream-bg: #faf6f0;
   --card-bg: #fbf9f6;
   --border-color: #eae5e0;
   --text-muted: #8a7e73;
-  --button-primary: #b99c7d;
+
+  /* Modal Specific */
+  --modal-input-bg: #f9f9f9;
+  --modal-input-border: #e0e0e0;
+  --modal-label: #333333;
 
   /* Status Colors */
-  --status-diproses-bg: #eef3f8;
-  --status-diproses-text: #366091;
-  --status-wawancara-bg: #fff8e1;
-  --status-wawancara-text: #f57f17;
-  --status-diterima-bg: #e8f5e9;
-  --status-diterima-text: #2e7d32;
-  --status-ditolak-bg: #ffebee;
-  --status-ditolak-text: #c62828;
+  --bg-diproses: #eef3f8;
+  --text-diproses: #366091;
+  --bg-wawancara: #fff8e1;
+  --text-wawancara: #f57f17;
+  --bg-diterima: #e8f5e9;
+  --text-diterima: #2e7d32;
+  --bg-ditolak: #ffebee;
+  --text-ditolak: #c62828;
 }
 
 /* --- 2. Page Header --- */
 .status-container {
-  padding: 30px;
+  padding: 40px 20px;
+  background-color: var(--cream-bg);
+  min-height: 80vh;
 }
+
 .status-container h1 {
-  margin-bottom: 0.5rem;
-  font-family: var(--font-secondary);
-  font-size: 2.5rem;
+  font-family: "Lora", serif;
+  font-size: 2.2rem;
   text-align: center;
+  color: var(--dark-brown);
+  margin-bottom: 5px;
 }
 
 .status-container > p {
-  margin-bottom: 3rem;
-  color: var(--text-muted);
   text-align: center;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 40px;
 }
 
-/* --- 3. Timeline Layout --- */
+/* --- 3. Timeline Components --- */
 .timeline-container {
   position: relative;
-  max-width: 800px;
+  max-width: 850px;
   margin: 0 auto;
-  padding: 2rem 0;
 }
 
-/* Garis Vertikal Timeline */
 .timeline-container::before {
   content: "";
   position: absolute;
   top: 0;
-  left: 19px;
-  /* Center of the icon (40px width / 2) - (4px line width / 2) = 18px, adjusted to 19px for visual alignment */
-  width: 4px;
-  height: 100%;
-  background: var(--border-color);
-  border-radius: 2px;
+  bottom: 0;
+  left: 20px;
+  width: 3px;
+  background: #e0e0e0;
 }
 
 .timeline-item {
   position: relative;
-  margin-bottom: 2rem;
-  padding-left: 50px;
+  margin-bottom: 25px;
+  padding-left: 60px;
 }
 
-/* Ikon Bulat Timeline */
 .timeline-icon {
   position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  font-size: 1.2rem;
-  background-color: var(--border-color);
-  border: 4px solid var(--cream-bg);
+  top: 25px;
+  left: 6px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
+  z-index: 2;
+  border: 4px solid var(--cream-bg);
 }
 
-/* Kartu Konten */
+/* Status Icon Colors */
+.timeline-icon.status-diproses {
+  background-color: var(--text-diproses);
+}
+.timeline-icon.status-wawancara {
+  background-color: var(--text-wawancara);
+}
+.timeline-icon.status-diterima {
+  background-color: var(--text-diterima);
+}
+.timeline-icon.status-ditolak {
+  background-color: var(--text-ditolak);
+}
+
+/* Content Card */
 .timeline-content {
-  padding: 1.5rem;
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
 }
 
 .timeline-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
+  align-items: flex-start;
+  margin-bottom: 5px;
 }
 
 .job-title {
-  font-size: 1.4rem;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2rem;
   font-weight: 600;
+  color: var(--dark-brown);
+  margin: 0;
 }
 
 .application-date {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--text-muted);
 }
 
 .company-name {
-  margin-bottom: 1rem;
+  font-size: 0.95rem;
   color: var(--text-muted);
+  font-weight: 500;
+  margin-bottom: 20px;
 }
 
-.btn-detail-timeline {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--button-primary);
-  text-decoration: none;
-}
-
-/* --- Footer Kartu (Flexbox Kiri-Kanan) --- */
+/* Footer Layout */
 .timeline-footer {
   display: flex;
   justify-content: space-between;
@@ -134,102 +146,207 @@
   gap: 15px;
 }
 
-/* Badge Status */
 .status-badge {
-  display: inline-block;
-  margin-bottom: 1rem;
-  padding: 0.4rem 0.8rem;
-  font-size: 0.9rem;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
   font-weight: 500;
-  border-radius: 20px;
 }
 .status-badge.status-diproses {
-  color: var(--status-diproses-text);
-  background-color: var(--status-diproses-bg);
-}
-
-.timeline-item.status-diproses .timeline-icon {
-  background-color: var(--status-diproses-text);
+  background: var(--bg-diproses);
+  color: var(--text-diproses);
 }
 .status-badge.status-wawancara {
-  color: var(--status-wawancara-text);
-  background-color: var(--status-wawancara-bg);
-}
-
-.timeline-item.status-wawancara .timeline-icon {
-  background-color: var(--status-wawancara-text);
+  background: var(--bg-wawancara);
+  color: var(--text-wawancara);
 }
 .status-badge.status-diterima {
-  color: var(--status-diterima-text);
-  background-color: var(--status-diterima-bg);
-}
-
-.timeline-item.status-diterima .timeline-icon {
-  background-color: var(--status-diterima-text);
+  background: var(--bg-diterima);
+  color: var(--text-diterima);
 }
 .status-badge.status-ditolak {
-  color: var(--status-ditolak-text);
-  background-color: var(--status-ditolak-bg);
+  background: var(--bg-ditolak);
+  color: var(--text-ditolak);
 }
 
-.timeline-item.status-ditolak .timeline-icon {
-  background-color: var(--status-ditolak-text);
+.link-detail-text {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.link-detail-text:hover {
+  color: var(--dark-brown);
+  text-decoration: underline;
 }
 
-/* --- 6. Empty State --- */
-.no-applications {
-  padding: 3rem;
-  text-align: center;
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
+.btn-jadwal {
+  background-color: var(--btn-brown);
+  color: #ffffff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.btn-jadwal:hover {
+  background-color: #4a332a;
 }
 
-.no-applications p {
-  margin-bottom: 1.5rem;
-  font-size: 1.1rem;
-}
-
-/* --- Responsive Mobile --- */
-@media (max-width: 768px) {
-  .timeline-header {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .application-date {
-    margin-top: 0.5rem;
-  }
-}
-
-/* ===================================================================
- * MODAL DETAIL WAWANCARA STYLESHEET (NEW - MIRIP GAMBAR)
- * =================================================================== */
-
-/* Overlay Latar Belakang */
+/* --- 4. MODAL STYLING (Fixed Z-Index) --- */
 .modal-overlay {
-  display: none; /* Sembunyi default */
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparan hitam */
-  z-index: 9999; /* Paling depan */
+  background: rgba(0, 0, 0, 0.5);
+
+  /* PERUBAHAN UTAMA DI SINI: Z-INDEX SANGAT TINGGI */
+  z-index: 999999;
+
   justify-content: center;
   align-items: center;
-  backdrop-filter: blur(3px); /* Efek blur */
 }
 
-/* Kartu Modal */
 .modal-card {
   background: #fff;
   width: 90%;
-  max-width: 700px; /* Lebar mirip gambar */
+  max-width: 800px;
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   overflow: hidden;
-  animation: slideDown 0.3s ease-out;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: slideDown 0.3s ease;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Header Modal */
+.modal-header {
+  padding: 20px 30px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--dark-brown);
+  font-weight: 600;
+}
+
+.close-modal {
+  font-size: 28px;
+  color: #999;
+  cursor: pointer;
+  line-height: 1;
+}
+.close-modal:hover {
+  color: #333;
+}
+
+/* Body Modal Grid */
+.modal-body {
+  padding: 30px;
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 Kolom Presisi */
+  gap: 40px;
+}
+
+.grid-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group-modal {
+  margin-bottom: 20px;
+}
+
+.form-group-modal label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--modal-label);
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* Input Styling - Clean Look */
+.modal-input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid var(--modal-input-border);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #555;
+  background-color: var(--modal-input-bg);
+  outline: none;
+  font-family: "Poppins", sans-serif;
+  transition: border-color 0.2s;
+  box-sizing: border-box; /* Memastikan padding tidak merusak lebar */
+}
+
+.modal-input:focus {
+  border-color: #bbb;
+}
+
+.modal-textarea {
+  height: 120px;
+  resize: none;
+}
+
+/* Icon Wrapper */
+.input-icon-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.input-icon-wrapper .modal-input {
+  padding-right: 40px;
+}
+
+.icon-suffix {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* Footer Modal */
+.modal-footer {
+  padding: 15px 30px;
+  border-top: 1px solid #eee;
+  text-align: right;
+  background: #fff;
+}
+
+.btn-close-modal {
+  background-color: #e0e0e0;
+  color: #333;
+  border: none;
+  padding: 10px 35px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-close-modal:hover {
+  background-color: #d0d0d0;
 }
 
 @keyframes slideDown {
@@ -243,132 +360,25 @@
   }
 }
 
-/* Header Modal */
-.modal-header {
-  padding: 20px 25px;
-  border-bottom: 1px solid #eee;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.modal-header h2 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: #333;
-  font-weight: 600;
-}
-
-.close-modal {
-  font-size: 28px;
-  color: #aaa;
-  cursor: pointer;
-  line-height: 1;
-  transition: color 0.2s;
-}
-.close-modal:hover {
-  color: #333;
-}
-
-/* Body Modal (Grid 2 Kolom) */
-.modal-body {
-  padding: 25px;
-  background-color: #f9f9f9;
-}
-
-.modal-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* Dua kolom sama lebar */
-  gap: 25px;
-}
-
-.grid-column {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* Form Group Styles */
-.form-group-modal {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.form-group-modal label {
-  font-weight: 600;
-  color: #555;
-  font-size: 0.95rem;
-}
-
-/* Input & Textarea Styles */
-.modal-input,
-.modal-textarea {
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #fff;
-  font-size: 1rem;
-  color: #333;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-/* Textarea khusus */
-.modal-textarea {
-  resize: none;
-  height: 120px; /* Tinggi mirip gambar */
-}
-
-/* Input dengan Ikon (Tanggal & Jam) */
-.input-icon-wrapper {
-  position: relative;
-}
-
-.input-icon-wrapper .modal-input {
-  padding-right: 40px; /* Ruang untuk ikon */
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.icon-suffix {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #999;
-  pointer-events: none; /* Agar klik tembus ke input */
-}
-
-/* Footer Modal */
-.modal-footer {
-  padding: 15px 25px;
-  border-top: 1px solid #eee;
-  text-align: right;
-  background: #fff;
-}
-
-.btn-close-modal {
-  padding: 10px 25px;
-  background-color: #6c757d;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.btn-close-modal:hover {
-  background-color: #5a6268;
-}
-
-/* Responsive Modal */
-@media (max-width: 600px) {
-  .modal-grid {
-    grid-template-columns: 1fr; /* Satu kolom di layar kecil */
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .timeline-footer {
+    flex-direction: column;
+    align-items: flex-start;
     gap: 15px;
   }
-  .modal-textarea {
-    height: 100px;
+  .footer-left,
+  .footer-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .btn-jadwal {
+    width: 100%;
+  }
+
+  /* Modal Responsif */
+  .modal-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 }

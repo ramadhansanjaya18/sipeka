@@ -1,7 +1,7 @@
 <?php
 /**
  * Halaman Manajemen Wawancara untuk HRD.
- * Fitur: CRUD Jadwal Wawancara + Notifikasi Email Otomatis (Menggunakan Kredensial Contact.php)
+ * Fitur: CRUD Jadwal Wawancara + Notifikasi Email Otomatis & Reschedule
  */
 
 // --- 1. Konfigurasi PHPMailer ---
@@ -19,41 +19,32 @@ include '../templates/hrd_header.php'; // Sudah memanggil init.php (session & ko
 
 $message = "";
 
-// --- FUNGSI KIRIM EMAIL ---
+// --- FUNGSI KIRIM EMAIL (UNDANGAN BARU) ---
 function kirimEmailNotifikasi($data_pelamar, $jadwal_info) {
     // KREDENSIAL DARI contact.php
     $mail_host = 'smtp.gmail.com';
-    $mail_username = 'hrdsyjuracoffe@gmail.com'; // Email Admin/Sistem
-    $mail_password = 'vtzl yffh yimv pcpa';       // App Password Anda
-    $mail_port = 587; // Port TLS (Sesuai contact.php)
+    $mail_username = 'hrdsyjuracoffe@gmail.com'; 
+    $mail_password = 'vtzl yffh yimv pcpa';       
+    $mail_port = 587; 
 
     $mail = new PHPMailer(true);
 
     try {
-        // Server settings
         $mail->isSMTP();
         $mail->Host       = $mail_host;
         $mail->SMTPAuth   = true;
         $mail->Username   = $mail_username;
         $mail->Password   = $mail_password;
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Sesuai contact.php
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
         $mail->Port       = $mail_port;
 
-        // Pengirim & Penerima
-        // Dari: HRD Syjura Coffee (Email Sistem)
         $mail->setFrom($mail_username, 'HRD SIPEKA - Syjura Coffee');
-        
-        // Kepada: Pelamar
         $mail->addAddress($data_pelamar['email'], $data_pelamar['nama_lengkap']);
-
-        // Jika pelamar me-reply email ini, arahkan ke email HRD utama
         $mail->addReplyTo($mail_username, 'HRD Syjura Coffee');
 
-        // Content
         $mail->isHTML(true);
         $mail->Subject = 'Undangan Wawancara Kerja - Syjura Coffee';
         
-        // Template Email HTML
         $bodyContent = "
         <div style='font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px;'>
             <h2 style='color: #6a4e3b;'>Undangan Wawancara</h2>
@@ -76,20 +67,73 @@ function kirimEmailNotifikasi($data_pelamar, $jadwal_info) {
         </div>";
 
         $mail->Body = $bodyContent;
-        $mail->AltBody = "Halo {$data_pelamar['nama_lengkap']}, Anda diundang wawancara pada tanggal {$jadwal_info['tanggal']} jam {$jadwal_info['jam']} di {$jadwal_info['lokasi']}. Catatan: {$jadwal_info['catatan']}";
+        $mail->AltBody = "Halo, Anda diundang wawancara pada tanggal {$jadwal_info['tanggal']} jam {$jadwal_info['jam']}.";
 
         $mail->send();
         return true;
     } catch (Exception $e) {
-        // Log error jika perlu: error_log($mail->ErrorInfo);
         return false;
     }
 }
 
-// 3. --- LOGIKA CRUD (CREATE, UPDATE, DELETE) ---
+// --- FUNGSI KIRIM EMAIL (RESCHEDULE / PERUBAHAN JADWAL) ---
+function kirimEmailReschedule($data_pelamar, $jadwal_info) {
+    $mail_host = 'smtp.gmail.com';
+    $mail_username = 'hrdsyjuracoffe@gmail.com'; 
+    $mail_password = 'vtzl yffh yimv pcpa';       
+    $mail_port = 587; 
+
+    $mail = new PHPMailer(true);
+
+    try {
+        $mail->isSMTP();
+        $mail->Host       = $mail_host;
+        $mail->SMTPAuth   = true;
+        $mail->Username   = $mail_username;
+        $mail->Password   = $mail_password;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
+        $mail->Port       = $mail_port;
+
+        $mail->setFrom($mail_username, 'HRD SIPEKA - Syjura Coffee');
+        $mail->addAddress($data_pelamar['email'], $data_pelamar['nama_lengkap']);
+        $mail->addReplyTo($mail_username, 'HRD Syjura Coffee');
+
+        $mail->isHTML(true);
+        $mail->Subject = 'PENTING: Perubahan Jadwal Wawancara - Syjura Coffee';
+        
+        $bodyContent = "
+        <div style='font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px;'>
+            <h2 style='color: #d32f2f;'>Perubahan Jadwal Wawancara</h2>
+            <p>Halo <strong>{$data_pelamar['nama_lengkap']}</strong>,</p>
+            <p>Mohon maaf, kami menginformasikan bahwa terdapat <strong>perubahan/reschedule</strong> pada jadwal wawancara Anda untuk posisi <strong>{$data_pelamar['posisi_dilamar']}</strong>.</p>
+            
+            <div style='background-color: #fff8e1; padding: 15px; border-left: 4px solid #fbc02d; margin: 20px 0;'>
+                <h3 style='margin-top: 0; color: #f57f17;'>Jadwal Terbaru:</h3>
+                <ul style='list-style: none; padding-left: 0;'>
+                    <li style='margin-bottom: 8px;'>📅 <strong>Tanggal:</strong> {$jadwal_info['tanggal']}</li>
+                    <li style='margin-bottom: 8px;'>⏰ <strong>Jam:</strong> {$jadwal_info['jam']} WIB</li>
+                    <li style='margin-bottom: 8px;'>📍 <strong>Lokasi:</strong> {$jadwal_info['lokasi']}</li>
+                    <li style='margin-bottom: 8px;'>📝 <strong>Catatan:</strong> " . nl2br($jadwal_info['catatan']) . "</li>
+                </ul>
+            </div>
+            
+            <p>Mohon perhatikan jadwal terbaru di atas. Harap konfirmasi kembali jika Anda bisa hadir.</p>
+            <hr style='border: 0; border-top: 1px solid #eee;'>
+            <p style='font-size: 12px; color: #777;'>Terima kasih,<br>Tim HRD Syjura Coffee</p>
+        </div>";
+
+        $mail->Body = $bodyContent;
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        return false;
+    }
+}
+
+// 3. --- LOGIKA CRUD ---
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
 
-    // AKSI: CREATE (Tambah Wawancara & Kirim Email)
+    // AKSI: CREATE (Tambah Wawancara)
     if ($_POST['action'] == 'create') {
         $id_lamaran = $_POST['id_lamaran'];
         $lokasi = $_POST['lokasi'];
@@ -106,7 +150,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             $koneksi->begin_transaction();
             
             try {
-                // 1. Ambil Data Pelamar (Email & Nama) untuk notifikasi SEBELUM insert
+                // [FIX DUPLIKAT] 1. Cek apakah pelamar ini SUDAH punya jadwal?
+                $stmt_cek = $koneksi->prepare("SELECT id_wawancara FROM wawancara WHERE id_lamaran = ?");
+                $stmt_cek->bind_param("i", $id_lamaran);
+                $stmt_cek->execute();
+                if ($stmt_cek->get_result()->num_rows > 0) {
+                    throw new Exception("Pelamar ini SUDAH memiliki jadwal. Gunakan tombol edit untuk mengubahnya.");
+                }
+                $stmt_cek->close();
+
+                // 2. Ambil Data Pelamar
                 $stmt_get_user = $koneksi->prepare("
                     SELECT u.email, u.nama_lengkap, l.posisi_dilamar 
                     FROM lamaran l 
@@ -117,58 +170,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 $stmt_get_user->execute();
                 $res_user = $stmt_get_user->get_result();
                 
-                if ($res_user->num_rows == 0) {
-                    throw new Exception("Data pelamar tidak ditemukan.");
-                }
-                
+                if ($res_user->num_rows == 0) throw new Exception("Data pelamar tidak ditemukan.");
                 $data_pelamar = $res_user->fetch_assoc();
                 $stmt_get_user->close();
 
-                // 2. Insert ke tabel wawancara
+                // 3. Insert Wawancara
                 $stmt_insert = $koneksi->prepare("INSERT INTO wawancara (id_lamaran, jadwal, lokasi, status_wawancara, catatan) VALUES (?, ?, ?, ?, ?)");
                 $stmt_insert->bind_param("issss", $id_lamaran, $jadwal, $lokasi, $status, $catatan);
-                if (!$stmt_insert->execute()) {
-                    throw new Exception($stmt_insert->error);
-                }
+                if (!$stmt_insert->execute()) throw new Exception($stmt_insert->error);
                 $stmt_insert->close();
 
-                // 3. Update status di tabel lamaran
+                // 4. Update Status Lamaran
                 $stmt_update = $koneksi->prepare("UPDATE lamaran SET status_lamaran = ? WHERE id_lamaran = ?");
                 $stmt_update->bind_param("si", $status_lamaran_baru, $id_lamaran);
-                if (!$stmt_update->execute()) {
-                    throw new Exception($stmt_update->error);
-                }
+                if (!$stmt_update->execute()) throw new Exception($stmt_update->error);
                 $stmt_update->close();
 
-                // 4. Commit Transaksi Database
                 $koneksi->commit();
 
-                // 5. PROSES KIRIM EMAIL
-                $tanggal_indo = date('d-m-Y', strtotime($tanggal));
+                // 5. Kirim Email Undangan
                 $jadwal_info = [
-                    'tanggal' => $tanggal_indo,
+                    'tanggal' => date('d-m-Y', strtotime($tanggal)),
                     'jam' => $jam,
                     'lokasi' => $lokasi,
                     'catatan' => $catatan
                 ];
 
-                $email_status = kirimEmailNotifikasi($data_pelamar, $jadwal_info);
-
-                if ($email_status) {
-                    $_SESSION['message'] = ['type' => 'success', 'text' => 'Jadwal berhasil dibuat dan notifikasi email terkirim ke pelamar.'];
+                if (kirimEmailNotifikasi($data_pelamar, $jadwal_info)) {
+                    $_SESSION['message'] = ['type' => 'success', 'text' => 'Jadwal berhasil dibuat dan notifikasi email terkirim.'];
                 } else {
                     $_SESSION['message'] = ['type' => 'warning', 'text' => 'Jadwal tersimpan, tetapi GAGAL mengirim email notifikasi.'];
                 }
 
             } catch (Exception $e) {
                 $koneksi->rollback();
-                $error_message = htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
-                $_SESSION['message'] = ['type' => 'error', 'text' => "Gagal: {$error_message}"];
+                $_SESSION['message'] = ['type' => 'error', 'text' => "Gagal: " . $e->getMessage()];
             }
         }
     }
 
-    // AKSI: UPDATE (Perbarui Wawancara)
+    // AKSI: UPDATE (Perbarui & Reschedule)
     if ($_POST['action'] == 'update') {
         $id_wawancara = $_POST['id_wawancara'];
         $lokasi = $_POST['lokasi'];
@@ -178,18 +219,62 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $jam = $_POST['jam'];
 
         if (empty($id_wawancara) || empty($lokasi) || empty($status) || empty($tanggal) || empty($jam)) {
-            $message = "<div class='message animated error'>Input tidak valid. Data wajib diisi.</div>";
+            $_SESSION['message'] = ['type' => 'error', 'text' => 'Input tidak valid. Data wajib diisi.'];
         } else {
-            $jadwal = "{$tanggal} {$jam}";
-            $stmt = $koneksi->prepare("UPDATE wawancara SET jadwal = ?, lokasi = ?, status_wawancara = ?, catatan = ? WHERE id_wawancara = ?");
-            $stmt->bind_param("ssssi", $jadwal, $lokasi, $status, $catatan, $id_wawancara);
+            $new_jadwal = "{$tanggal} {$jam}";
 
-            if ($stmt->execute()) {
-                $_SESSION['message'] = ['type' => 'success', 'text' => 'Jadwal wawancara berhasil diperbarui.'];
+            // 1. Ambil Data Lama untuk Cek Perubahan & Data Email
+            $stmt_old = $koneksi->prepare("
+                SELECT w.jadwal, w.lokasi, w.catatan, u.email, u.nama_lengkap, l.posisi_dilamar 
+                FROM wawancara w 
+                JOIN lamaran l ON w.id_lamaran = l.id_lamaran 
+                JOIN user u ON l.id_pelamar = u.id_user 
+                WHERE w.id_wawancara = ?
+            ");
+            $stmt_old->bind_param("i", $id_wawancara);
+            $stmt_old->execute();
+            $res_old = $stmt_old->get_result();
+            $old_data = $res_old->fetch_assoc();
+            $stmt_old->close();
+
+            if (!$old_data) {
+                $_SESSION['message'] = ['type' => 'error', 'text' => 'Data wawancara tidak ditemukan.'];
             } else {
-                $_SESSION['message'] = ['type' => 'error', 'text' => 'Gagal memperbarui jadwal.'];
+                // 2. Bandingkan Data (Apakah Reschedule?)
+                $old_time = strtotime($old_data['jadwal']);
+                $new_time = strtotime($new_jadwal);
+                
+                $is_rescheduled = ($old_time !== $new_time) || ($old_data['lokasi'] !== $lokasi);
+
+                // 3. Update Database
+                $stmt = $koneksi->prepare("UPDATE wawancara SET jadwal = ?, lokasi = ?, status_wawancara = ?, catatan = ? WHERE id_wawancara = ?");
+                $stmt->bind_param("ssssi", $new_jadwal, $lokasi, $status, $catatan, $id_wawancara);
+
+                if ($stmt->execute()) {
+                    $pesan_sukses = 'Jadwal wawancara berhasil diperbarui.';
+
+                    // 4. Jika Reschedule, Kirim Email
+                    if ($is_rescheduled) {
+                        $jadwal_info = [
+                            'tanggal' => date('d-m-Y', strtotime($tanggal)),
+                            'jam' => $jam,
+                            'lokasi' => $lokasi,
+                            'catatan' => $catatan
+                        ];
+
+                        if (kirimEmailReschedule($old_data, $jadwal_info)) {
+                            $pesan_sukses .= ' Notifikasi Reschedule telah dikirim ke pelamar.';
+                        } else {
+                            $pesan_sukses .= ' Namun GAGAL mengirim email notifikasi reschedule.';
+                        }
+                    }
+
+                    $_SESSION['message'] = ['type' => 'success', 'text' => $pesan_sukses];
+                } else {
+                    $_SESSION['message'] = ['type' => 'error', 'text' => 'Gagal memperbarui jadwal.'];
+                }
+                $stmt->close();
             }
-            $stmt->close();
         }
     }
 
@@ -251,7 +336,8 @@ if (!empty($search)) {
     $result = $koneksi->query($full_query);
 }
 
-// 5. --- LOGIKA DROPDOWN PELAMAR (Status 'Wawancara' & Urutan Terbaru) ---
+// 5. --- LOGIKA DROPDOWN PELAMAR ---
+// Mengambil pelamar dengan status 'Wawancara' (untuk dropdown tambah manual jika diperlukan)
 $query_pelamar = "SELECT l.id_lamaran, u.nama_lengkap, l.posisi_dilamar 
                   FROM lamaran l 
                   JOIN user u ON l.id_pelamar = u.id_user
