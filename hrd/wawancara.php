@@ -159,11 +159,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 }
                 $stmt_cek->close();
 
-                // 2. Ambil Data Pelamar
+                // 2. Ambil Data Pelamar (FIX: JOIN ke profil_pelamar untuk nama_lengkap)
                 $stmt_get_user = $koneksi->prepare("
-                    SELECT u.email, u.nama_lengkap, l.posisi_dilamar 
+                    SELECT u.email, p.nama_lengkap, l.posisi_dilamar 
                     FROM lamaran l 
                     JOIN user u ON l.id_pelamar = u.id_user 
+                    JOIN profil_pelamar p ON u.id_user = p.id_user
                     WHERE l.id_lamaran = ?
                 ");
                 $stmt_get_user->bind_param("i", $id_lamaran);
@@ -223,12 +224,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         } else {
             $new_jadwal = "{$tanggal} {$jam}";
 
-            // 1. Ambil Data Lama untuk Cek Perubahan & Data Email
+            // 1. Ambil Data Lama untuk Cek Perubahan & Data Email (FIX: JOIN ke profil_pelamar)
             $stmt_old = $koneksi->prepare("
-                SELECT w.jadwal, w.lokasi, w.catatan, u.email, u.nama_lengkap, l.posisi_dilamar 
+                SELECT w.jadwal, w.lokasi, w.catatan, u.email, p.nama_lengkap, l.posisi_dilamar 
                 FROM wawancara w 
                 JOIN lamaran l ON w.id_lamaran = l.id_lamaran 
                 JOIN user u ON l.id_pelamar = u.id_user 
+                JOIN profil_pelamar p ON u.id_user = p.id_user
                 WHERE w.id_wawancara = ?
             ");
             $stmt_old->bind_param("i", $id_wawancara);
@@ -311,9 +313,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     }
 }
 
-// 4. --- LOGIKA READ ---
+// 4. --- LOGIKA READ (TAMPIL DATA) ---
+// FIX: JOIN ke profil_pelamar (p) untuk mengambil nama_lengkap
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
-$query = "SELECT w.id_wawancara, w.id_lamaran, u.nama_lengkap, l.posisi_dilamar,
+$query = "SELECT w.id_wawancara, w.id_lamaran, p.nama_lengkap, l.posisi_dilamar,
             DATE_FORMAT(w.jadwal, '%d - %m - %Y') AS tanggal_formatted, 
             DATE_FORMAT(w.jadwal, '%H:%i') AS jam_formatted, 
             w.status_wawancara, w.lokasi, w.catatan,
@@ -321,11 +324,13 @@ $query = "SELECT w.id_wawancara, w.id_lamaran, u.nama_lengkap, l.posisi_dilamar,
             DATE_FORMAT(w.jadwal, '%H:%i') AS jam_raw
           FROM wawancara w
           JOIN lamaran l ON w.id_lamaran = l.id_lamaran
-          JOIN user u ON l.id_pelamar = u.id_user";
+          JOIN user u ON l.id_pelamar = u.id_user
+          JOIN profil_pelamar p ON u.id_user = p.id_user";
 
 if (!empty($search)) {
     $search_param = "%{$search}%";
-    $full_query = $query . " WHERE u.nama_lengkap LIKE ? OR l.posisi_dilamar LIKE ? OR w.status_wawancara LIKE ? ORDER BY w.jadwal ASC";
+    // Search juga menggunakan p.nama_lengkap
+    $full_query = $query . " WHERE p.nama_lengkap LIKE ? OR l.posisi_dilamar LIKE ? OR w.status_wawancara LIKE ? ORDER BY w.jadwal ASC";
     $stmt_read = $koneksi->prepare($full_query);
     $stmt_read->bind_param("sss", $search_param, $search_param, $search_param);
     $stmt_read->execute();
@@ -337,10 +342,11 @@ if (!empty($search)) {
 }
 
 // 5. --- LOGIKA DROPDOWN PELAMAR ---
-// Mengambil pelamar dengan status 'Wawancara' (untuk dropdown tambah manual jika diperlukan)
-$query_pelamar = "SELECT l.id_lamaran, u.nama_lengkap, l.posisi_dilamar 
+// FIX: JOIN ke profil_pelamar (p) untuk nama_lengkap di dropdown
+$query_pelamar = "SELECT l.id_lamaran, p.nama_lengkap, l.posisi_dilamar 
                   FROM lamaran l 
                   JOIN user u ON l.id_pelamar = u.id_user
+                  JOIN profil_pelamar p ON u.id_user = p.id_user
                   WHERE l.status_lamaran = 'Wawancara'
                   ORDER BY l.id_lamaran DESC"; 
 $result_pelamar = $koneksi->query($query_pelamar);
@@ -361,8 +367,22 @@ if ($result_pelamar) {
     <button class="btn-primary" id="btnTambahWawancara">+ Jadwal wawancara baru</button>
     <div class="search-container">
         <form action="wawancara.php" method="GET">
-            <input type="text" name="search" placeholder="Cari pelamar..." value="<?php echo htmlspecialchars($search); ?>">
-            <button type="submit" class="search-button">Search</button>
+            <input type="text" name="search" placeholder="Cari pelamar, posisi, atau status..."
+                value="<?php echo htmlspecialchars($search, ENT_QUOTES, 'UTF-8'); ?>">
+            <button type="submit" class="search-button">
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0,0,256,256">
+                    <g fill="#6a4e3b" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
+                        stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
+                        font-family="none" font-weight="none" font-size="none" text-anchor="none"
+                        style="mix-blend-mode: normal">
+                        <g transform="scale(5.12,5.12)">
+                            <path
+                                d="M21,3c-9.37891,0 -17,7.62109 -17,17c0,9.37891 7.62109,17 17,17c3.71094,0 7.14063,-1.19531 9.9375,-3.21875l13.15625,13.125l2.8125,-2.8125l-13,-13.03125c2.55469,-2.97656 4.09375,-6.83984 4.09375,-11.0625c0,-9.37891 -7.62109,-17 -17,-17zM21,5c8.29688,0 15,6.70313 15,15c0,8.29688 -6.70312,15 -15,15c-8.29687,0 -15,-6.70312 -15,-15c0,-8.29687 6.70313,-15 15,-15z">
+                            </path>
+                        </g>
+                    </g>
+                </svg>
+            </button>
         </form>
     </div>
 </div>
@@ -514,4 +534,4 @@ if ($result_pelamar) {
     });
 </script>
 
-<?php include '../templates/hrd_footer.php'; $koneksi->close(); ?>
+<?php include '../templates/hrd_footer.php'; $koneksi->close(); ?>  

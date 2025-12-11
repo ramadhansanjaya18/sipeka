@@ -65,17 +65,15 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <?php if (isset($_SESSION['id_user'])): ?>
                     <?php if ($_SESSION['role'] == 'pelamar'): ?>
                         <a href="profil.php" class="btn-profile">
-                            Profil (<?php echo htmlspecialchars($_SESSION['nama_lengkap']); ?>)
+                            Profil (<?php echo htmlspecialchars($_SESSION['username'] ?? 'User'); ?>)
                         </a>
                     <?php endif; ?>
-                    <!-- <a href="logout.php" class="btn-logout">Logout</a> -->
-                <?php else: ?>
+                    <?php else: ?>
                     <a href="login.php" class="btn-login">Daftar/Login</a>
                 <?php endif; ?>
             </div>
         </nav>
 
-        <!-- Tombol Hamburger -->
         <button class="hamburger-menu" id="hamburgerMenu" aria-label="Buka menu">
             <span></span>
             <span></span>

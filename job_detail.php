@@ -1,9 +1,6 @@
 <?php
 /**
  * Halaman Detail Lowongan.
- *
- * Menampilkan informasi lengkap dari satu lowongan pekerjaan.
- * Memastikan pelamar melengkapi data wajib sebelum bisa melamar.
  */
 
 // 1. Memanggil header (init session & koneksi)
@@ -27,7 +24,7 @@ if (!isset($_GET['id']) || !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
                     WHEN CURDATE() BETWEEN l.tanggal_buka AND l.tanggal_tutup THEN 'Aktif'
                     ELSE 'Tutup'
                 END) AS status_lowongan_realtime,
-                u.nama_lengkap AS nama_hrd
+                u.username AS nama_hrd
             FROM 
                 lowongan l
             JOIN 
@@ -48,10 +45,10 @@ if (!isset($_GET['id']) || !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     $stmt->close();
 }
 
-// 4. --- LOGIKA VALIDASI KELENGKAPAN PROFIL ---
+// 4. --- LOGIKA VALIDASI KELENGKAPAN PROFIL (SEMUA KOLOM) ---
 $user_has_applied = false;
 $profile_is_complete = false;
-$missing_fields = []; // Array untuk menampung data yang kurang
+$missing_fields = []; 
 $status_lowongan_aktif = false;
 
 // Cek hanya jika user login sebagai pelamar
@@ -59,7 +56,7 @@ if (!$error_message && isset($_SESSION['id_user']) && $_SESSION['role'] == 'pela
     $id_pelamar = $_SESSION['id_user'];
     $status_lowongan_aktif = ($lowongan['status_lowongan_realtime'] == 'Aktif');
 
-    // A. Cek apakah sudah pernah melamar di lowongan ini
+    // A. Cek lamaran
     $stmt_check_lamaran = $koneksi->prepare("SELECT id_lamaran FROM lamaran WHERE id_pelamar = ? AND id_lowongan = ?");
     $stmt_check_lamaran->bind_param("ii", $id_pelamar, $id_lowongan);
     $stmt_check_lamaran->execute();
@@ -68,33 +65,41 @@ if (!$error_message && isset($_SESSION['id_user']) && $_SESSION['role'] == 'pela
     }
     $stmt_check_lamaran->close();
 
-    // B. Ambil data profil pelamar untuk validasi kelengkapan
-    $stmt_profile = $koneksi->prepare("SELECT * FROM user WHERE id_user = ?");
+    // B. Ambil data profil pelamar
+    $stmt_profile = $koneksi->prepare("
+        SELECT * FROM profil_pelamar WHERE id_user = ?
+    ");
     $stmt_profile->bind_param("i", $id_pelamar);
     $stmt_profile->execute();
     $pelamar = $stmt_profile->get_result()->fetch_assoc();
     $stmt_profile->close();
 
-    // C. Definisi Data Wajib (Key Database => Label yang Tampil)
+    // C. Definisi Data Wajib (SEMUA KOLOM)
     $required_fields = [
-        'nama_lengkap'       => 'Nama Lengkap',
-        'email'              => 'Email',
-        'no_telepon'         => 'Nomor Telepon',
-        'alamat'             => 'Alamat',
-        'ringkasan_pribadi'  => 'Ringkasan Pribadi',
-        'riwayat_pendidikan' => 'Riwayat Pendidikan',
-        'foto_profil'        => 'Foto Profil',
-        'dokumen_cv'         => 'Curriculum Vitae (CV)',
-        'surat_lamaran'      => 'Surat Lamaran',
-        'ijasah'             => 'Ijazah'
+        'nama_lengkap'         => 'Nama Lengkap',
+        'no_telepon'           => 'No. Telepon',
+        'alamat'               => 'Alamat',
+        'tempat_tanggal_lahir' => 'Tempat, Tanggal Lahir',
+        'riwayat_pendidikan'   => 'Riwayat Pendidikan',
+        'pengalaman_kerja'     => 'Pengalaman Kerja',
+        'keahlian'             => 'Keahlian',
+        'ringkasan_pribadi'    => 'Ringkasan Pribadi',
+        'foto_profil'          => 'Foto Profil',
+        'dokumen_cv'           => 'CV (Curriculum Vitae)',
+        'surat_lamaran'        => 'Surat Lamaran',
+        'sertifikat_pendukung' => 'Sertifikat Pendukung',
+        'ijasah'               => 'Ijazah'
     ];
 
     // D. Loop cek kelengkapan
-    foreach ($required_fields as $db_column => $label) {
-        // Cek jika kolom kosong atau null
-        if (empty($pelamar[$db_column])) {
-            $missing_fields[] = $label;
+    if ($pelamar) {
+        foreach ($required_fields as $db_column => $label) {
+            if (empty($pelamar[$db_column]) || trim($pelamar[$db_column]) === '') {
+                $missing_fields[] = $label;
+            }
         }
+    } else {
+        $missing_fields[] = "Profil Belum Dibuat Sama Sekali";
     }
 
     if (empty($missing_fields)) {
@@ -163,7 +168,7 @@ if (!$error_message && isset($_SESSION['id_user']) && $_SESSION['role'] == 'pela
 
                                 <?php else: ?>
                                     <a href="apply.php?id=<?php echo htmlspecialchars($id_lowongan, ENT_QUOTES, 'UTF-8'); ?>"
-                                        class="btn-apply" onclick="return confirm('Apakah Anda yakin ingin melamar posisi ini? Pastikan data profil sudah benar.');">
+                                        class="btn-apply" onclick="return confirm('Apakah Anda yakin ingin melamar posisi ini?');">
                                         Lamar Sekarang
                                     </a>
                                 <?php endif; ?>
@@ -183,13 +188,14 @@ if (!$error_message && isset($_SESSION['id_user']) && $_SESSION['role'] == 'pela
 
 <script>
 function showIncompleteAlert() {
-    // Mengambil data array PHP ke Javascript
     const missingItems = <?php echo json_encode($missing_fields); ?>;
     
     let listText = "";
-    missingItems.forEach(function(item) {
-        listText += "- " + item + "\n";
-    });
+    if (missingItems && missingItems.length > 0) {
+        missingItems.forEach(function(item) {
+            listText += "- " + item + "\n";
+        });
+    }
 
     const message = "Maaf, Anda belum dapat melamar.\n\n" +
                     "Mohon lengkapi data berikut di halaman Profil:\n" + 
