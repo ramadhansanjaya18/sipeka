@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 10 Des 2025 pada 14.00
+-- Waktu pembuatan: 11 Des 2025 pada 08.24
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -41,11 +41,8 @@ CREATE TABLE `lamaran` (
 --
 
 INSERT INTO `lamaran` (`id_lamaran`, `id_lowongan`, `id_pelamar`, `posisi_dilamar`, `tanggal_lamaran`, `status_lamaran`) VALUES
-(86, 10, 91, 'Waitress', '2025-12-05 11:58:24', 'Wawancara'),
-(87, 9, 91, 'Barista', '2025-12-05 12:16:33', 'Diterima'),
-(88, 9, 101, 'Barista', '2025-12-10 14:33:17', 'Wawancara'),
-(89, 10, 101, 'Waitress', '2025-12-10 14:33:42', 'Wawancara'),
-(90, 11, 101, 'Kitchen Staff', '2025-12-10 14:34:34', 'Diproses');
+(91, 10, 103, 'Waitress', '2025-12-10 21:37:25', 'Diproses'),
+(92, 11, 103, 'Kitchen Staff', '2025-12-10 21:37:40', 'Ditolak');
 
 -- --------------------------------------------------------
 
@@ -88,34 +85,6 @@ CREATE TABLE `profil_pelamar` (
   `id_profil` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
   `nama_lengkap` varchar(100) DEFAULT NULL,
-  `alamat` text DEFAULT NULL,
-  `tempat_tanggal_lahir` varchar(100) DEFAULT NULL,
-  `riwayat_pendidikan` text DEFAULT NULL,
-  `pengalaman_kerja` text DEFAULT NULL,
-  `keahlian` text DEFAULT NULL,
-  `dokumen_pendukung` varchar(255) DEFAULT NULL COMMENT 'Menyimpan nama file dokumen'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data untuk tabel `profil_pelamar`
---
-
-INSERT INTO `profil_pelamar` (`id_profil`, `id_user`, `nama_lengkap`, `alamat`, `tempat_tanggal_lahir`, `riwayat_pendidikan`, `pengalaman_kerja`, `keahlian`, `dokumen_pendukung`) VALUES
-(1, 91, 'Adelita nur mu\'izah', 'sasaasaa', 'sasaasasa', 'mkmkmmkmmkmkmkmmk', 'dslkdmsaodkmsad', ' ds dlksamdksamdpod', NULL),
-(2, 92, 'Syahrul Hannan Ramdhani', 'maoaskanmslka', 'rumah,30 februari 2089', 'al;lamslamsa', 'ksalksmams', 'asu', NULL),
-(3, 101, 'Junanti', 'rgferwgv', 'jhdgfjgerf', 'revgew', 'vrevbersb', 'bvtfrbvfet', NULL);
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `user`
---
-
-CREATE TABLE `user` (
-  `id_user` int(11) NOT NULL,
-  `nama_lengkap` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `password` varchar(255) NOT NULL COMMENT 'Di-hash menggunakan password_hash()',
   `no_telepon` varchar(20) DEFAULT NULL,
   `alamat` text DEFAULT NULL,
   `tempat_tanggal_lahir` varchar(100) DEFAULT NULL,
@@ -127,8 +96,27 @@ CREATE TABLE `user` (
   `foto_profil` varchar(255) DEFAULT NULL,
   `surat_lamaran` varchar(255) DEFAULT NULL,
   `sertifikat_pendukung` varchar(255) DEFAULT NULL,
-  `ijasah` varchar(255) DEFAULT NULL,
-  `jabatan` varchar(50) DEFAULT NULL COMMENT 'Diisi jika role = hrd',
+  `ijasah` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `profil_pelamar`
+--
+
+INSERT INTO `profil_pelamar` (`id_profil`, `id_user`, `nama_lengkap`, `no_telepon`, `alamat`, `tempat_tanggal_lahir`, `riwayat_pendidikan`, `pengalaman_kerja`, `keahlian`, `ringkasan_pribadi`, `dokumen_cv`, `foto_profil`, `surat_lamaran`, `sertifikat_pendukung`, `ijasah`) VALUES
+(4, 103, 'ramadan sanjaya', '0882329732980', 'jalan', 'rumah,30 februari 2089', 'sekolah', 'gaada', 'tiduran', 'apa ya', 'CV_103_69397d6049fbe.pdf', 'FOTO_103_69397d3a522dc.png', 'SL_103_69397d8d34952.pdf', 'SERTIFIKAT_103_69397f5ecde0d.pdf', 'IJASAH_103_69397f68265e3.pdf');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `user`
+--
+
+CREATE TABLE `user` (
+  `id_user` int(11) NOT NULL,
+  `username` varchar(10) DEFAULT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL COMMENT 'Di-hash menggunakan password_hash()',
   `role` enum('hrd','pelamar') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -136,20 +124,9 @@ CREATE TABLE `user` (
 -- Dumping data untuk tabel `user`
 --
 
-INSERT INTO `user` (`id_user`, `nama_lengkap`, `email`, `password`, `no_telepon`, `alamat`, `tempat_tanggal_lahir`, `riwayat_pendidikan`, `pengalaman_kerja`, `keahlian`, `ringkasan_pribadi`, `dokumen_cv`, `foto_profil`, `surat_lamaran`, `sertifikat_pendukung`, `ijasah`, `jabatan`, `role`) VALUES
-(1, 'Ramadhan Sanjaya', 'hrdsyjuracoffe@gmail.com', '$2y$10$rMYdcvaVEu.keopsVRia4Os9H3Tcu0Wkwd1K2pAoaEp6F8QWKLaNu', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'HRD', 'hrd'),
-(91, 'Adelita nur mu\'izah', 'adelita@gmail.com', '$2y$10$kzcVRJc1J1NEQMt7uruA3upK02KxU0ILRyvizjrWu9iMJL3rKWNfe', '0882329732980', 'sasaasaa', 'sasaasasa', 'mkmkmmkmmkmkmkmmk', 'dslkdmsaodkmsad', ' ds dlksamdksamdpod', 'mkmkmkmkmkmkmk', 'CV_91_69326a3fcde84.pdf', 'FOTO_91_693269d517e77.jpeg', 'SL_91_69326a696103c.pdf', 'SERTIFIKAT_91_69326a2602005.pdf', 'IJASAH_91_69326a353fc67.pdf', NULL, 'pelamar'),
-(92, 'Syahrul Hannan Ramdhani', 'arul@gmail.com', '$2y$10$6ggwmM0POOzdhGXrB51I1uvIp3asdNxB6v6u3s2oHqurp30UrVJ/G', '0882329732980', 'maoaskanmslka', 'rumah,30 februari 2089', 'al;lamslamsa', 'ksalksmams', 'asu', 'smalsma;lsmal,s;a', NULL, NULL, NULL, NULL, NULL, NULL, 'pelamar'),
-(93, 'Eka mayputri.Y', 'ekamay@gmail.com', '$2y$10$RDqxHTQk/SW3rgGMRrVHLuUNQV/k.u1uqlAT8pGgnhl1FN2IkaPEG', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'pelamar'),
-(94, 'syifa awaliyah', 'nonok@gmail.com', '$2y$10$fp4nbXD7j09GUfnDX08.7.ZAdx.7ibm5sa4ElSu59D03tu/QjLVSu', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'pelamar'),
-(95, 'Restu Septio', 'restu@gmail.com', '$2y$10$/5V3Gpb.qCqU8L5fh05T6ekeen29K2uswmGZ8.rNiWAeKo76.ukqu', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'pelamar'),
-(96, 'Hafiz Muzakar Addin', 'hafiz@gmail.com', '$2y$10$PZ0I7BUVHH5tetEWgczKh.2gVO.NRmcamkLft41wAOi/rcf4opg5K', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'pelamar'),
-(97, 'Selsa Nabila Putri', 'selsa@gmail.com', '$2y$10$a1dFDzpVHdQMLG7tLlCbaeeY/3rts81DMz66d3O0LpAK.N3/I8nNa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'pelamar'),
-(98, 'junanti', 'junanti@gmail.com', '$2y$10$EVXO3olEgROyc.OuSX98h.op6kpTje2w5R9aZmSTh.2E5Wt9Dqcmm', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'pelamar'),
-(99, 'arul', 'arulimut@gmail.com', '$2y$10$/s/RphmCWNBqeQYVU7giQ.Bdd4ANDZXSJU5l1JC0SNRXUVz28QZuO', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'pelamar'),
-(100, 'diyan', 'diyan@gmail.com', '$2y$10$XLpWEpITTxlzjaCoWuXptudX4Mo1kNiS0Guuf3IJt7fXXFkJ9y22W', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'pelamar'),
-(101, 'Junanti', 'antitwvinterb@gmail.com', '$2y$10$jjHuzf/9RpBFO9v0GaaldeciWR7enH5CsrGbbjXvsGOIZPgr7dKv2', '029848032985', 'rgferwgv', 'jhdgfjgerf', 'revgew', 'vrevbersb', 'bvtfrbvfet', 'gerwvggv', 'CV_101_693921b18865c.pdf', 'FOTO_101_69392191a399f.jpg', 'SL_101_693921c0e6a7c.pdf', 'SERTIFIKAT_101_693921d66cecd.pdf', 'IJASAH_101_693921eb6f877.pdf', NULL, 'pelamar'),
-(102, 'junanti', 'junti@gmail.com', '$2y$10$D4eZ2bXuGOgLvILyo8cqhuzyPrvdJ7OiZOoVXvVA0luQ5QrTDgwI2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'pelamar');
+INSERT INTO `user` (`id_user`, `username`, `email`, `password`, `role`) VALUES
+(1, 'Ramadhan', 'hrdsyjuracoffe@gmail.com', '$2y$10$rMYdcvaVEu.keopsVRia4Os9H3Tcu0Wkwd1K2pAoaEp6F8QWKLaNu', 'hrd'),
+(103, 'ramadan', 'ramadhansanjaya18@gmail.com', '$2y$10$qn6TFsRWXZU.O.R1XyLy5O0ajCjWfAZoVOKFr...4PC1gqd3H2UUu', 'pelamar');
 
 -- --------------------------------------------------------
 
@@ -171,9 +148,7 @@ CREATE TABLE `wawancara` (
 --
 
 INSERT INTO `wawancara` (`id_wawancara`, `id_lamaran`, `jadwal`, `lokasi`, `status_wawancara`, `catatan`) VALUES
-(12, 86, '2025-12-05 16:08:00', 'kantor syjura', 'Selesai', 'bawa buku'),
-(13, 88, '2025-12-11 13:15:00', 'kantor syjura', 'Terjadwal', 'eweweweewwewewewwewe'),
-(15, 89, '2025-12-12 23:59:00', 'Kantor Syjura Coffe', 'Terjadwal', 'mkmmk');
+(16, 92, '2025-12-10 02:42:00', 'Online Via Zoom / Kantor Syjura Coffe', 'Terjadwal', 'sasas');
 
 --
 -- Indexes for dumped tables
@@ -223,7 +198,7 @@ ALTER TABLE `wawancara`
 -- AUTO_INCREMENT untuk tabel `lamaran`
 --
 ALTER TABLE `lamaran`
-  MODIFY `id_lamaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
+  MODIFY `id_lamaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
 -- AUTO_INCREMENT untuk tabel `lowongan`
@@ -235,19 +210,19 @@ ALTER TABLE `lowongan`
 -- AUTO_INCREMENT untuk tabel `profil_pelamar`
 --
 ALTER TABLE `profil_pelamar`
-  MODIFY `id_profil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_profil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
 
 --
 -- AUTO_INCREMENT untuk tabel `wawancara`
 --
 ALTER TABLE `wawancara`
-  MODIFY `id_wawancara` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_wawancara` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
