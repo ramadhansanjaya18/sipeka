@@ -365,6 +365,10 @@ if ($result_pelamar) {
 
 <div class="page-actions">
     <button class="btn-primary" id="btnTambahWawancara">+ Jadwal wawancara baru</button>
+    
+    <a href="cetak_wawancara.php?search=<?php echo urlencode($search); ?>" target="_blank" class="btn-primary" style="background-color: #d35400; text-decoration: none; margin-left: 10px; display:inline-block; line-height: normal;">
+        <i class="fas fa-print"></i> Cetak Data
+    </a>
     <div class="search-container">
         <form action="wawancara.php" method="GET">
             <input type="text" name="search" placeholder="Cari pelamar, posisi, atau status..."
@@ -534,4 +538,4 @@ if ($result_pelamar) {
     });
 </script>
 
-<?php include '../templates/hrd_footer.php'; $koneksi->close(); ?>  
+<?php include '../templates/hrd_footer.php'; $koneksi->close(); ?>
