@@ -641,7 +641,6 @@ body {
 .mobile-menu-toggle {
   top: 10px;
   left: 15px;
-  z-index: 1200;
   display: none;
   padding: 0.5rem 0.8rem;
   font-size: 1.2rem;
@@ -762,15 +761,12 @@ body {
 }
 
 @media (max-width: 850px) {
-  .top-bar {
-    justify-content: left;
-  }
   .mobile-menu-toggle {
     display: block;
   }
 
   .top-bar {
-    padding-left: 60px;
+    padding-left: 30px;
   }
 
   .sidebar {

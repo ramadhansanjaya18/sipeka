@@ -1,8 +1,7 @@
 /* ===================================================================
- * SIPEKA STATUS LAMARAN STYLESHEET (Refined & Clean)
+ * SIPEKA STATUS LAMARAN STYLESHEET (Final Fix Mobile)
  * =================================================================== */
 
-/* --- 1. Root Variables --- */
 :root {
   --dark-brown: #3d352f;
   --btn-brown: #5d4037;
@@ -10,24 +9,18 @@
   --card-bg: #fbf9f6;
   --border-color: #eae5e0;
   --text-muted: #8a7e73;
-
-  /* Modal Specific */
+  
+  --modal-bg: #ffffff;
   --modal-input-bg: #f9f9f9;
-  --modal-input-border: #e0e0e0;
-  --modal-label: #333333;
-
+  
   /* Status Colors */
-  --bg-diproses: #eef3f8;
-  --text-diproses: #366091;
-  --bg-wawancara: #fff8e1;
-  --text-wawancara: #f57f17;
-  --bg-diterima: #e8f5e9;
-  --text-diterima: #2e7d32;
-  --bg-ditolak: #ffebee;
-  --text-ditolak: #c62828;
+  --bg-diproses: #eef3f8; --text-diproses: #366091;
+  --bg-wawancara: #fff8e1; --text-wawancara: #f57f17;
+  --bg-diterima: #e8f5e9; --text-diterima: #2e7d32;
+  --bg-ditolak: #ffebee; --text-ditolak: #c62828;
 }
 
-/* --- 2. Page Header --- */
+/* --- Page Layout --- */
 .status-container {
   padding: 40px 20px;
   background-color: var(--cream-bg);
@@ -45,11 +38,10 @@
 .status-container > p {
   text-align: center;
   color: var(--text-muted);
-  font-size: 0.95rem;
   margin-bottom: 40px;
 }
 
-/* --- 3. Timeline Components --- */
+/* --- Timeline --- */
 .timeline-container {
   position: relative;
   max-width: 850px;
@@ -59,9 +51,7 @@
 .timeline-container::before {
   content: "";
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 20px;
+  top: 0; bottom: 0; left: 20px;
   width: 3px;
   background: #e0e0e0;
 }
@@ -74,49 +64,37 @@
 
 .timeline-icon {
   position: absolute;
-  top: 25px;
-  left: 6px;
-  width: 30px;
-  height: 30px;
+  top: 25px; left: 6px;
+  width: 30px; height: 30px;
   border-radius: 50%;
-  z-index: 2;
   border: 4px solid var(--cream-bg);
+  z-index: 2;
 }
 
-/* Status Icon Colors */
-.timeline-icon.status-diproses {
-  background-color: var(--text-diproses);
-}
-.timeline-icon.status-wawancara {
-  background-color: var(--text-wawancara);
-}
-.timeline-icon.status-diterima {
-  background-color: var(--text-diterima);
-}
-.timeline-icon.status-ditolak {
-  background-color: var(--text-ditolak);
-}
+/* Status Colors */
+.timeline-icon.status-diproses { background-color: var(--text-diproses); }
+.timeline-icon.status-wawancara { background-color: var(--text-wawancara); }
+.timeline-icon.status-diterima { background-color: var(--text-diterima); }
+.timeline-icon.status-ditolak { background-color: var(--text-ditolak); }
 
-/* Content Card */
+/* Card Content */
 .timeline-content {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 25px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.03);
 }
 
 .timeline-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
   margin-bottom: 5px;
 }
 
 .job-title {
   font-family: "Poppins", sans-serif;
   font-size: 1.2rem;
-  font-weight: 600;
   color: var(--dark-brown);
   margin: 0;
 }
@@ -129,11 +107,10 @@
 .company-name {
   font-size: 0.95rem;
   color: var(--text-muted);
-  font-weight: 500;
   margin-bottom: 20px;
 }
 
-/* Footer Layout */
+/* Footer Card */
 .timeline-footer {
   display: flex;
   justify-content: space-between;
@@ -152,233 +129,183 @@
   font-size: 0.85rem;
   font-weight: 500;
 }
-.status-badge.status-diproses {
-  background: var(--bg-diproses);
-  color: var(--text-diproses);
-}
-.status-badge.status-wawancara {
-  background: var(--bg-wawancara);
-  color: var(--text-wawancara);
-}
-.status-badge.status-diterima {
-  background: var(--bg-diterima);
-  color: var(--text-diterima);
-}
-.status-badge.status-ditolak {
-  background: var(--bg-ditolak);
-  color: var(--text-ditolak);
-}
+.status-badge.status-diproses { background: var(--bg-diproses); color: var(--text-diproses); }
+.status-badge.status-wawancara { background: var(--bg-wawancara); color: var(--text-wawancara); }
+.status-badge.status-diterima { background: var(--bg-diterima); color: var(--text-diterima); }
+.status-badge.status-ditolak { background: var(--bg-ditolak); color: var(--text-ditolak); }
 
 .link-detail-text {
   font-size: 0.85rem;
   color: var(--text-muted);
   text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s;
 }
 .link-detail-text:hover {
-  color: var(--dark-brown);
   text-decoration: underline;
+  color: var(--dark-brown);
 }
 
 .btn-jadwal {
   background-color: var(--btn-brown);
-  color: #ffffff;
+  color: #fff;
   border: none;
   padding: 10px 24px;
   border-radius: 6px;
   font-family: "Poppins", sans-serif;
   font-size: 0.9rem;
-  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: 0.3s;
 }
-.btn-jadwal:hover {
-  background-color: #4a332a;
-}
+.btn-jadwal:hover { background-color: #4a332a; }
 
-/* --- 4. MODAL STYLING (Fixed Z-Index) --- */
+/* --- MODAL STYLES (Fixed Z-Index & Layout) --- */
 .modal-overlay {
   display: none;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-
-  /* PERUBAHAN UTAMA DI SINI: Z-INDEX SANGAT TINGGI */
-  z-index: 999999;
-
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 99999; /* Paling Depan */
   justify-content: center;
   align-items: center;
+  padding: 20px; /* Jarak aman di HP */
 }
 
 .modal-card {
-  background: #fff;
-  width: 90%;
-  max-width: 800px;
+  background: var(--modal-bg);
+  width: 100%;
+  max-width: 800px; /* Lebar Maksimal Desktop */
   border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh; /* Agar tidak melebihi tinggi layar HP */
   animation: slideDown 0.3s ease;
-  font-family: "Poppins", sans-serif;
 }
 
-/* Header Modal */
+@keyframes slideDown {
+  from { transform: translateY(-30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
 .modal-header {
-  padding: 20px 30px;
+  padding: 20px;
   border-bottom: 1px solid #eee;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #fff;
 }
+.modal-header h2 { margin: 0; font-size: 1.25rem; color: var(--dark-brown); }
+.close-modal { font-size: 24px; cursor: pointer; color: #999; }
 
-.modal-header h2 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: var(--dark-brown);
-  font-weight: 600;
-}
-
-.close-modal {
-  font-size: 28px;
-  color: #999;
-  cursor: pointer;
-  line-height: 1;
-}
-.close-modal:hover {
-  color: #333;
-}
-
-/* Body Modal Grid */
+/* Body Modal dengan Scroll jika konten panjang */
 .modal-body {
-  padding: 30px;
+  padding: 20px;
+  overflow-y: auto; /* Scroll vertikal aktif di HP */
 }
 
 .modal-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* 2 Kolom Presisi */
-  gap: 40px;
+  grid-template-columns: 1fr 1fr; /* Default: 2 Kolom */
+  gap: 20px;
 }
 
-.grid-column {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-group-modal {
-  margin-bottom: 20px;
-}
-
+.form-group-modal { margin-bottom: 15px; }
 .form-group-modal label {
+  display: block;
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--modal-label);
-  margin-bottom: 8px;
-  display: block;
+  margin-bottom: 5px;
+  color: #333;
 }
 
-/* Input Styling - Clean Look */
 .modal-input {
   width: 100%;
-  padding: 12px 15px;
-  border: 1px solid var(--modal-input-border);
-  border-radius: 8px;
-  font-size: 0.95rem;
-  color: #555;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
   background-color: var(--modal-input-bg);
-  outline: none;
   font-family: "Poppins", sans-serif;
-  transition: border-color 0.2s;
-  box-sizing: border-box; /* Memastikan padding tidak merusak lebar */
+  color: #555;
 }
 
-.modal-input:focus {
-  border-color: #bbb;
-}
-
-.modal-textarea {
-  height: 120px;
-  resize: none;
-}
-
-/* Icon Wrapper */
-.input-icon-wrapper {
-  position: relative;
-  width: 100%;
-}
-
-.input-icon-wrapper .modal-input {
-  padding-right: 40px;
-}
-
-.icon-suffix {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #777;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-
-/* Footer Modal */
 .modal-footer {
-  padding: 15px 30px;
+  padding: 15px 20px;
   border-top: 1px solid #eee;
   text-align: right;
-  background: #fff;
 }
 
 .btn-close-modal {
-  background-color: #e0e0e0;
-  color: #333;
+  padding: 10px 25px;
+  background: #e0e0e0;
   border: none;
-  padding: 10px 35px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.95rem;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background 0.2s;
-}
-.btn-close-modal:hover {
-  background-color: #d0d0d0;
+  font-weight: 600;
 }
 
-@keyframes slideDown {
-  from {
-    transform: translateY(-30px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-/* --- Responsive --- */
+/* =================================================================
+   🔥 MOBILE RESPONSIVE (MODAL & TIMELINE) 🔥
+   ================================================================= */
 @media (max-width: 768px) {
+  
+  /* 1. Reset Padding Page */
+  .status-container {
+    padding: 20px 15px;
+  }
+  
+  .status-container h1 { font-size: 1.8rem; }
+
+  /* 2. Timeline Item Stack */
+  .timeline-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .application-date {
+    font-size: 0.8rem;
+    margin-top: 5px;
+  }
+
+  /* 3. Footer Stack (Badge & Tombol) */
   .timeline-footer {
     flex-direction: column;
     align-items: flex-start;
     gap: 15px;
   }
-  .footer-left,
+  
+  .footer-left {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    gap: 10px;
+  }
+  
   .footer-right {
     width: 100%;
-    justify-content: space-between;
   }
+  
   .btn-jadwal {
-    width: 100%;
+    width: 100%; /* Tombol Full Width */
+    text-align: center;
   }
 
-  /* Modal Responsif */
+  /* 4. MODAL RESPONSIF (KUNCI PERBAIKAN) */
+  .modal-card {
+    max-height: 85vh; /* Sedikit lebih pendek agar muat */
+  }
+  
   .modal-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
+    grid-template-columns: 1fr; /* Ubah jadi 1 Kolom Vertikal */
+    gap: 10px;
+  }
+  
+  .modal-body {
+    padding: 15px;
+  }
+  
+  /* Input di HP lebih besar sedikit agar mudah ditap */
+  .modal-input {
+    padding: 12px; 
+    font-size: 1rem;
   }
 }

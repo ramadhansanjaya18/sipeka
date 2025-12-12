@@ -6,26 +6,25 @@ include_once __DIR__ . '/config/init.php';
 include_once 'templates/header.php';
 
 // =====================================================
-// 2. Inisialisasi variabel untuk pesan
+// 2. Inisialisasi variabel pesan
 // =====================================================
 $error_message = "";
 $success_message = "";
 
 // =====================================================
-// 3. Cek apakah form dikirim (method POST)
+// 3. Proses Form (POST)
 // =====================================================
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    // Ambil data input (Nama Lengkap dihapus)
+    // Ambil data input
     $username = $koneksi->real_escape_string(trim($_POST['username'] ?? ''));
     $email = $koneksi->real_escape_string(trim($_POST['email'] ?? ''));
     $password = $_POST['password'] ?? '';
     $konfirmasi_password = $_POST['konfirmasi_password'] ?? '';
 
     // =====================================================
-    // 4. Validasi input
+    // 4. Validasi Input Dasar
     // =====================================================
-    // Cek empty dihapus untuk nama_lengkap
     if (empty($username) || empty($email) || empty($password) || empty($konfirmasi_password)) {
         $error_message = "Semua kolom wajib diisi!";
     } elseif (strlen($username) > 10) {
@@ -36,55 +35,67 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $error_message = "Format email tidak valid!";
     } else {
         // =====================================================
-        // 5. Cek apakah email atau username sudah terdaftar
+        // 5. Cek Ketersediaan Akun (LOGIKA DIPISAH)
         // =====================================================
-        $stmt_cek = $koneksi->prepare("SELECT id_user FROM user WHERE email = ? OR username = ?");
-        $stmt_cek->bind_param("ss", $email, $username);
-        $stmt_cek->execute();
-        $result_cek = $stmt_cek->get_result();
+        
+        // A. Cek Email Terlebih Dahulu (Prioritas Utama)
+        $stmt_email = $koneksi->prepare("SELECT id_user FROM user WHERE email = ?");
+        $stmt_email->bind_param("s", $email);
+        $stmt_email->execute();
+        $res_email = $stmt_email->get_result();
+        $stmt_email->close();
 
-        if ($result_cek->num_rows > 0) {
-            $error_message = "Email atau Username sudah terdaftar.";
+        if ($res_email->num_rows > 0) {
+            // Jika email ditemukan di database
+            $error_message = "email sudah digunakan"; 
         } else {
-            // =====================================================
-            // 6. Lanjutkan registrasi (TRANSAKSI)
-            // =====================================================
-            $koneksi->begin_transaction();
+            // B. Jika Email Aman, Baru Cek Username
+            $stmt_user = $koneksi->prepare("SELECT id_user FROM user WHERE username = ?");
+            $stmt_user->bind_param("s", $username);
+            $stmt_user->execute();
+            $res_user = $stmt_user->get_result();
+            $stmt_user->close();
 
-            try {
-                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                $role = "pelamar";
+            if ($res_user->num_rows > 0) {
+                $error_message = "Username sudah terdaftar, silakan ganti.";
+            } else {
+                // =====================================================
+                // 6. Proses Insert Data (Transaksi Database)
+                // =====================================================
+                $koneksi->begin_transaction();
 
-                // A. Insert ke tabel USER (Data Login)
-                $stmt_insert_user = $koneksi->prepare("INSERT INTO user (username, email, password, role) VALUES (?, ?, ?, ?)");
-                $stmt_insert_user->bind_param("ssss", $username, $email, $hashed_password, $role);
-                $stmt_insert_user->execute();
-                
-                // Ambil ID User yang baru dibuat
-                $new_user_id = $koneksi->insert_id;
-                $stmt_insert_user->close();
+                try {
+                    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                    $role = "pelamar";
 
-                // B. Insert ke tabel PROFIL_PELAMAR (Data Diri)
-                // Karena input nama_lengkap dihapus, kita isi default dengan username agar query tidak error
-                $stmt_insert_profil = $koneksi->prepare("INSERT INTO profil_pelamar (id_user, nama_lengkap) VALUES (?, ?)");
-                $stmt_insert_profil->bind_param("is", $new_user_id, $username); 
-                $stmt_insert_profil->execute();
-                $stmt_insert_profil->close();
+                    // 1. Insert ke tabel user
+                    $stmt_insert = $koneksi->prepare("INSERT INTO user (username, email, password, role) VALUES (?, ?, ?, ?)");
+                    $stmt_insert->bind_param("ssss", $username, $email, $hashed_password, $role);
+                    $stmt_insert->execute();
+                    $new_user_id = $koneksi->insert_id; // Ambil ID baru
+                    $stmt_insert->close();
 
-                // Jika kedua query berhasil, simpan perubahan
-                $koneksi->commit();
+                    // 2. Insert ke tabel profil_pelamar
+                    $stmt_profil = $koneksi->prepare("INSERT INTO profil_pelamar (id_user, nama_lengkap) VALUES (?, ?)");
+                    $stmt_profil->bind_param("is", $new_user_id, $username); 
+                    $stmt_profil->execute();
+                    $stmt_profil->close();
 
-                $success_message = "Registrasi berhasil! Anda akan diarahkan ke halaman login.";
-                $_SESSION['register_success'] = "Registrasi berhasil! Silakan login.";
-                // header("refresh:3;url=login.php");
+                    // Simpan perubahan ke database
+                    $koneksi->commit();
 
-            } catch (Exception $e) {
-                // Jika ada error, batalkan semua perubahan
-                $koneksi->rollback();
-                $error_message = "Registrasi gagal: " . $e->getMessage();
+                    // Set pesan sukses sesuai permintaan (Akan tampil Hijau)
+                    $success_message = "pendaftaran akun telah berhasil";
+                    
+                    // (Opsional) Set session untuk pesan di halaman login nanti
+                    $_SESSION['register_success'] = "Akun berhasil dibuat. Silakan login.";
+
+                } catch (Exception $e) {
+                    $koneksi->rollback();
+                    $error_message = "Terjadi kesalahan sistem: " . $e->getMessage();
+                }
             }
         }
-        $stmt_cek->close();
     }
     $koneksi->close();
 }
@@ -101,8 +112,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div class="right-side">
         <div class="login-box">
             <form action="register.php" method="POST">
+                
                 <?php if (!empty($error_message)) : ?>
-                    <div class="notification">
+                    <div class="notification" style="display: block;">
                         <div class="message error">
                             <?php echo htmlspecialchars($error_message); ?>
                             <span class="close-btn">&times;</span>
@@ -111,12 +123,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <?php endif; ?>
 
                 <?php if (!empty($success_message)) : ?>
-                    <div class="notification">
+                    <div class="notification" style="display: block;">
                         <div class="message success">
                             <?php echo htmlspecialchars($success_message); ?>
-                            <span class="close-btn">&times;</span>
                         </div>
                     </div>
+                    <script>
+                        setTimeout(function() {
+                            window.location.href = 'login.php';
+                        }, 3000); 
+                    </script>
                 <?php endif; ?>
 
                 <fieldset <?php if (!empty($success_message)) echo 'disabled'; ?>>

@@ -30,7 +30,7 @@
 }
 .profile-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 2fr 1fr; /* Kiri (Form) 2 bagian, Kanan (Foto) 1 bagian */
   gap: 2rem;
 }
 
@@ -176,7 +176,7 @@
   border: none;
   border-radius: var(--border-radius-md);
   transition: background-color 0.3s ease;
-  float: right;
+  float: right; /* Default Desktop: Float kanan */
 }
 
 .btn:hover {
@@ -245,15 +245,46 @@
   border: 1px solid var(--error-text);
 }
 
-/* --- 8. Responsive Design --- */
+/* --- 8. Responsive Design (MOBILE) --- */
 @media (max-width: 992px) {
+  /* Layout Grid */
   .profile-grid {
     display: flex;
+    /* Ubah urutan: Kolom Kanan (Foto) naik ke atas, Form di bawah */
     flex-direction: column-reverse;
-    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
   .right-column {
-    flex-direction: column-reverse;
+    display: flex;
+    /* Pastikan urutan di kolom kanan: Foto di atas, Dokumen di bawah */
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  /* Modifikasi Tombol Aksi (Simpan & Logout) */
+  .form-card .btn_apply {
+    float: none; /* Matikan float */
+    display: block; /* Ubah jadi block element */
+    width: 100%; /* Lebar penuh */
+    text-align: center;
+    margin-bottom: 15px; /* Beri jarak dengan tombol logout */
+  }
+
+  .form-card .btn_logout {
+    width: 100%; /* Lebar penuh */
+    justify-content: center; /* Teks dan icon di tengah */
+    background-color: #f5f5f5; /* Background abu muda biar terlihat jelas batasnya */
+    border: 1px solid #ddd;
+  }
+
+  /* Reset padding container agar lebih lega di layar kecil */
+  .profile-container {
+    padding: 20px;
+  }
+
+  /* Font size judul dikecilkan sedikit */
+  .profile-container h1 {
+    font-size: 2rem;
   }
 }
