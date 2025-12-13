@@ -1,13 +1,25 @@
 <?php
-/**
- * Halaman Cetak Laporan Wawancara
- * Fitur: Menampilkan data wawancara siap cetak
- */
-
-// PENTING: Gunakan init.php dan auth_hrd.php agar sesi login terbaca
-// Jangan gunakan session_start() manual jika sistem sudah punya init.php
 require '../config/init.php';      // Memuat koneksi dan konfigurasi sesi
 require '../config/auth_hrd.php';  // Memastikan user adalah HRD
+
+// --- BARU: Ambil Nama HRD dari Database berdasarkan User yang Login ---
+// Menggunakan $_SESSION['id_user'] yang diset saat login
+$id_user_login = $_SESSION['id_user'];
+
+$stmt_hrd = $koneksi->prepare("SELECT username FROM user WHERE id_user = ?");
+$stmt_hrd->bind_param("i", $id_user_login);
+$stmt_hrd->execute();
+$res_hrd = $stmt_hrd->get_result();
+
+if ($res_hrd->num_rows > 0) {
+    $data_hrd = $res_hrd->fetch_assoc();
+    // Menggunakan username sebagai nama tampilan (sesuai struktur database user hrd)
+    $nama_hrd = $data_hrd['username']; 
+} else {
+    $nama_hrd = "HRD Manager"; // Fallback jika data tidak ditemukan
+}
+$stmt_hrd->close();
+// ---------------------------------------------------------------------
 
 // Ambil parameter filter
 $status_filter = isset($_GET['status']) ? $_GET['status'] : '';
@@ -80,10 +92,7 @@ $result = $koneksi->query($query);
 </head>
 <body>
 
-    <div class="no-print" style="text-align: right; background: #eee; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
-        <span style="float: left; font-family: sans-serif; padding-top: 5px;">
-            ℹ️ <b>Tips:</b> Pada dialog print, pilih <b>"Save as PDF"</b> atau <b>"Simpan sbg PDF"</b> pada bagian Destination/Printer.
-        </span>
+    <div class="no-print" style="text-align: right;  padding: 10px; border-radius: 5px; margin-bottom: 20px;">
         <button onclick="window.print()" class="btn-print">🖨️ Cetak / Simpan PDF</button>
         <button onclick="window.close()" class="btn-print" style="background-color: #dc3545;">Tutup</button>
     </div>
@@ -91,7 +100,7 @@ $result = $koneksi->query($query);
     <div class="header">
         <h1>Syjura Coffee</h1>
         <h2>Laporan Data Wawancara Pelamar</h2>
-        <p>Alamat: Jl. Contoh No. 123, Kota Kopi, Indonesia | Telp: (021) 555-9999</p>
+        <p>Alamat: Jl. Lohbener, Pamayahan, Indramayu , Indonesia   | Telp: (0274) 123456</p>
     </div>
 
     <div class="meta-info">
@@ -106,7 +115,7 @@ $result = $koneksi->query($query);
             </tr>
             <tr>
                 <td><strong>Dicetak Oleh</strong></td>
-                <td>: HRD Manager</td>
+                <td>: <?php echo htmlspecialchars($nama_hrd); ?></td>
             </tr>
         </table>
     </div>
@@ -148,7 +157,7 @@ $result = $koneksi->query($query);
     <div class="signature">
         Mengetahui,
         <br>HRD Manager
-        <p>Ramadhan</p>
+        <p><?php echo htmlspecialchars($nama_hrd); ?></p>
     </div>
 
     <script>

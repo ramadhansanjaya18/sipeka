@@ -49,6 +49,11 @@ a {
   padding: 5px 20px;
   background-color: var(--cream-bg);
 }
+.top-contain h1 {
+  font-family: var(--font-syjura);
+  color: var(--dark-brown);
+  font-weight: bold;
+}
 
 .container-visi-misi {
   display: flex;
@@ -437,14 +442,14 @@ a {
   }
 
   .top-contain {
-    padding: 10px 15px;
-
-    flex-wrap: wrap;
     gap: 10px;
+    padding: 15px 20px;
+    text-align: center;
   }
 
-  .top-contain * {
+  .top-contain h1 {
     font-size: 25px;
+    margin: 0;
   }
 
   .content-grid {

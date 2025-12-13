@@ -343,11 +343,13 @@ if (!empty($search)) {
 
 // 5. --- LOGIKA DROPDOWN PELAMAR ---
 // FIX: JOIN ke profil_pelamar (p) untuk nama_lengkap di dropdown
+// UPDATE: Filter pelamar yang SUDAH punya jadwal (agar tidak dobel jadwal)
 $query_pelamar = "SELECT l.id_lamaran, p.nama_lengkap, l.posisi_dilamar 
                   FROM lamaran l 
                   JOIN user u ON l.id_pelamar = u.id_user
                   JOIN profil_pelamar p ON u.id_user = p.id_user
-                  WHERE l.status_lamaran = 'Wawancara'
+                  LEFT JOIN wawancara w ON l.id_lamaran = w.id_lamaran
+                  WHERE l.status_lamaran = 'Wawancara' AND w.id_wawancara IS NULL
                   ORDER BY l.id_lamaran DESC"; 
 $result_pelamar = $koneksi->query($query_pelamar);
 $opsi_pelamar = [];
