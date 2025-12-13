@@ -1,0 +1,57 @@
+/* --- 1. Root Variables & Global Reset --- */
+:root {
+  /* Base Colors */
+  --dark-brown: #6a4e3b;
+  --cream-bg: #faf8f5;
+  --side-bg: #f5f0e8;
+  --header-text: #f5f0e8;
+  --card-bg: #ffffff;
+  --border-color: #e0e0e0;
+
+  /* Text Colors */
+  --text-primary: #333;
+  --text-secondary: #3b3b3b;
+  --text-muted: #777;
+
+  /* Component Colors */
+  --button-primary: #856550;
+  --nav-active-bg: #ffffff;
+  --nav-hover-bg: #e0dace;
+  --table-header-bg: var(--side-bg);
+
+  /* Message & Status Colors */
+  --success-bg: #d4edda;
+  --success-border: #c3e6cb;
+  --success-text: #155724;
+  --error-bg: #f8d7da;
+  --error-border: #f5c6cb;
+  --error-text: #721c24;
+}
+
+body,
+h1,
+h2,
+h3,
+p,
+ul,
+li,
+a,
+button,
+input,
+select,
+textarea {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  color: var(--text-primary);
+  list-style: none;
+  text-decoration: none;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--cream-bg);
+}

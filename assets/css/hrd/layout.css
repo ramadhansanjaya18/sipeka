@@ -1,0 +1,103 @@
+/* --- 2. Main Layout (Top Bar, Wrapper, Sidebar) --- */
+.top-bar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  height: 60px;
+  padding: 10px 30px;
+  font-family: "Lora", serif;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--header-text);
+  background-color: var(--dark-brown);
+}
+
+.top-bar h4 {
+  color: var(--header-text);
+}
+.top-bar img {
+  flex-shrink: 0;
+  height: 60px;
+  margin-right: 10px;
+}
+
+.hrd-wrapper {
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: 240px;
+  padding: 24px;
+  overflow-y: auto;
+  background-color: var(--side-bg);
+  border-right: 1px solid var(--border-color);
+  transition: transform 0.3s ease-in-out;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  background-color: var(--cream-bg);
+  transition: all 0.3s ease;
+}
+
+/* --- 3. Sidebar Components --- */
+.sidebar-header {
+  margin-bottom: 24px;
+}
+.sidebar-header span {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.sidebar-header small {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.sidebar-nav {
+  flex-grow: 1;
+}
+.sidebar-nav ul {
+  list-style: none;
+}
+.sidebar-nav li {
+  margin-bottom: 8px;
+}
+
+.sidebar-nav a,
+.sidebar-footer a {
+  display: flex;
+  align-items: center;
+  width: 180px;
+  height: 40px;
+  padding: 12px 16px;
+  gap: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.sidebar-nav a:hover:not(.active),
+.sidebar-footer a:hover {
+  background-color: var(--nav-hover-bg);
+}
+
+.sidebar-nav a.active {
+  font-weight: 600;
+  color: var(--text-primary);
+  background-color: var(--nav-active-bg);
+  box-shadow: 4px 4px 4px var(--dark-brown);
+}
+
+.sidebar-footer {
+  margin-top: 24px;
+}

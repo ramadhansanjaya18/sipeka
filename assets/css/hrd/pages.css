@@ -1,0 +1,186 @@
+/* --- 4. Main Content Area & Page Titles --- */
+.page-title {
+  margin-bottom: 20px;
+}
+.page-title h1 {
+  font-size: 1.5rem;
+}
+
+.page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+.page-actions .search-container {
+  margin-left: auto;
+}
+
+/* --- 5. Dashboard Components (Stats & Charts) --- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  gap: 20px;
+  background-color: var(--side-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 4px var(--dark-brown);
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+.stat-card h2 {
+  margin-bottom: 0.5rem;
+  font-size: 2.25rem;
+  font-weight: 600;
+  color: var(--dark-brown);
+}
+
+.stat-card p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.chart-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+.chart-card h3 {
+  flex-shrink: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.placeholder-chart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  border-radius: 8px;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+/* --- 9. Detail Page Styles (detail_pelamar.php) --- */
+.detail-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.profile-card,
+.additional-info {
+  margin-bottom: 1.5rem;
+  padding: 2rem;
+  background-color: var(--side-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.detail-container .profile-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.profile-pic {
+  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  background-color: var(--cream-bg);
+  border: 4px solid var(--cream-bg);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--dark-brown);
+}
+
+.profile-info p {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+  gap: 10px;
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+.profile-info p i {
+  width: 16px;
+  text-align: center;
+  color: var(--dark-brown);
+}
+
+.profile-actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  min-width: 220px;
+  gap: 0.75rem;
+  grid-column: 1 / -1;
+  margin-top: 1rem;
+}
+
+.profile-actions .status-update-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  flex-grow: 1;
+}
+.profile-actions .form-control {
+  width: 200px;
+}
+
+.additional-info h3 {
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--dark-brown);
+  border-bottom: 2px solid var(--border-color);
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: minmax(150px, 25%) 1fr;
+}
+.info-grid dt {
+  height: 30px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.info-grid dd {
+  color: var(--text-muted);
+}

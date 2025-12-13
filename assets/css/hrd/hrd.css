@@ -1,0 +1,9 @@
+/* ===================================================================
+ * SIPEKA HRD DASHBOARD STYLESHEET (MODULAR)
+ * =================================================================== */
+
+@import "base.css";
+@import "layout.css";
+@import "pages.css";
+@import "components.css";
+@import "responsive.css";
