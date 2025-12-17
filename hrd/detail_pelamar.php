@@ -23,7 +23,7 @@ $error_message = "";
 $message = ""; 
 $upload_dir_foto = '../uploads/foto_profil/';
 $upload_dir_docs = '../uploads/dokumen/';
-$placeholder_foto = '../assets/img/placeholder-profile.png';
+$placeholder_foto = '../assets/img/placeholder-profile.jpg';
 
 // --- FUNGSI KIRIM EMAIL ---
 function kirimNotifikasiEmail($email_tujuan, $nama_pelamar, $status, $posisi, &$pesan_error_detail) {
@@ -54,28 +54,66 @@ function kirimNotifikasiEmail($email_tujuan, $nama_pelamar, $status, $posisi, &$
 
         // Konten Email
         $mail->isHTML(true);
-        
-        if ($status == 'Diterima') {
-            $mail->Subject = "Selamat! Lamaran Anda Diterima - Syjura Coffee";
-            $mail->Body    = "
-                <h3>Halo, $nama_pelamar</h3>
-                <p>Selamat! Kami sampaikan bahwa Anda <b>DITERIMA</b> untuk posisi <b>$posisi</b> di Syjura Coffee.</p>
-                <p>Tim HRD akan segera menghubungi Anda untuk langkah selanjutnya.</p>
-                <br><p>Salam,<br>HRD Syjura Coffee</p>";
-        } elseif ($status == 'Ditolak') {
-            $mail->Subject = "Status Lamaran - Syjura Coffee";
-            $mail->Body    = "
-                <h3>Halo, $nama_pelamar</h3>
-                <p>Terima kasih telah melamar posisi <b>$posisi</b>.</p>
-                <p>Mohon maaf, saat ini kami belum dapat melanjutkan proses lamaran Anda.</p>
-                <br><p>Salam,<br>HRD Syjura Coffee</p>";
-        }
 
+        // Styling dasar untuk email agar terlihat rapi
+        $header_email = "
+            <div style='font-family: Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px;'>
+                <h2 style='color: #8B4513;'>SYJURA COFFEE</h2>
+                <hr style='border: 0; border-top: 1px solid #eee;'>
+        ";
+
+        $footer_email = "
+                <br><br>
+                <hr style='border: 0; border-top: 1px solid #eee;'>
+                <p style='font-size: 12px; color: #777;'>
+                    <b>HR Department - Syjura Coffee</b><br>
+                    Jl. Lohbener, Pamayahan<br>
+                    Website: sipeka.gt.tc | Email: hrd@syjuracoffee.com
+                </p>
+                <p style='font-size: 11px; color: #999;'>
+                    <i>Email ini dibuat secara otomatis oleh sistem SIPEKA. Mohon untuk tidak membalas email ini secara langsung.</i>
+                </p>
+            </div>
+        ";
+
+        if ($status == 'Diterima') {
+            $mail->Subject = "Konfirmasi Penerimaan Lamaran Kerja - Posisi $posisi";
+            $mail->Body    = $header_email . "
+                <h3>Yth. Sdr/i $nama_pelamar,</h3>
+                
+                <p>Terima kasih telah mengikuti serangkaian proses seleksi di <b>Syjura Coffee</b>.</p>
+                
+                <p>Berdasarkan hasil evaluasi kualifikasi dan wawancara, dengan senang hati kami sampaikan bahwa Anda dinyatakan <b>DITERIMA</b> untuk bergabung bersama kami pada posisi <b>$posisi</b>.</p>
+                
+                <p>Kami percaya bahwa kemampuan dan pengalaman yang Anda miliki akan memberikan kontribusi positif bagi tim kami. Selanjutnya, perwakilan dari tim HRD kami akan segera menghubungi Anda melalui telepon atau WhatsApp untuk membahas penawaran kerja (Offering Letter) dan jadwal orientasi.</p>
+                
+                <p>Sekali lagi, selamat bergabung dengan keluarga besar Syjura Coffee.</p>
+                
+                <p>Salam hangat,</p>
+            " . $footer_email;
+
+        } elseif ($status == 'Ditolak') {
+            $mail->Subject = "Informasi Status Lamaran Kerja - Posisi $posisi";
+            $mail->Body    = $header_email . "
+                <h3>Yth. Sdr/i $nama_pelamar,</h3>
+                
+                <p>Terima kasih banyak atas ketertarikan Anda untuk berkarir di <b>Syjura Coffee</b> dan telah meluangkan waktu untuk mengikuti proses seleksi posisi <b>$posisi</b>.</p>
+                
+                <p>Kami telah meninjau kualifikasi Anda secara menyeluruh. Namun, dengan berat hati kami sampaikan bahwa saat ini kami belum dapat melanjutkan proses lamaran Anda ke tahap berikutnya, karena kami telah memutuskan untuk melanjutkan dengan kandidat lain yang profilnya lebih mendekati kebutuhan spesifik kami saat ini.</p>
+                
+                <p>Profil Anda akan kami simpan dalam database talenta kami. Apabila terdapat lowongan yang sesuai dengan kualifikasi Anda di masa mendatang, kami tidak akan ragu untuk menghubungi Anda kembali.</p>
+                
+                <p>Kami mendoakan yang terbaik untuk kesuksesan karir Anda ke depannya.</p>
+                
+                <p>Hormat kami,</p>
+            " . $footer_email;
+        }
         $mail->send();
         return true;
     } catch (Exception $e) {
-        $pesan_error_detail = $mail->ErrorInfo;
-        return false; 
+        // Tangkap pesan error asli
+        $pesan_error = $mail->ErrorInfo;
+        return false;
     }
 }
 

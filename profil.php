@@ -17,7 +17,7 @@ $error_message = "";
 $success_message = "";
 $upload_dir_foto = 'uploads/foto_profil/';
 $upload_dir_docs = 'uploads/dokumen/';
-$placeholder_foto = 'assets/img/placeholder-profile.png';
+$placeholder_foto = 'assets/img/placeholder-profile.jpg';
 
 // Konfigurasi Upload
 // SEMUA kolom file ini sekarang berada di tabel 'profil_pelamar'

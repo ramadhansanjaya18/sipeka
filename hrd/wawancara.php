@@ -19,55 +19,97 @@ include '../templates/hrd_header.php'; // Sudah memanggil init.php (session & ko
 
 $message = "";
 
-// --- FUNGSI KIRIM EMAIL (UNDANGAN BARU) ---
+// --- FUNGSI KIRIM EMAIL (UNDANGAN BARU - VERSI PROFESIONAL) ---
 function kirimEmailNotifikasi($data_pelamar, $jadwal_info) {
-    // KREDENSIAL DARI contact.php
+    // KONFIGURASI SMTP
     $mail_host = 'smtp.gmail.com';
     $mail_username = 'hrdsyjuracoffe@gmail.com'; 
     $mail_password = 'vtzl yffh yimv pcpa';       
-    $mail_port = 587; 
+    $mail_port = 465; // Menggunakan Port 465 (SMTPS) agar lebih stabil di Gmail
 
     $mail = new PHPMailer(true);
 
     try {
+        // Server settings
         $mail->isSMTP();
         $mail->Host       = $mail_host;
         $mail->SMTPAuth   = true;
         $mail->Username   = $mail_username;
         $mail->Password   = $mail_password;
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; 
         $mail->Port       = $mail_port;
 
-        $mail->setFrom($mail_username, 'HRD SIPEKA - Syjura Coffee');
+        // Recipients
+        $mail->setFrom($mail_username, 'Recruitment Team - Syjura Coffee');
         $mail->addAddress($data_pelamar['email'], $data_pelamar['nama_lengkap']);
         $mail->addReplyTo($mail_username, 'HRD Syjura Coffee');
 
+        // Content
         $mail->isHTML(true);
-        $mail->Subject = 'Undangan Wawancara Kerja - Syjura Coffee';
+        $mail->Subject = "Undangan Wawancara Kerja - Posisi " . $data_pelamar['posisi_dilamar'];
+
+        // Format Tanggal (Contoh: 18 December 2025)
+        $tgl_formatted = date('d F Y', strtotime($jadwal_info['tanggal']));
+
+        // Styling Email
+        $header_style = "background-color: #6F4E37; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;";
+        $body_style   = "font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px;";
         
         $bodyContent = "
-        <div style='font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px;'>
-            <h2 style='color: #6a4e3b;'>Undangan Wawancara</h2>
-            <p>Halo <strong>{$data_pelamar['nama_lengkap']}</strong>,</p>
-            <p>Selamat! Berdasarkan hasil seleksi administrasi untuk posisi <strong>{$data_pelamar['posisi_dilamar']}</strong>, kami mengundang Anda untuk mengikuti sesi wawancara.</p>
-            
-            <div style='background-color: #f9f9f9; padding: 15px; border-left: 4px solid #6a4e3b; margin: 20px 0;'>
-                <h3 style='margin-top: 0;'>Detail Jadwal:</h3>
-                <ul style='list-style: none; padding-left: 0;'>
-                    <li style='margin-bottom: 8px;'>📅 <strong>Tanggal:</strong> {$jadwal_info['tanggal']}</li>
-                    <li style='margin-bottom: 8px;'>⏰ <strong>Jam:</strong> {$jadwal_info['jam']} WIB</li>
-                    <li style='margin-bottom: 8px;'>📍 <strong>Lokasi:</strong> {$jadwal_info['lokasi']}</li>
-                    <li style='margin-bottom: 8px;'>📝 <strong>Catatan:</strong> " . nl2br($jadwal_info['catatan']) . "</li>
-                </ul>
+        <div style=\"$body_style\">
+            <div style=\"$header_style\">
+                <h2 style='color: #ffffff; margin: 0; letter-spacing: 1px;'>SYJURA COFFEE</h2>
             </div>
             
-            <p>Harap konfirmasi kehadiran Anda atau hubungi kami jika ada kendala.</p>
-            <hr style='border: 0; border-top: 1px solid #eee;'>
-            <p style='font-size: 12px; color: #777;'>Terima kasih,<br>Tim HRD Syjura Coffee</p>
+            <div style='padding: 30px;'>
+                <p>Yth. Sdr/i <strong>{$data_pelamar['nama_lengkap']}</strong>,</p>
+                
+                <p>Terima kasih atas ketertarikan Anda untuk bergabung dengan Syjura Coffee. Setelah meninjau lamaran dan kualifikasi Anda untuk posisi <strong>{$data_pelamar['posisi_dilamar']}</strong>, dengan senang hati kami mengundang Anda untuk mengikuti tahapan seleksi selanjutnya, yaitu Sesi Wawancara.</p>
+                
+                <p>Jadwal wawancara Anda telah ditentukan sebagai berikut:</p>
+                
+                <div style='background-color: #f8f9fa; border-left: 4px solid #6F4E37; padding: 15px; margin: 20px 0;'>
+                    <table style='width: 100%; border-collapse: collapse;'>
+                        <tr>
+                            <td style='padding: 5px 0; width: 100px; font-weight: bold;'>Hari/Tanggal</td>
+                            <td>: $tgl_formatted</td>
+                        </tr>
+                        <tr>
+                            <td style='padding: 5px 0; font-weight: bold;'>Waktu</td>
+                            <td>: {$jadwal_info['jam']} WIB - Selesai</td>
+                        </tr>
+                        <tr>
+                            <td style='padding: 5px 0; font-weight: bold;'>Lokasi</td>
+                            <td>: {$jadwal_info['lokasi']}</td>
+                        </tr>
+                        <tr>
+                            <td style='padding: 5px 0; font-weight: bold; vertical-align: top;'>Catatan</td>
+                            <td>: " . nl2br($jadwal_info['catatan']) . "</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <p><strong>Hal-hal yang perlu diperhatikan:</strong></p>
+                <ul style='color: #555;'>
+                    <li>Harap hadir 15 menit sebelum jadwal yang ditentukan.</li>
+                    <li>Membawa hardcopy CV, Portofolio (jika ada), dan alat tulis.</li>
+                    <li>Berpakaian rapi dan formal (Business Casual/Formal).</li>
+                </ul>
+
+                <p>Mohon konfirmasikan kehadiran Anda melalui balasan email ini. Jika Anda memiliki kendala mengenai jadwal tersebut, harap segera menghubungi kami.</p>
+                
+                <p>Hormat kami,<br>
+                <strong>HR Department - Syjura Coffee</strong></p>
+            </div>
+
+            <div style='background-color: #f1f1f1; padding: 15px; text-align: center; font-size: 12px; color: #888; border-radius: 0 0 8px 8px;'>
+                <p style='margin: 0;'>Syjura Coffee &copy; " . date('Y') . "</p>
+                <p style='margin: 5px 0;'>Email ini dibuat secara otomatis oleh sistem SIPEKA. Mohon cek kembali detail jadwal Anda.</p>
+            </div>
         </div>";
 
         $mail->Body = $bodyContent;
-        $mail->AltBody = "Halo, Anda diundang wawancara pada tanggal {$jadwal_info['tanggal']} jam {$jadwal_info['jam']}.";
+        $mail->AltBody = "Yth. {$data_pelamar['nama_lengkap']}, Anda diundang wawancara pada $tgl_formatted jam {$jadwal_info['jam']} di {$jadwal_info['lokasi']}. Mohon cek email versi HTML untuk detail lengkap.";
 
         $mail->send();
         return true;
@@ -76,12 +118,13 @@ function kirimEmailNotifikasi($data_pelamar, $jadwal_info) {
     }
 }
 
-// --- FUNGSI KIRIM EMAIL (RESCHEDULE / PERUBAHAN JADWAL) ---
+// --- FUNGSI KIRIM EMAIL (RESCHEDULE - VERSI PROFESIONAL) ---
 function kirimEmailReschedule($data_pelamar, $jadwal_info) {
+    // KONFIGURASI SMTP
     $mail_host = 'smtp.gmail.com';
     $mail_username = 'hrdsyjuracoffe@gmail.com'; 
     $mail_password = 'vtzl yffh yimv pcpa';       
-    $mail_port = 587; 
+    $mail_port = 465;
 
     $mail = new PHPMailer(true);
 
@@ -91,38 +134,72 @@ function kirimEmailReschedule($data_pelamar, $jadwal_info) {
         $mail->SMTPAuth   = true;
         $mail->Username   = $mail_username;
         $mail->Password   = $mail_password;
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = $mail_port;
 
-        $mail->setFrom($mail_username, 'HRD SIPEKA - Syjura Coffee');
+        $mail->setFrom($mail_username, 'Recruitment Team - Syjura Coffee');
         $mail->addAddress($data_pelamar['email'], $data_pelamar['nama_lengkap']);
         $mail->addReplyTo($mail_username, 'HRD Syjura Coffee');
 
         $mail->isHTML(true);
-        $mail->Subject = 'PENTING: Perubahan Jadwal Wawancara - Syjura Coffee';
-        
+        $mail->Subject = "PENTING: Perubahan Jadwal Wawancara - Posisi " . $data_pelamar['posisi_dilamar'];
+
+        $tgl_formatted = date('d F Y', strtotime($jadwal_info['tanggal']));
+
+        // Styling
+        $header_style = "background-color: #A52A2A; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;"; 
+        $body_style   = "font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333; line-height: 1.6; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px;";
+
         $bodyContent = "
-        <div style='font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px;'>
-            <h2 style='color: #d32f2f;'>Perubahan Jadwal Wawancara</h2>
-            <p>Halo <strong>{$data_pelamar['nama_lengkap']}</strong>,</p>
-            <p>Mohon maaf, kami menginformasikan bahwa terdapat <strong>perubahan/reschedule</strong> pada jadwal wawancara Anda untuk posisi <strong>{$data_pelamar['posisi_dilamar']}</strong>.</p>
-            
-            <div style='background-color: #fff8e1; padding: 15px; border-left: 4px solid #fbc02d; margin: 20px 0;'>
-                <h3 style='margin-top: 0; color: #f57f17;'>Jadwal Terbaru:</h3>
-                <ul style='list-style: none; padding-left: 0;'>
-                    <li style='margin-bottom: 8px;'>📅 <strong>Tanggal:</strong> {$jadwal_info['tanggal']}</li>
-                    <li style='margin-bottom: 8px;'>⏰ <strong>Jam:</strong> {$jadwal_info['jam']} WIB</li>
-                    <li style='margin-bottom: 8px;'>📍 <strong>Lokasi:</strong> {$jadwal_info['lokasi']}</li>
-                    <li style='margin-bottom: 8px;'>📝 <strong>Catatan:</strong> " . nl2br($jadwal_info['catatan']) . "</li>
-                </ul>
+        <div style=\"$body_style\">
+            <div style=\"$header_style\">
+                <h2 style='color: #ffffff; margin: 0; letter-spacing: 1px;'>PEMBERITAHUAN JADWAL</h2>
             </div>
             
-            <p>Mohon perhatikan jadwal terbaru di atas. Harap konfirmasi kembali jika Anda bisa hadir.</p>
-            <hr style='border: 0; border-top: 1px solid #eee;'>
-            <p style='font-size: 12px; color: #777;'>Terima kasih,<br>Tim HRD Syjura Coffee</p>
+            <div style='padding: 30px;'>
+                <p>Yth. Sdr/i <strong>{$data_pelamar['nama_lengkap']}</strong>,</p>
+                
+                <p>Sehubungan dengan adanya penyesuaian agenda internal manajemen Syjura Coffee, kami bermaksud menginformasikan adanya <strong>perubahan jadwal (reschedule)</strong> untuk sesi wawancara Anda yang sebelumnya telah kami kirimkan.</p>
+                
+                <p>Mohon abaikan jadwal sebelumnya. Berikut adalah detail <strong>Jadwal Terbaru</strong> Anda:</p>
+                
+                <div style='background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; color: #856404;'>
+                    <table style='width: 100%; border-collapse: collapse;'>
+                        <tr>
+                            <td style='padding: 5px 0; width: 100px; font-weight: bold;'>Hari/Tanggal</td>
+                            <td>: $tgl_formatted</td>
+                        </tr>
+                        <tr>
+                            <td style='padding: 5px 0; font-weight: bold;'>Waktu Baru</td>
+                            <td>: {$jadwal_info['jam']} WIB - Selesai</td>
+                        </tr>
+                        <tr>
+                            <td style='padding: 5px 0; font-weight: bold;'>Lokasi</td>
+                            <td>: {$jadwal_info['lokasi']}</td>
+                        </tr>
+                        <tr>
+                            <td style='padding: 5px 0; font-weight: bold; vertical-align: top;'>Catatan HRD</td>
+                            <td>: " . nl2br($jadwal_info['catatan']) . "</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <p>Kami memohon maaf atas ketidaknyamanan yang ditimbulkan akibat perubahan ini. Besar harapan kami Anda tetap dapat menghadiri sesi wawancara sesuai jadwal terbaru tersebut.</p>
+
+                <p>Mohon konfirmasikan kesediaan Anda untuk hadir pada jadwal baru ini dengan membalas email ini.</p>
+                
+                <p>Hormat kami,<br>
+                <strong>HR Department - Syjura Coffee</strong></p>
+            </div>
+
+            <div style='background-color: #f1f1f1; padding: 15px; text-align: center; font-size: 12px; color: #888; border-radius: 0 0 8px 8px;'>
+                <p style='margin: 0;'>Syjura Coffee &copy; " . date('Y') . "</p>
+            </div>
         </div>";
 
         $mail->Body = $bodyContent;
+        $mail->AltBody = "PENTING: Terdapat perubahan jadwal wawancara Anda menjadi tanggal $tgl_formatted jam {$jadwal_info['jam']}. Mohon cek email Anda untuk detail lengkap.";
+
         $mail->send();
         return true;
     } catch (Exception $e) {
@@ -504,34 +581,51 @@ if ($result_pelamar) {
 
 <script>
     $(document).ready(function () {
+        // --- KLIK TOMBOL TAMBAH (CREATE) ---
         $("#btnTambahWawancara").click(function () {
-            $("#formWawancara")[0].reset();
+            $("#formWawancara")[0].reset(); // Reset form
             $("#modalTitle").text("Jadwal Wawancara Baru");
             $("#formAction").val("create");
             $("#formIdWawancara").val("");
-            $("#formIdLamaran").show().prop("disabled", false);
+
+            // Tampilkan Dropdown & Jadikan Wajib Diisi
+            $("#formIdLamaran").show().prop("disabled", false).prop("required", true); 
+            
+            // Sembunyikan Input Teks Nama (Hanya untuk Edit)
             $("#formNamaPelamarEdit").hide();
+            
             $("#modalWawancara").css("display", "block");
         });
 
+        // --- KLIK TOMBOL EDIT (UPDATE) ---
         $(".btn-edit").click(function () {
             $("#modalTitle").text("Edit Jadwal Wawancara");
             $("#formAction").val("update");
             $("#formIdWawancara").val($(this).data("id_wawancara"));
-            $("#formIdLamaran").hide().val($(this).data("id_lamaran"));
+
+            // Sembunyikan Dropdown & HAPUS WAJIB DIISI
+            // Ini PENTING: Menghapus 'required' agar browser mengizinkan submit meski dropdown hidden/kosong
+            $("#formIdLamaran").hide().prop("required", false); 
+            
+            // Tampilkan Input Teks Nama (Readonly)
             $("#formNamaPelamarEdit").show().val($(this).data("nama_pelamar"));
+            
+            // Isi data lainnya
             $("#formLokasi").val($(this).data("lokasi"));
             $("#formCatatan").val($(this).data("catatan"));
             $("#formStatus").val($(this).data("status"));
             $("#formTanggal").val($(this).data("tanggal"));
             $("#formJam").val($(this).data("jam"));
+            
             $("#modalWawancara").css("display", "block");
         });
 
+        // --- KLIK BATAL / CLOSE ---
         $(".modal-close, .btn-batal").click(function () {
             $("#modalWawancara").css("display", "none");
         });
 
+        // Klik di luar modal untuk menutup
         $(window).click(function (event) {
             if (event.target == $("#modalWawancara")[0]) {
                 $("#modalWawancara").css("display", "none");
