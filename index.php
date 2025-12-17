@@ -39,8 +39,10 @@ include_once 'templates/header.php';
         <h1>Lowongan Terbaru</h1>
         <div class="container_job">
             <?php
-            // Query Lowongan
-            $query = "SELECT * FROM lowongan ORDER BY id_lowongan DESC LIMIT 3";
+            // PERBAIKAN QUERY: 
+            // 1. Menambahkan WHERE status_lowongan = 'Aktif'
+            // 2. Mengubah ORDER BY menjadi tanggal_buka DESC (terbaru), lalu id_lowongan DESC
+            $query = "SELECT * FROM lowongan WHERE status_lowongan = 'Aktif' ORDER BY tanggal_buka DESC, id_lowongan DESC LIMIT 3";
             $result = $koneksi->query($query);
 
             if ($result && $result->num_rows > 0) {
@@ -48,7 +50,7 @@ include_once 'templates/header.php';
                     $posisi_lowongan = htmlspecialchars($row['posisi_lowongan']);
                     $posisi_lower = strtolower($posisi_lowongan);
                     
-                    // PERBAIKAN: Gunakan logo.png sebagai default karena default_icon.png tidak ada
+                    // Default icon
                     $icon_path = 'assets/img/beranda/icon_default.png'; 
 
                     // Logika Penentuan Icon
@@ -63,13 +65,11 @@ include_once 'templates/header.php';
                     } elseif (strpos($posisi_lower, 'cleaning') !== false) {
                         $icon_path = 'assets/img/beranda/icon_cleaning_services.png';
                     } elseif (strpos($posisi_lower, 'supervisor') !== false) {
-                        // Menambahkan icon supervisor
                         $icon_path = 'assets/img/beranda/icon_supervisor.png';
                     }
 
                     echo '<div class="card_job_new">';
                     echo '    <div class="icons_job">';
-                    // Pastikan path tidak menggunakan ./ agar lebih aman di berbagai server
                     echo '        <img src="' . $icon_path . '" alt="icon_job">';
                     echo '    </div>';
                     echo '    <div class="contain_job">';
@@ -82,7 +82,7 @@ include_once 'templates/header.php';
                     echo '</div>';
                 }
             } else {
-                echo '<p style="text-align:center; width:100%;">Belum ada lowongan terbaru saat ini.</p>';
+                echo '<p style="text-align:center; width:100%;">Belum ada lowongan aktif terbaru saat ini.</p>';
             }
             ?>
         </div>
