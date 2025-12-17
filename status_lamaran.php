@@ -47,8 +47,11 @@ $result = $stmt->get_result();
 
                 // Data Modal
                 $jadwal_db = $lamaran['jadwal'];
-                $tgl_modal = !empty($jadwal_db) ? date('d-m-Y', strtotime($jadwal_db)) : '-';
-                $jam_modal = !empty($jadwal_db) ? date('H.i', strtotime($jadwal_db)) : '-';
+                $belum_dijadwalkan = empty($jadwal_db);
+
+                $tgl_modal = !$belum_dijadwalkan ? date('d-m-Y', strtotime($jadwal_db)) : '';
+                $jam_modal = !$belum_dijadwalkan ? date('H.i', strtotime($jadwal_db)) : '';
+
             ?>
                 <div class="timeline-item">
                     <div class="timeline-icon <?php echo $status_class; ?>"></div>
@@ -79,10 +82,12 @@ $result = $stmt->get_result();
                                         data-status="<?php echo htmlspecialchars($lamaran['status_lamaran']); ?>"
                                         data-tanggal="<?php echo $tgl_modal; ?>"
                                         data-jam="<?php echo $jam_modal; ?>"
-                                        data-lokasi="<?php echo htmlspecialchars($lamaran['lokasi'] ?? '-'); ?>"
-                                        data-catatan="<?php echo htmlspecialchars($lamaran['catatan'] ?? '-'); ?>">
-                                        Lihat Jadwal
+                                        data-lokasi="<?php echo htmlspecialchars($lamaran['lokasi'] ?? ''); ?>"
+                                        data-catatan="<?php echo htmlspecialchars($lamaran['catatan'] ?? ''); ?>"
+                                        data-belum="<?php echo $belum_dijadwalkan ? '1' : '0'; ?>">
+                                    Lihat Jadwal
                                     </button>
+
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -179,15 +184,29 @@ document.addEventListener('DOMContentLoaded', function() {
             const jam = this.dataset.jam;
             const lokasi = this.dataset.lokasi;
             const catatan = this.dataset.catatan;
+            const belum = this.dataset.belum;
 
-            // Set Data ke Input
+            // Data utama (selalu ditampilkan)
             document.getElementById('modalPelamar').value = `${nama} (ID:${idLamaran})`;
             document.getElementById('modalPosisi').value = posisi;
-            document.getElementById('modalCatatan').value = catatan;
             document.getElementById('modalStatus').value = status;
+
+            // Jika belum dijadwalkan wawancara
+            if (belum === "1") {
+            document.getElementById('modalTanggal').value = '-';
+            document.getElementById('modalJam').value = '-';
+            document.getElementById('modalLokasi').value = '-';
+            document.getElementById('modalCatatan').value =
+            'Belum ada jadwal wawancara yang ditetapkan.';
+} 
+            // Jika sudah dijadwalkan
+            else {
             document.getElementById('modalTanggal').value = tanggal;
             document.getElementById('modalJam').value = jam;
             document.getElementById('modalLokasi').value = lokasi;
+            document.getElementById('modalCatatan').value = catatan;
+}
+
             
             modal.style.display = 'flex';
         });
