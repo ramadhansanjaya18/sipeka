@@ -236,7 +236,7 @@ a {
 .card-box:hover {
   transform: scale(1.05);
   background-color: #4a3b2a;
-  z-index: 10;
+  z-index: 1;
 }
 
 .tree ul ul ul ul li .card-box {

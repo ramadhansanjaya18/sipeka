@@ -1,18 +1,14 @@
 <?php
 // =====================================================
-// 1. Panggil file init.php (session & koneksi database)
+// 1. Init & Config (JANGAN ADA OUTPUT HTML DI ATAS INI)
 // =====================================================
 include_once __DIR__ . '/config/init.php';
-include_once 'templates/header.php';
 
-// =====================================================
-// 2. Inisialisasi variabel pesan
-// =====================================================
+// Inisialisasi variabel pesan
 $error_message = "";
-$success_message = "";
 
 // =====================================================
-// 3. Proses Form (POST)
+// 2. Proses Form (POST) - Ditaruh SEBELUM load Header
 // =====================================================
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -22,9 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $password = $_POST['password'] ?? '';
     $konfirmasi_password = $_POST['konfirmasi_password'] ?? '';
 
-    // =====================================================
-    // 4. Validasi Input Dasar
-    // =====================================================
+    // Validasi Input
     if (empty($username) || empty($email) || empty($password) || empty($konfirmasi_password)) {
         $error_message = "Semua kolom wajib diisi!";
     } elseif (strlen($username) > 10) {
@@ -34,11 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error_message = "Format email tidak valid!";
     } else {
-        // =====================================================
-        // 5. Cek Ketersediaan Akun (LOGIKA DIPISAH)
-        // =====================================================
-        
-        // A. Cek Email Terlebih Dahulu (Prioritas Utama)
+        // Cek Ketersediaan Akun
+        // A. Cek Email
         $stmt_email = $koneksi->prepare("SELECT id_user FROM user WHERE email = ?");
         $stmt_email->bind_param("s", $email);
         $stmt_email->execute();
@@ -46,10 +37,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt_email->close();
 
         if ($res_email->num_rows > 0) {
-            // Jika email ditemukan di database
-            $error_message = "email sudah digunakan"; 
+            $error_message = "Email sudah digunakan"; 
         } else {
-            // B. Jika Email Aman, Baru Cek Username
+            // B. Cek Username
             $stmt_user = $koneksi->prepare("SELECT id_user FROM user WHERE username = ?");
             $stmt_user->bind_param("s", $username);
             $stmt_user->execute();
@@ -59,9 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             if ($res_user->num_rows > 0) {
                 $error_message = "Username sudah terdaftar, silakan ganti.";
             } else {
-                // =====================================================
-                // 6. Proses Insert Data (Transaksi Database)
-                // =====================================================
+                // Proses Insert Data
                 $koneksi->begin_transaction();
 
                 try {
@@ -72,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $stmt_insert = $koneksi->prepare("INSERT INTO user (username, email, password, role) VALUES (?, ?, ?, ?)");
                     $stmt_insert->bind_param("ssss", $username, $email, $hashed_password, $role);
                     $stmt_insert->execute();
-                    $new_user_id = $koneksi->insert_id; // Ambil ID baru
+                    $new_user_id = $koneksi->insert_id;
                     $stmt_insert->close();
 
                     // 2. Insert ke tabel profil_pelamar
@@ -84,11 +72,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     // Simpan perubahan ke database
                     $koneksi->commit();
 
-                    // Set pesan sukses sesuai permintaan (Akan tampil Hijau)
-                    $success_message = "pendaftaran akun telah berhasil";
+                    // === KUNCI PERBAIKAN ===
+                    // Set session sukses
+                    $_SESSION['register_success'] = "Akun berhasil dibuat! Silakan login.";
                     
-                    // (Opsional) Set session untuk pesan di halaman login nanti
-                    $_SESSION['register_success'] = "Akun berhasil dibuat. Silakan login.";
+                    // Pastikan koneksi tutup sebelum redirect (opsional tapi baik)
+                    $koneksi->close();
+
+                    // Redirect ke Login
+                    header("Location: login.php");
+                    exit(); // Penting: Hentikan script di sini agar HTML di bawah tidak dimuat
 
                 } catch (Exception $e) {
                     $koneksi->rollback();
@@ -97,8 +90,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         }
     }
-    $koneksi->close();
 }
+
+// =====================================================
+// 3. Tampilkan Halaman (HTML mulai dari sini)
+// =====================================================
+include_once 'templates/header.php';
 ?>
 
 <div class="container">
@@ -122,21 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </div>
                 <?php endif; ?>
 
-                <?php if (!empty($success_message)) : ?>
-                    <div class="notification" style="display: block;">
-                        <div class="message success">
-                            <?php echo htmlspecialchars($success_message); ?>
-                        </div>
-                    </div>
-                    <script>
-                        setTimeout(function() {
-                            window.location.href = 'login.php';
-                        }, 3000); 
-                    </script>
-                <?php endif; ?>
-
-                <fieldset <?php if (!empty($success_message)) echo 'disabled'; ?>>
-                    
+                <fieldset>
                     <label for="username">Username</label>
                     <div class="input-group">
                         <img src="assets/img/auth/person_icon.png" alt="icon_user">

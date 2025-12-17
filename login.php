@@ -12,7 +12,7 @@ if (isset($_SESSION['id_user'])) {
     }
 }
 
-$error_message = "";
+$error_message = "";!
 $success_message = "";
 
 if (isset($_SESSION['register_success'])) {

@@ -54,7 +54,6 @@ main {
   flex-direction: column;
   color: #7a5c3e;
   position: relative;
-  z-index: 1;
   padding: 20px;
 }
 
@@ -167,12 +166,11 @@ fieldset {
 /* --- Style Notifikasi --- */
 .notification {
   position: fixed;
-  top: 20px;
+  top: 100px;
   right: 20px;
-  z-index: 9999; /* Z-Index sangat tinggi agar selalu di depan */
+  z-index: 9999;
   width: 350px;
   max-width: 90%;
-  /* Hapus animasi fadeOut, cukup fadeIn saja agar tidak hilang sendiri sebelum JS bekerja */
   animation: fadeIn 0.5s ease-out;
 }
 
@@ -191,12 +189,10 @@ fieldset {
 
 .message.success {
   background-color: #28a745; /* Hijau */
-  border-left: 5px solid #1e7e34;
 }
 
 .message.error {
   background-color: #dc3545; /* Merah */
-  border-left: 5px solid #bd2130;
 }
 
 .close-btn {

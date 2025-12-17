@@ -358,7 +358,6 @@
   }
   #recruit_3 {
     transform: translateX(0) translateY(0);
-    z-index: 10;
   }
 
   #recruit_1:hover,

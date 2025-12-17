@@ -42,32 +42,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // -----------------------------------------------------------
             // BAGIAN INI WAJIB DIISI DENGAN EMAIL & APP PASSWORD ADMIN
             // -----------------------------------------------------------
-            // Email ini bertindak sebagai "Kurir" pengirim surat
             $mail->Username   = 'hrdsyjuracoffe@gmail.com'; 
-            
-            // Masukkan 16 digit App Password Anda di sini (BUKAN password login biasa)
             $mail->Password   = 'vtzl yffh yimv pcpa'; 
             
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port       = 587;
 
             // --- Pengaturan Pengirim & Penerima ---
-            
-            // 1. FROM: Tetap harus email Admin agar tidak diblokir Google (Anti-Spam)
-            // Tapi kita ubah 'Nama'-nya agar terlihat dari pengunjung
             $mail->setFrom('hrdsyjuracoffe@gmail.com', "$nama (via Website SIPEKA)"); 
-            
-            // 2. REPLY-TO: Ini kuncinya! Jika admin klik "Reply", akan ke email pengunjung
             $mail->addReplyTo($email_pengirim, $nama); 
-            
-            // 3. ADD ADDRESS: Email tujuan (Admin HRD)
             $mail->addAddress('hrdsyjuracoffe@gmail.com', 'Admin HRD'); 
 
             // --- Konten Email ---
             $mail->isHTML(true);
             $mail->Subject = "Pesan Baru dari: $nama";
             
-            // Desain Body Email
             $mail->Body    = "
                 <h3>Pesan Baru Masuk</h3>
                 <p><strong>Dari:</strong> $nama ($email_pengirim)</p>
@@ -79,7 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             ";
             
-            // Versi teks biasa untuk email client lama
             $mail->AltBody = "Dari: $nama ($email_pengirim)\nTelepon: $telepon\nPesan: $isi_pesan";
 
             $mail->send();
@@ -95,9 +83,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 <style>
-    .alert { padding: 15px; margin-bottom: 20px; border-radius: 5px; width: 100%; text-align: center; font-weight: 600; }
+    /* CSS Alert yang Dimodifikasi */
+    .alert { 
+        position: relative; /* Agar tombol close bisa diposisikan absolut */
+        padding: 15px; 
+        padding-right: 40px; /* Memberi ruang agar teks tidak tertumpuk tombol X */
+        margin-bottom: 20px; 
+        border-radius: 5px; 
+        width: 100%; 
+        text-align: center; 
+        font-weight: 600;
+        opacity: 1;
+        transition: opacity 0.6s; /* Efek memudar saat hilang */
+    }
     .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
     .alert-error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+    /* Style untuk tombol X (Close Button) */
+    .closebtn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        color: inherit;
+        font-weight: bold;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .closebtn:hover {
+        color: black;
+        opacity: 0.7;
+    }
 </style>
 
 <section class="contact-section">
@@ -120,8 +138,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form class="contact-form" action="" method="post">
             
             <?php if (!empty($status_pesan)): ?>
-                <div class="alert alert-<?php echo $tipe_pesan; ?>">
+                <div class="alert alert-<?php echo $tipe_pesan; ?>" id="notification">
                     <?php echo $status_pesan; ?>
+                    <span class="closebtn" onclick="this.parentElement.style.opacity='0'; setTimeout(function(){ this.parentElement.style.display='none'; }, 600);">&times;</span>
                 </div>
             <?php endif; ?>
 
@@ -141,6 +160,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
     </div>
 </section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var notification = document.getElementById("notification");
+        
+        // Cek apakah notifikasi muncul
+        if (notification) {
+            // Tunggu 5 detik (5000 ms) sebelum mulai menghilang
+            setTimeout(function() {
+                notification.style.opacity = "0"; // Mulai efek transisi (memudar)
+                
+                // Hapus elemen dari tampilan setelah transisi selesai (sesuai durasi CSS 0.6s)
+                setTimeout(function() { 
+                    notification.style.display = "none"; 
+                }, 600);
+            }, 5000);
+        }
+    });
+</script>
 
 <?php
 include_once 'templates/footer.php';
