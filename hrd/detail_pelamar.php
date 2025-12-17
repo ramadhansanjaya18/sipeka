@@ -1,7 +1,7 @@
 <?php
 /**
  * Halaman detail pelamar untuk HRD.
- * VERSI DEBUG & FIX SSL: Menampilkan pesan error spesifik jika email gagal kirim.
+ * VERSI: Tampilan Dokumen List (Bukan Card) dengan Teks Tombol Spesifik
  */
 
 ob_start();
@@ -25,23 +25,21 @@ $upload_dir_foto = '../uploads/foto_profil/';
 $upload_dir_docs = '../uploads/dokumen/';
 $placeholder_foto = '../assets/img/placeholder-profile.png';
 
-// --- FUNGSI KIRIM EMAIL (DENGAN FIX SSL & DEBUG) ---
+// --- FUNGSI KIRIM EMAIL ---
 function kirimNotifikasiEmail($email_tujuan, $nama_pelamar, $status, $posisi, &$pesan_error_detail) {
     $mail = new PHPMailer(true);
 
     try {
         // --- KONFIGURASI SMTP ---
-        // PENTING: Ganti dengan email dan App Password Anda yang benar!
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com'; 
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'hrdsyjuracoffe@gmail.com';     // <--- GANTI INI DENGAN EMAIL GMAIL ASLI ANDA
-        $mail->Password   = 'vtzl yffh yimv pcpa';        // <--- GANTI INI DENGAN APP PASSWORD 16 DIGIT (JANGAN SPASI)
+        $mail->Username   = 'hrdsyjuracoffe@gmail.com';     // GANTI EMAIL ANDA
+        $mail->Password   = 'vtzl yffh yimv pcpa';          // GANTI APP PASSWORD ANDA
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
 
-        // --- FIX SSL UNTUK XAMPP/LOCALHOST ---
-        // Tambahkan opsi ini agar tidak gagal verifikasi sertifikat di localhost
+        // FIX SSL (Untuk Localhost/XAMPP)
         $mail->SMTPOptions = array(
             'ssl' => array(
                 'verify_peer' => false,
@@ -76,7 +74,6 @@ function kirimNotifikasiEmail($email_tujuan, $nama_pelamar, $status, $posisi, &$
         $mail->send();
         return true;
     } catch (Exception $e) {
-        // Tangkap pesan error asli dari PHPMailer
         $pesan_error_detail = $mail->ErrorInfo;
         return false; 
     }
@@ -89,15 +86,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
 
     $status_valid = ['Diproses', 'Wawancara', 'Diterima', 'Ditolak'];
     if (in_array($status_baru, $status_valid)) {
-        // 1. Update Database
+        // Update Database
         $stmt = $koneksi->prepare("UPDATE lamaran SET status_lamaran = ? WHERE id_lamaran = ?");
         $stmt->bind_param("si", $status_baru, $id_lamaran_update);
         
         if ($stmt->execute()) {
             $notif_msg = "";
             $error_mail = "";
+            $terkirim = false;
             
-            // 2. Cek apakah perlu kirim email (Hanya jika Diterima / Ditolak)
+            // Cek apakah perlu kirim email (Hanya jika Diterima / Ditolak)
             if ($status_baru == 'Diterima' || $status_baru == 'Ditolak') {
                 $q_mail = "SELECT u.email, pp.nama_lengkap, l.posisi_dilamar 
                            FROM lamaran l
@@ -110,21 +108,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
                 $res_m = $stmt_m->get_result();
 
                 if ($row_m = $res_m->fetch_assoc()) {
-                    // Panggil fungsi dengan variabel error catcher
                     $terkirim = kirimNotifikasiEmail($row_m['email'], $row_m['nama_lengkap'], $status_baru, $row_m['posisi_dilamar'], $error_mail);
                     
                     if ($terkirim) {
                         $notif_msg = " (Email notifikasi BERHASIL terkirim)";
                     } else {
-                        // Tampilkan error spesifik dari PHPMailer
                         $notif_msg = " (Email GAGAL: " . $error_mail . ")";
                     }
                 }
                 $stmt_m->close();
             }
 
-            // Simpan pesan ke session (termasuk error mail jika ada)
-            $_SESSION['message'] = ['type' => $terkirim ? 'success' : 'warning', 'text' => "Status diubah menjadi '$status_baru'. $notif_msg"];
+            $_SESSION['message'] = ['type' => $terkirim ? 'success' : ($error_mail ? 'warning' : 'success'), 'text' => "Status diubah menjadi '$status_baru'. $notif_msg"];
         } else {
             $_SESSION['message'] = ['type' => 'error', 'text' => 'Gagal memperbarui status database.'];
         }
@@ -188,6 +183,7 @@ if ($lamaran && !empty($lamaran['foto_profil']) && file_exists($upload_dir_foto 
     <?php if (!empty($error_message)): ?>
         <div class="message animated error"><?php echo htmlspecialchars($error_message); ?></div>
     <?php elseif ($lamaran): ?>
+        
         <div class="profile-card">
             <img src="<?php echo htmlspecialchars($foto_profil_path); ?>?t=<?php echo time(); ?>" alt="Foto Profil" class="profile-pic">
 
@@ -240,24 +236,46 @@ if ($lamaran && !empty($lamaran['foto_profil']) && file_exists($upload_dir_foto 
             <h3 style="margin-top: 2rem;">Dokumen Lamaran</h3>
             <dl class="info-grid">
                 <?php
+                // Array definisi dokumen: Label Tampilan => [Nama Kolom Database, Label Tombol]
                 $docs = [
-                    'CV' => 'dokumen_cv', 
-                    'Surat Lamaran' => 'surat_lamaran', 
-                    'Sertifikat' => 'sertifikat_pendukung', 
-                    'Ijazah' => 'ijasah'
+                    'CV' => [
+                        'col' => 'dokumen_cv', 
+                        'btn_text' => 'Dokumen CV'
+                    ],
+                    'Surat Lamaran' => [
+                        'col' => 'surat_lamaran', 
+                        'btn_text' => 'Surat Lamaran'
+                    ],
+                    'Sertifikat Pendukung' => [
+                        'col' => 'sertifikat_pendukung', 
+                        'btn_text' => 'Sertifikat Pendukung'
+                    ],
+                    'Ijazah' => [
+                        'col' => 'ijasah', 
+                        'btn_text' => 'Ijasah'
+                    ]
                 ];
-                foreach ($docs as $label => $col) {
-                    echo "<dt>$label</dt><dd>";
-                    if (!empty($lamaran[$col])) {
-                        echo "<a href='" . htmlspecialchars($upload_dir_docs . $lamaran[$col]) . "' target='_blank' class='btn-download'><i class='fas fa-file-pdf'></i> Download</a>";
+
+                foreach ($docs as $label => $data) {
+                    $colName = $data['col'];
+                    $btnLabel = $data['btn_text'];
+                    
+                    echo "<dt>" . htmlspecialchars($label) . "</dt><dd>";
+                    
+                    if (!empty($lamaran[$colName])) {
+                        // Tampilkan tombol dengan teks spesifik
+                        echo "<a href='" . htmlspecialchars($upload_dir_docs . $lamaran[$colName]) . "' target='_blank' class='btn-download'>";
+                        echo "<i class='fas fa-file-pdf'></i> Lihat/Download " . htmlspecialchars($btnLabel);
+                        echo "</a>";
                     } else {
                         echo "<span class='text-muted'>Tidak ada</span>";
                     }
+                    
                     echo "</dd>";
                 }
                 ?>
             </dl>
-        </div>
+            </div>
     <?php endif; ?>
     <br>
     <a href="pelamar.php" class="btn-batal"><i class="fas fa-arrow-left"></i> Kembali</a>

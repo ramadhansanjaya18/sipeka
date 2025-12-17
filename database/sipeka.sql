@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 11 Des 2025 pada 08.24
+-- Waktu pembuatan: 17 Des 2025 pada 18.12
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -41,8 +41,8 @@ CREATE TABLE `lamaran` (
 --
 
 INSERT INTO `lamaran` (`id_lamaran`, `id_lowongan`, `id_pelamar`, `posisi_dilamar`, `tanggal_lamaran`, `status_lamaran`) VALUES
-(91, 10, 103, 'Waitress', '2025-12-10 21:37:25', 'Diproses'),
-(92, 11, 103, 'Kitchen Staff', '2025-12-10 21:37:40', 'Ditolak');
+(91, 10, 103, 'Waitress', '2025-12-10 21:37:25', 'Wawancara'),
+(92, 11, 103, 'Kitchen Staff', '2025-12-10 21:37:40', 'Wawancara');
 
 -- --------------------------------------------------------
 
@@ -104,7 +104,13 @@ CREATE TABLE `profil_pelamar` (
 --
 
 INSERT INTO `profil_pelamar` (`id_profil`, `id_user`, `nama_lengkap`, `no_telepon`, `alamat`, `tempat_tanggal_lahir`, `riwayat_pendidikan`, `pengalaman_kerja`, `keahlian`, `ringkasan_pribadi`, `dokumen_cv`, `foto_profil`, `surat_lamaran`, `sertifikat_pendukung`, `ijasah`) VALUES
-(4, 103, 'ramadan sanjaya', '0882329732980', 'jalan', 'rumah,30 februari 2089', 'sekolah', 'gaada', 'tiduran', 'apa ya', 'CV_103_69397d6049fbe.pdf', 'FOTO_103_69397d3a522dc.png', 'SL_103_69397d8d34952.pdf', 'SERTIFIKAT_103_69397f5ecde0d.pdf', 'IJASAH_103_69397f68265e3.pdf');
+(4, 103, 'ramadan sanjaya', '0882329732980', 'jalan', 'rumah,30 februari 2089', 'sekolah', 'gaada', 'tiduran', 'apa ya', 'CV_103_69397d6049fbe.pdf', 'FOTO_103_69397d3a522dc.png', 'SL_103_69397d8d34952.pdf', 'SERTIFIKAT_103_69397f5ecde0d.pdf', 'IJASAH_103_69397f68265e3.pdf'),
+(7, 106, 'admin', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(8, 107, 'ramadhan41', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(9, 108, 'ramadhan42', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(10, 109, 'r.sanjaya4', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(11, 110, 'sarul', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(12, 111, 'anti', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -125,8 +131,14 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id_user`, `username`, `email`, `password`, `role`) VALUES
-(1, 'Ramadhan', 'hrdsyjuracoffe@gmail.com', '$2y$10$rMYdcvaVEu.keopsVRia4Os9H3Tcu0Wkwd1K2pAoaEp6F8QWKLaNu', 'hrd'),
-(103, 'ramadan', 'ramadhansanjaya18@gmail.com', '$2y$10$qn6TFsRWXZU.O.R1XyLy5O0ajCjWfAZoVOKFr...4PC1gqd3H2UUu', 'pelamar');
+(1, 'Ramadhan', 'hrdsyjuracoffe@gmail.com', '$2a$12$Z/70JBaIm2Q6Of.7Hhltju2iWRi3tJkg7e1Z8sHWZjigRe7X4Z2Re', 'hrd'),
+(103, 'ramadan', 'ramadhansanjaya18@gmail.com', '$2y$10$qn6TFsRWXZU.O.R1XyLy5O0ajCjWfAZoVOKFr...4PC1gqd3H2UUu', 'pelamar'),
+(106, 'admin', 'admin122@gmail.com', '$2y$10$Jr.Dt3/Ct5HXIGsyj1jhdOGLDi.wUw2dEJiRjOYr0i7lIzxsi30U2', 'pelamar'),
+(107, 'ramadhan41', 'adan@gmail.com', '$2y$10$rpTbu/1ScPp4BP75uoOfZ.ocHYAW/5Bnmo3h.n0XbLk99SqM.9R46', 'pelamar'),
+(108, 'ramadhan42', 'rama@gmail.com', '$2y$10$2sAnzmPYruUTRSbvhktW6OKfJl7zK.Uq4NiUAju7RschNeVexeGLi', 'pelamar'),
+(109, 'r.sanjaya4', 'adelita@gmail.com', '$2y$10$FHXc9eLbf4oddcIH.p6m6.HmY/xb9KM4p3EJKpBNK5DOUo7PgBTj.', 'pelamar'),
+(110, 'sarul', 'sarul@gmail.com', '$2y$10$EFOw/qG.RjAcEITXsH.7AOJm7JuRk4bJ9gWvp6ZlIHKdi0U5uXPu6', 'pelamar'),
+(111, 'anti', 'anti@gmail.com', '$2y$10$uUPa.7IGiOD/D8FXXIUHMOGn8iLK6vc3ia9IJLPI7Ad6SZDI6uQdK', 'pelamar');
 
 -- --------------------------------------------------------
 
@@ -142,13 +154,6 @@ CREATE TABLE `wawancara` (
   `status_wawancara` enum('Terjadwal','Selesai','Batal') NOT NULL DEFAULT 'Terjadwal',
   `catatan` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data untuk tabel `wawancara`
---
-
-INSERT INTO `wawancara` (`id_wawancara`, `id_lamaran`, `jadwal`, `lokasi`, `status_wawancara`, `catatan`) VALUES
-(16, 92, '2025-12-10 02:42:00', 'Online Via Zoom / Kantor Syjura Coffe', 'Terjadwal', 'sasas');
 
 --
 -- Indexes for dumped tables
@@ -204,25 +209,25 @@ ALTER TABLE `lamaran`
 -- AUTO_INCREMENT untuk tabel `lowongan`
 --
 ALTER TABLE `lowongan`
-  MODIFY `id_lowongan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_lowongan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT untuk tabel `profil_pelamar`
 --
 ALTER TABLE `profil_pelamar`
-  MODIFY `id_profil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_profil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
 
 --
 -- AUTO_INCREMENT untuk tabel `wawancara`
 --
 ALTER TABLE `wawancara`
-  MODIFY `id_wawancara` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_wawancara` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
