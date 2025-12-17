@@ -1,4 +1,3 @@
-// Isi file sipeka/about.php (Tidak Berubah)
 <?php
 
 include_once 'templates/header.php';

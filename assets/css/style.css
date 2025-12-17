@@ -455,11 +455,11 @@
   }
 
   #recruit_1:hover {
-    --hover-x: -40px;
+    --hover-x: -15px;
     --hover-y: -15px;
   }
   #recruit_2:hover {
-    --hover-x: 40px;
+    --hover-x: 15px;
     --hover-y: 15px;
   }
 }

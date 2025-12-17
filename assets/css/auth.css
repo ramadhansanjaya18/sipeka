@@ -295,7 +295,8 @@ fieldset {
 /* Opsional: Penyesuaian untuk layar yang sangat kecil (misalnya, lebar di bawah 480px) */
 @media (max-width: 480px) {
   .left-side img {
-    width: 80px; /* Perkecil logo sedikit */
+    width: 250px;
+    height: 250px; /* Perkecil logo sedikit */
   }
 
   .left-side h2 {
