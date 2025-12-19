@@ -40,4 +40,28 @@ function menuActive($target_pages, $current_page) {
     }
     return ($current_page == $target_pages) ? 'active' : '';
 }
+
+/**
+ * Menampilkan Flash Message khusus halaman HRD.
+ * (Disisipkan untuk menangani notifikasi HRD)
+ */
+function displayHrdMessage() {
+    if (isset($_SESSION['message'])) {
+        // Validasi tipe pesan (success, error, warning, info)
+        $allowed_types = ['success', 'error', 'warning', 'info'];
+        $type = in_array($_SESSION['message']['type'], $allowed_types) ? $_SESSION['message']['type'] : 'info';
+        $text = $_SESSION['message']['text'];
+
+        // Output HTML yang sesuai dengan selector di hrd.js (.message.animated)
+        echo '<div class="message-container">';
+        echo '    <div class="message animated ' . $type . '">';
+        echo '        <button class="close-btn">&times;</button>';
+        echo '        <p>' . htmlspecialchars($text, ENT_QUOTES, 'UTF-8') . '</p>';
+        echo '    </div>';
+        echo '</div>';
+
+        // Hapus pesan agar tidak muncul lagi saat refresh
+        unset($_SESSION['message']);
+    }
+}
 ?>

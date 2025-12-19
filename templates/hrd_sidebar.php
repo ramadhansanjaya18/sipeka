@@ -1,39 +1,49 @@
+<?php
+/**
+ * Sidebar Template HRD
+ */
+
+// Pastikan helper dimuat (untuk fungsi getCurrentPage & menuActive)
+// Menggunakan require_once agar aman jika sudah dimuat di header
+require_once __DIR__ . '/../helpers/view_helper.php';
+
+$current_page = getCurrentPage();
+?>
 <aside class="sidebar">
 
     <div class="sidebar-header">
-        <span>SYJURACOFFEE</span>
-        <small>Dashboard</small>
+        <span>SYJURA COFFEE</span>
+        <small>HRD Dashboard</small>
     </div>
 
     <nav class="sidebar-nav">
         <ul>
             <li>
-                <a href="index.php" class="<?php echo ($page == 'dashboard') ? 'active' : ''; ?>">
-                    <img width="30" height="30" src="https://img.icons8.com/ios-filled/50/laptop-metrics.png"
-                        alt="laptop-metrics" />
+                <a href="index.php" class="<?php echo menuActive('index.php', $current_page); ?>">
+                    <img width="24" height="24" src="https://img.icons8.com/ios-filled/50/laptop-metrics.png" alt="icon-dashboard" />
                     <span class="nav-text">Dashboard</span>
                 </a>
             </li>
+
             <li>
-                <a href="pelamar.php" class="<?php echo ($page == 'pelamar') ? 'active' : ''; ?>">
-                    <img width="30" height="30" src="https://img.icons8.com/ios-filled/50/manager.png" alt="manager" />
+                <a href="pelamar.php" class="<?php echo menuActive(['pelamar.php', 'detail_pelamar.php'], $current_page); ?>">
+                    <img width="24" height="24" src="https://img.icons8.com/ios-filled/50/manager.png" alt="icon-pelamar" />
                     <span class="nav-text">Pelamar</span>
                 </a>
             </li>
+
             <li>
-                <a href="lowongan.php" class="<?php echo ($page == 'lowongan') ? 'active' : ''; ?>">
-                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 50 50">
-                        <path
-                            d="M 20 3 C 18.355469 3 17 4.355469 17 6 L 17 9 L 3 9 C 1.347656 9 0 10.347656 0 12 L 0 25 C 0 26.652344 1.347656 28 3 28 L 47 28 C 48.652344 28 50 26.652344 50 25 L 50 12 C 50 10.347656 48.652344 9 47 9 L 33 9 L 33 6 C 33 4.355469 31.644531 3 30 3 Z M 20 5 L 30 5 C 30.5625 5 31 5.4375 31 6 L 31 9 L 19 9 L 19 6 C 19 5.4375 19.4375 5 20 5 Z M 25 22 C 26.105469 22 27 22.894531 27 24 C 27 25.105469 26.105469 26 25 26 C 23.894531 26 23 25.105469 23 24 C 23 22.894531 23.894531 22 25 22 Z M 0 27 L 0 44 C 0 45.652344 1.347656 47 3 47 L 47 47 C 48.652344 47 50 45.652344 50 44 L 50 27 C 50 28.652344 48.652344 30 47 30 L 3 30 C 1.347656 30 0 28.652344 0 27 Z">
-                        </path>
+                <a href="lowongan.php" class="<?php echo menuActive('lowongan.php', $current_page); ?>">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 50 50" fill="currentColor">
+                        <path d="M 20 3 C 18.355469 3 17 4.355469 17 6 L 17 9 L 3 9 C 1.347656 9 0 10.347656 0 12 L 0 25 C 0 26.652344 1.347656 28 3 28 L 47 28 C 48.652344 28 50 26.652344 50 25 L 50 12 C 50 10.347656 48.652344 9 47 9 L 33 9 L 33 6 C 33 4.355469 31.644531 3 30 3 Z M 20 5 L 30 5 C 30.5625 5 31 5.4375 31 6 L 31 9 L 19 9 L 19 6 C 19 5.4375 19.4375 5 20 5 Z M 25 22 C 26.105469 22 27 22.894531 27 24 C 27 25.105469 26.105469 26 25 26 C 23.894531 26 23 25.105469 23 24 C 23 22.894531 23.894531 22 25 22 Z M 0 27 L 0 44 C 0 45.652344 1.347656 47 3 47 L 47 47 C 48.652344 47 50 45.652344 50 44 L 50 27 C 50 28.652344 48.652344 30 47 30 L 3 30 C 1.347656 30 0 28.652344 0 27 Z"></path>
                     </svg>
                     <span class="nav-text">Lowongan</span>
                 </a>
             </li>
+
             <li>
-                <a href="wawancara.php" class="<?php echo ($page == 'wawancara') ? 'active' : ''; ?>">
-                    <img width="30" height="30" src="https://img.icons8.com/ios-filled/50/notepad-user.png"
-                        alt="notepad-user" />
+                <a href="wawancara.php" class="<?php echo menuActive(['wawancara.php', 'cetak_wawancara.php'], $current_page); ?>">
+                    <img width="24" height="24" src="https://img.icons8.com/ios-filled/50/notepad-user.png" alt="icon-wawancara" />
                     <span class="nav-text">Wawancara</span>
                 </a>
             </li>
@@ -42,8 +52,8 @@
 
     <div class="sidebar-footer">
         <a href="../logout.php">
-            <img width="30" height="30" src="https://img.icons8.com/ios-filled/50/exit.png" alt="exit" />
-            Logout
+            <img width="24" height="24" src="https://img.icons8.com/ios-filled/50/exit.png" alt="icon-logout" />
+            <span class="nav-text">Logout</span>
         </a>
     </div>
 

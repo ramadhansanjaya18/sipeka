@@ -1,8 +1,4 @@
 <?php
-/**
- * Data Statis Perusahaan.
- * Memisahkan teks panjang dari HTML agar mudah diedit.
- */
 
 $visi = "Menjadi coffee shop lokal terdepan yang memadukan cita rasa kopi Nusantara dengan konsep pelayanan modern dan berorientasi pada pengalaman pelanggan.";
 
