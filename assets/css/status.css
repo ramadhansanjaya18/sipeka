@@ -1,5 +1,5 @@
 /* ===================================================================
- * SIPEKA STATUS LAMARAN STYLESHEET (Final Fix Mobile)
+ * SIPEKA STATUS LAMARAN STYLESHEET (COMPLETE)
  * =================================================================== */
 
 :root {
@@ -45,13 +45,14 @@
   margin-bottom: 40px;
 }
 
-/* --- Timeline --- */
+/* --- Timeline Structure --- */
 .timeline-container {
   position: relative;
   max-width: 850px;
   margin: 0 auto;
 }
 
+/* Garis Vertikal Utama */
 .timeline-container::before {
   content: "";
   position: absolute;
@@ -68,32 +69,37 @@
   padding-left: 60px;
 }
 
+/* --- Timeline Icons (Nodes) with Pulse Effect --- */
 .timeline-icon {
   position: absolute;
   top: 25px;
-  left: 6px;
+  left: 6px; /* Posisi relatif terhadap garis */
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  border: 4px solid var(--cream-bg);
+  border: 4px solid var(--cream-bg); /* Gap visual dari garis */
   z-index: 1;
 }
 
-/* Status Colors */
+/* Status Colors & Animations */
 .timeline-icon.status-diproses {
   background-color: var(--text-diproses);
+  animation: pulse-blue 2s infinite;
 }
 .timeline-icon.status-wawancara {
   background-color: var(--text-wawancara);
+  animation: pulse-orange 2s infinite;
 }
 .timeline-icon.status-diterima {
   background-color: var(--text-diterima);
+  animation: pulse-green 2s infinite;
 }
 .timeline-icon.status-ditolak {
   background-color: var(--text-ditolak);
+  animation: pulse-red 2s infinite;
 }
 
-/* Card Content */
+/* --- Timeline Card Content --- */
 .timeline-content {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
@@ -139,6 +145,7 @@
   gap: 15px;
 }
 
+/* Status Badges */
 .status-badge {
   padding: 5px 12px;
   border-radius: 6px;
@@ -187,31 +194,159 @@
   background-color: #4a332a;
 }
 
-/* --- MODAL STYLES (Fixed Z-Index & Layout) --- */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 99999; /* Paling Depan */
-  justify-content: center;
-  align-items: center;
-  padding: 20px; /* Jarak aman di HP */
-}
+/* ===================================================================
+ * EMPTY STATE: MODERN PULSE START NODE (Belum Ada Lamaran)
+ * =================================================================== */
+.no-applications {
+  position: relative;
+  margin-left: 60px; /* Sejajar dengan timeline item */
+  margin-right: 10px;
+  margin-top: 30px;
+  margin-bottom: 30px;
 
-.modal-card {
-  background: var(--modal-bg);
-  width: 100%;
-  max-width: 800px; /* Lebar Maksimal Desktop */
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  /* Modern Card Design */
+  background: #ffffff;
+  padding: 35px 30px;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+
   display: flex;
   flex-direction: column;
-  max-height: 90vh; /* Agar tidak melebihi tinggi layar HP */
-  animation: slideDown 0.3s ease;
+  align-items: flex-start;
+  animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Start Node (Titik Awal) */
+.no-applications::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 40px;
+  left: -53px; /* Posisi di tengah garis timeline */
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: var(--btn-brown);
+  border: 4px solid var(--cream-bg);
+  box-shadow: 0 0 0 2px var(--btn-brown);
+  z-index: 2;
+  animation: pulse-brown 2s infinite;
+}
+
+/* Konektor Kecil */
+.no-applications::after {
+  content: "";
+  position: absolute;
+  top: 49px;
+  left: -25px;
+  width: 25px;
+  height: 1px;
+  background-color: var(--border-color);
+  z-index: 1;
+}
+
+.no-applications p {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  margin: 0 0 25px 0;
+  line-height: 1.6;
+}
+
+.no-applications .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--btn-brown);
+  color: #fff;
+  padding: 12px 32px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 10px rgba(93, 64, 55, 0.2);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.no-applications .btn:hover {
+  background-color: #4a332a;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(93, 64, 55, 0.3);
+}
+
+/* ===================================================================
+ * KEYFRAMES ANIMATION (PULSE & FADE)
+ * =================================================================== */
+
+@keyframes pulse-brown {
+  0% {
+    box-shadow: 0 0 0 0 rgba(93, 64, 55, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(93, 64, 55, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(93, 64, 55, 0);
+  }
+}
+
+@keyframes pulse-blue {
+  0% {
+    box-shadow: 0 0 0 0 rgba(54, 96, 145, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(54, 96, 145, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(54, 96, 145, 0);
+  }
+}
+
+@keyframes pulse-orange {
+  0% {
+    box-shadow: 0 0 0 0 rgba(245, 127, 23, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(245, 127, 23, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(245, 127, 23, 0);
+  }
+}
+
+@keyframes pulse-green {
+  0% {
+    box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(46, 125, 50, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(46, 125, 50, 0);
+  }
+}
+
+@keyframes pulse-red {
+  0% {
+    box-shadow: 0 0 0 0 rgba(198, 40, 40, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(198, 40, 40, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(198, 40, 40, 0);
+  }
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes slideDown {
@@ -223,6 +358,35 @@
     transform: translateY(0);
     opacity: 1;
   }
+}
+
+/* ===================================================================
+ * MODAL STYLES (Fixed Z-Index & Layout)
+ * =================================================================== */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99999;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.modal-card {
+  background: var(--modal-bg);
+  width: 100%;
+  max-width: 800px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  animation: slideDown 0.3s ease;
 }
 
 .modal-header {
@@ -243,15 +407,14 @@
   color: #999;
 }
 
-/* Body Modal dengan Scroll jika konten panjang */
 .modal-body {
   padding: 20px;
-  overflow-y: auto; /* Scroll vertikal aktif di HP */
+  overflow-y: auto;
 }
 
 .modal-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Default: 2 Kolom */
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 
@@ -276,6 +439,11 @@
   color: #555;
 }
 
+.modal-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
 .modal-footer {
   padding: 15px 20px;
   border-top: 1px solid #eee;
@@ -292,69 +460,78 @@
 }
 
 /* =================================================================
-   🔥 MOBILE RESPONSIVE (MODAL & TIMELINE) 🔥
+   🔥 MOBILE RESPONSIVE 🔥
    ================================================================= */
 @media (max-width: 768px) {
-  /* 1. Reset Padding Page */
+  /* 1. Page Padding */
   .status-container {
     padding: 20px 15px;
   }
-
   .status-container h1 {
     font-size: 1.8rem;
   }
 
-  /* 2. Timeline Item Stack */
+  /* 2. Timeline Stack */
   .timeline-header {
     flex-direction: column;
     align-items: flex-start;
   }
-
   .application-date {
     font-size: 0.8rem;
     margin-top: 5px;
   }
 
-  /* 3. Footer Stack (Badge & Tombol) */
+  /* 3. Footer Stack */
   .timeline-footer {
     flex-direction: column;
     align-items: flex-start;
     gap: 15px;
   }
-
   .footer-left {
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
     gap: 10px;
   }
-
   .footer-right {
     width: 100%;
   }
-
   .btn-jadwal {
-    width: 100%; /* Tombol Full Width */
+    width: 100%;
     text-align: center;
   }
 
-  /* 4. MODAL RESPONSIF (KUNCI PERBAIKAN) */
+  /* 4. Modal Responsive */
   .modal-card {
-    max-height: 85vh; /* Sedikit lebih pendek agar muat */
+    max-height: 85vh;
   }
-
   .modal-grid {
-    grid-template-columns: 1fr; /* Ubah jadi 1 Kolom Vertikal */
+    grid-template-columns: 1fr;
     gap: 10px;
   }
-
   .modal-body {
     padding: 15px;
   }
-
-  /* Input di HP lebih besar sedikit agar mudah ditap */
   .modal-input {
     padding: 12px;
     font-size: 1rem;
+  }
+
+  /* 5. Empty State Responsive */
+  .no-applications {
+    margin-left: 50px;
+    padding: 25px 20px;
+  }
+  .no-applications::before {
+    left: -46px; /* Adjust Node */
+    top: 35px;
+  }
+  .no-applications::after {
+    top: 44px;
+    left: -20px;
+    width: 20px;
+  }
+  .no-applications .btn {
+    width: 100%;
   }
 }

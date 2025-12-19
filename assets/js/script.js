@@ -1,12 +1,19 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const hamburgerMenu = document.querySelector('.hamburger-menu');
-    const mainNav = document.querySelector('.main-nav');
-    const body = document.querySelector('body');
+/**
+ * Main Script SIPEKA
+ * Menangani interaksi global seperti navigasi mobile.
+ */
 
-    if (hamburgerMenu && mainNav) {
-        hamburgerMenu.addEventListener('click', function () {
-            mainNav.classList.toggle('mobile-menu-open');
-            body.classList.toggle('mobile-menu-open');
-        });
-    }
+document.addEventListener("DOMContentLoaded", function () {
+  // Logika Hamburger Menu
+  const hamburger = document.getElementById("hamburgerMenu");
+  const nav = document.getElementById("mainNav");
+
+  if (hamburger && nav) {
+    hamburger.addEventListener("click", function () {
+      // Toggle class untuk animasi icon
+      this.classList.toggle("active");
+      // Toggle class untuk menampilkan menu
+      nav.classList.toggle("open");
+    });
+  }
 });
