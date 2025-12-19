@@ -160,13 +160,5 @@ $result = $koneksi->query($query);
         <p><?php echo htmlspecialchars($nama_hrd); ?></p>
     </div>
 
-    <script>
-        // Otomatis memunculkan dialog print saat halaman selesai dimuat
-        window.onload = function() { 
-            setTimeout(function() {
-                window.print();
-            }, 500); 
-        }
-    </script>
 </body>
 </html>
