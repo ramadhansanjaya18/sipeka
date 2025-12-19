@@ -12,7 +12,7 @@ include_once 'templates/header.php';
         <div class="top-contain">
             <img src="./assets/img/beranda/beans-left.png" alt="icont-kopi-kiri">
             <h1>SYJURA COFFEE</h1>
-            <img src="./assets/img/beranda/beans -right.png" alt="icont-kopi-kanan">
+            <img src="./assets/img/beranda/beans-right.png" alt="icont-kopi-kanan">
         </div>
         <div class="container-visi-misi">
             <div class="container-left">
