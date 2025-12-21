@@ -1,7 +1,4 @@
 <?php
-/**
- * Halaman Cetak Laporan
- */
 require '../config/init.php';
 require '../config/auth_hrd.php';
 require_once '../logic/hrd_cetak_logic.php';

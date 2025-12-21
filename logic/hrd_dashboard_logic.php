@@ -1,38 +1,26 @@
 <?php
-/**
- * Logika Dashboard HRD
- * Menghitung statistik dan menyiapkan data untuk grafik.
- */
 
-// Pastikan koneksi tersedia
 if (!isset($koneksi)) {
     die("Koneksi database tidak tersedia.");
 }
 
-// Inisialisasi variabel statistik
 $total_pelamar = 0;
 $lowongan_aktif = 0;
 $wawancara_terjadwal = 0;
 $pelamar_baru_hari_ini = 0;
 
-// 1. Hitung Total Pelamar (Unik)
 $result1 = $koneksi->query("SELECT COUNT(DISTINCT id_pelamar) AS total FROM lamaran");
 if ($result1) $total_pelamar = $result1->fetch_assoc()['total'];
 
-// 2. Hitung Lowongan Aktif
 $result2 = $koneksi->query("SELECT COUNT(id_lowongan) AS total FROM lowongan WHERE CURDATE() >= tanggal_buka AND CURDATE() <= tanggal_tutup");
 if ($result2) $lowongan_aktif = $result2->fetch_assoc()['total'];
 
-// 3. Hitung Wawancara Terjadwal
 $result3 = $koneksi->query("SELECT COUNT(id_wawancara) AS total FROM wawancara WHERE status_wawancara = 'Terjadwal'");
 if ($result3) $wawancara_terjadwal = $result3->fetch_assoc()['total'];
 
-// 4. Hitung Lamaran Hari Ini
 $result4 = $koneksi->query("SELECT COUNT(id_lamaran) AS total FROM lamaran WHERE DATE(tanggal_lamaran) = CURDATE()");
 if ($result4) $pelamar_baru_hari_ini = $result4->fetch_assoc()['total'];
 
-
-// --- BAR CHART DATA (Pelamar per Lowongan) ---
 $query_bar = "SELECT COALESCE(posisi_dilamar, 'Lainnya') AS posisi, COUNT(id_lamaran) AS jumlah 
               FROM lamaran GROUP BY posisi ORDER BY jumlah DESC";
 $result_bar = $koneksi->query($query_bar);
@@ -48,8 +36,6 @@ if ($result_bar) {
 $json_bar_labels = json_encode($bar_labels);
 $json_bar_data   = json_encode($bar_data);
 
-
-// --- PIE CHART DATA (Status Lamaran) ---
 $query_pie = "SELECT status_lamaran, COUNT(id_lamaran) AS jumlah 
               FROM lamaran 
               WHERE status_lamaran IN ('Diproses', 'Diterima', 'Ditolak', 'Wawancara') 

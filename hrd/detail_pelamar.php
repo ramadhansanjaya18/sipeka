@@ -1,14 +1,7 @@
 <?php
-/**
- * View: Detail Pelamar
- */
-ob_start(); // Buffer untuk header redirect aman
+ob_start(); 
 $page = 'pelamar';
-
-// 1. Header
 include '../templates/hrd_header.php';
-
-// 2. Logic
 require_once '../logic/hrd_detail_pelamar_logic.php';
 ?>
 

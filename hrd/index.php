@@ -1,12 +1,5 @@
 <?php
-/**
- * Halaman Dashboard HRD (View)
- */
-
-// 1. Panggil Header (sudah include init & auth_hrd)
 include '../templates/hrd_header.php';
-
-// 2. Panggil Logic Dashboard
 require_once '../logic/hrd_dashboard_logic.php';
 ?>
 

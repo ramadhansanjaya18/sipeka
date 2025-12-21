@@ -1,9 +1,6 @@
 <?php
-/**
- * Halaman Tentang Kami (View)
- */
 require_once 'templates/header.php';
-require_once 'data/company_data.php'; // Memuat data teks Visi, Misi, Jam Operasional
+require_once 'data/company_data.php';
 ?>
 
 <section class="section-1">

@@ -1,22 +1,15 @@
 $(document).ready(function () {
-  // Ambil elemen data tersembunyi
   const chartDataEl = document.getElementById("dashboardChartData");
-
   if (chartDataEl) {
-    // --- 1. Bar Chart (Chart.js) ---
     if ($("#chartPelamarPerLowongan").length) {
       const barLabels = JSON.parse(chartDataEl.dataset.barLabels);
       const barData = JSON.parse(chartDataEl.dataset.barData);
-
-      // Ambil CSS Variables
       const style = getComputedStyle(document.documentElement);
       const barColor = style.getPropertyValue("--side-bg") || "#6A4E3B";
       const barBorder = style.getPropertyValue("--dark-brown") || "#4A3B32";
-
       const ctxBar = document
         .getElementById("chartPelamarPerLowongan")
         .getContext("2d");
-
       new Chart(ctxBar, {
         type: "bar",
         data: {
@@ -46,7 +39,6 @@ $(document).ready(function () {
       });
     }
 
-    // --- 2. Pie Chart (CanvasJS) ---
     if ($("#pieChartContainer").length) {
       const pieData = JSON.parse(chartDataEl.dataset.pieData);
       const textColor =

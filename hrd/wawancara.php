@@ -1,9 +1,6 @@
 <?php
-/**
- * View: Manajemen Wawancara
- */
 $page = 'wawancara';
-include '../templates/hrd_header.php'; // Header memuat CSS asli + Auth + Helper
+include '../templates/hrd_header.php';
 require_once '../logic/hrd_wawancara_logic.php';
 ?>
 

@@ -1,9 +1,6 @@
 <?php
-/**
- * Halaman Kontak
- */
 require_once 'templates/header.php';
-require_once 'logic/contact_process.php'; // Memuat logika pengiriman email
+require_once 'logic/contact_process.php'; 
 ?>
 
 <section class="contact-section">
@@ -59,7 +56,7 @@ require_once 'logic/contact_process.php'; // Memuat logika pengiriman email
 </section>
 
 <?php
-// Inject Script JS khusus contact
+
 $extra_js = 'assets/js/contact.js';
 require_once 'templates/footer.php';
 ?>

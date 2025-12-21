@@ -1,12 +1,5 @@
 <?php
-/**
- * Logika Halaman Status Lamaran
- * Mengambil riwayat lamaran dan jadwal wawancara pelamar yang sedang login.
- */
-
-// Pastikan koneksi dan session tersedia
-if (!isset($koneksi) || !isset($_SESSION['id_user'])) {
-    // Jika file ini diakses langsung tanpa melalui index/header
+if (!isset($koneksi) || !isset($_SESSION['id_user'])) {   
     header("Location: ../login.php");
     exit;
 }
@@ -14,7 +7,7 @@ if (!isset($koneksi) || !isset($_SESSION['id_user'])) {
 $id_pelamar = $_SESSION['id_user'];
 $nama_pelamar = $_SESSION['nama_lengkap'] ?? 'Pelamar'; 
 
-// Query untuk mengambil data lamaran beserta detail lowongan dan jadwal wawancara (jika ada)
+
 $query = "SELECT 
             l.judul AS judul_lowongan,
             l.posisi_lowongan,
@@ -35,10 +28,8 @@ $stmt = $koneksi->prepare($query);
 if ($stmt) {
     $stmt->bind_param("i", $id_pelamar);
     $stmt->execute();
-    $result_lamaran = $stmt->get_result();
-    // $stmt->close(); // Close nanti setelah loop di view selesai
+    $result_lamaran = $stmt->get_result();   
 } else {
-    // Penanganan error jika query gagal prepare
     $result_lamaran = null;
     error_log("Query Error di status_lamaran_logic.php: " . $koneksi->error);
 }

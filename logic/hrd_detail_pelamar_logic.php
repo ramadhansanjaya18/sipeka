@@ -1,8 +1,4 @@
 <?php
-/**
- * Logic: Detail Pelamar
- */
-
 require_once __DIR__ . '/../helpers/mail_helper.php';
 
 $lamaran = null;
@@ -11,7 +7,7 @@ $upload_dir_foto = '../uploads/foto_profil/';
 $upload_dir_docs = '../uploads/dokumen/';
 $placeholder_foto = '../assets/img/placeholder-profile.jpg';
 
-// --- A. PROSES UPDATE STATUS (POST) ---
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
     $id_upd = filter_var($_POST['id_lamaran'], FILTER_VALIDATE_INT);
     $status = $_POST['status'];
@@ -23,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
         if ($stmt->execute()) {
             $msg_email = "";
             if ($status == 'Diterima' || $status == 'Ditolak') {
-                // Ambil data untuk email
+                
                 $q = "SELECT u.email, pp.nama_lengkap, l.posisi_dilamar 
                       FROM lamaran l JOIN user u ON l.id_pelamar = u.id_user 
                       LEFT JOIN profil_pelamar pp ON u.id_user = pp.id_user 
@@ -48,11 +44,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
     exit();
 }
 
-// --- B. AMBIL DATA DETAIL (GET) ---
+
 if (isset($_GET['id_lamaran']) && !empty($_GET['id_lamaran'])) {
     $id = (int) $_GET['id_lamaran'];
     
-    // Query Detail Lengkap
+    
     $sql = "SELECT l.id_lamaran, l.status_lamaran, l.posisi_dilamar,
                    pp.nama_lengkap, pp.no_telepon, pp.alamat, pp.tempat_tanggal_lahir,
                    pp.riwayat_pendidikan, pp.pengalaman_kerja, pp.keahlian, pp.foto_profil,
@@ -70,7 +66,7 @@ if (isset($_GET['id_lamaran']) && !empty($_GET['id_lamaran'])) {
     
     if ($res->num_rows == 1) {
         $lamaran = $res->fetch_assoc();
-        // Cek foto
+        
         $foto_path = (!empty($lamaran['foto_profil']) && file_exists($upload_dir_foto.$lamaran['foto_profil'])) 
                      ? $upload_dir_foto.$lamaran['foto_profil'] 
                      : $placeholder_foto;

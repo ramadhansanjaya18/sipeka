@@ -1,10 +1,4 @@
 <?php
-/**
- * Sidebar Template HRD
- */
-
-// Pastikan helper dimuat (untuk fungsi getCurrentPage & menuActive)
-// Menggunakan require_once agar aman jika sudah dimuat di header
 require_once __DIR__ . '/../helpers/view_helper.php';
 
 $current_page = getCurrentPage();

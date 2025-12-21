@@ -1,10 +1,7 @@
 <?php
-/**
- * Halaman Beranda (View)
- */
 require_once 'templates/header.php';
-require_once 'helpers/job_helper.php'; // Memuat fungsi ikon
-require_once 'logic/index_data.php';   // Memuat query database
+require_once 'helpers/job_helper.php'; 
+require_once 'logic/index_data.php';   
 ?>
 
 <div class="hero-section">
@@ -82,6 +79,5 @@ require_once 'logic/index_data.php';   // Memuat query database
 
 <?php
 require_once 'templates/footer.php';
-// Tutup koneksi di sini atau biarkan ditangani oleh script PHP (otomatis close)
 if (isset($koneksi)) $koneksi->close();
 ?>

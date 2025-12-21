@@ -1,12 +1,6 @@
 <?php
-/**
- * View: Manajemen Pelamar
- */
 $page = 'pelamar';
-// 1. Header (Include Init & Auth)
 include '../templates/hrd_header.php';
-
-// 2. Logic (Include Helper Email di dalamnya)
 require_once '../logic/hrd_pelamar_logic.php';
 ?>
 

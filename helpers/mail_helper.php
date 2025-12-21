@@ -1,13 +1,6 @@
 <?php
-/**
- * Helper untuk Pengiriman Email (PHPMailer)
- * Digunakan oleh modul HRD (Pelamar & Wawancara).
- * Update: Desain Email Modern (Clean & Professional)
- */
-
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
 require_once __DIR__ . '/../config/mail_config.php';
 require_once __DIR__ . '/../PHPMailer/Exception.php';
 require_once __DIR__ . '/../PHPMailer/PHPMailer.php';
@@ -22,7 +15,6 @@ function getMailerInstance() {
     $mail->Password   = SMTP_PASS;
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
     $mail->Port       = 465;
-    
     $mail->SMTPOptions = array(
         'ssl' => array(
             'verify_peer'       => false,
@@ -39,7 +31,6 @@ function getMailerInstance() {
     return $mail;
 }
 
-// Fungsi Template Dasar (Modern Clean Style)
 function wrapEmailTemplate($title, $content, $accentColor = '#6F4E37') {
     $year = date('Y');
     
@@ -149,17 +140,15 @@ function wrapEmailTemplate($title, $content, $accentColor = '#6F4E37') {
     </html>";
 }
 
-// 1. Notifikasi Status (Diterima / Ditolak)
+
 if (!function_exists('kirimNotifikasiEmailPelamar')) {
     function kirimNotifikasiEmailPelamar($email_tujuan, $nama_pelamar, $status, $posisi, &$pesan_error) {
         try {
             $mail = getMailerInstance();
             $mail->addAddress($email_tujuan, $nama_pelamar);
-
             if ($status == 'Diterima') {
                 $mail->Subject = "Selamat! Anda Diterima - Posisi $posisi";
-                $accentColor = "#2E7D32"; // Hijau Tua Elegan
-                
+                $accentColor = "#2E7D32";
                 $body = "
                 <p>Halo, <strong>$nama_pelamar</strong>.</p>
                 
@@ -204,7 +193,6 @@ if (!function_exists('kirimNotifikasiEmailPelamar')) {
             } else {
                 return true; 
             }
-            
             $mail->send();
             return true;
         } catch (Exception $e) {
@@ -214,7 +202,6 @@ if (!function_exists('kirimNotifikasiEmailPelamar')) {
     }
 }
 
-// 2. Undangan Wawancara
 if (!function_exists('kirimEmailUndanganWawancara')) {
     function kirimEmailUndanganWawancara($email, $nama, $posisi, $jadwal_info) {
         try {
@@ -223,7 +210,7 @@ if (!function_exists('kirimEmailUndanganWawancara')) {
             $mail->Subject = "Undangan Wawancara - Posisi $posisi";
 
             $tgl = $jadwal_info['tanggal_indo'];
-            $accentColor = "#6F4E37"; // Cokelat Brand
+            $accentColor = "#6F4E37"; 
             
             $body = "
             <p>Halo, <strong>$nama</strong>.</p>
@@ -264,7 +251,6 @@ if (!function_exists('kirimEmailUndanganWawancara')) {
     }
 }
 
-// 3. Reschedule Wawancara
 if (!function_exists('kirimEmailRescheduleWawancara')) {
     function kirimEmailRescheduleWawancara($email, $nama, $posisi, $jadwal_info) {
         try {
@@ -273,7 +259,7 @@ if (!function_exists('kirimEmailRescheduleWawancara')) {
             $mail->Subject = "UPDATE JADWAL: Wawancara Posisi $posisi";
 
             $tgl = $jadwal_info['tanggal_indo'];
-            $accentColor = "#D84315"; // Merah Bata (Alert tapi profesional)
+            $accentColor = "#D84315";
 
             $body = "
             <p>Halo, <strong>$nama</strong>.</p>

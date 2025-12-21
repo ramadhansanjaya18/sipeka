@@ -1,15 +1,10 @@
 <?php
-/**
- * Logic: Manajemen Wawancara (HRD)
- */
 
 require_once __DIR__ . '/../helpers/mail_helper.php';
 if (!isset($koneksi)) require_once __DIR__ . '/../config/koneksi.php';
 
-// --- CREATE & UPDATE & DELETE ---
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {   
     
-    // 1. CREATE
     if ($_POST['action'] == 'create') {
         $id_lamaran = $_POST['id_lamaran'];
         $lokasi     = $_POST['lokasi'];
@@ -23,30 +18,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         } else {
             $jadwal = "$tanggal $jam";
             $koneksi->begin_transaction();
-            try {
-                // Cek Duplikat
+            try {        
                 $cek = $koneksi->query("SELECT id_wawancara FROM wawancara WHERE id_lamaran = $id_lamaran");
                 if ($cek->num_rows > 0) throw new Exception("Pelamar ini sudah punya jadwal.");
-
-                // Data untuk Email (JOIN profil_pelamar)
+                
                 $q_user = "SELECT u.email, pp.nama_lengkap, l.posisi_dilamar 
                            FROM lamaran l 
                            JOIN user u ON l.id_pelamar = u.id_user 
                            JOIN profil_pelamar pp ON u.id_user = pp.id_user 
                            WHERE l.id_lamaran = $id_lamaran";
                 $d_user = $koneksi->query($q_user)->fetch_assoc();
-
-                // Insert
+                
                 $stmt = $koneksi->prepare("INSERT INTO wawancara (id_lamaran, jadwal, lokasi, status_wawancara, catatan) VALUES (?, ?, ?, ?, ?)");
                 $stmt->bind_param("issss", $id_lamaran, $jadwal, $lokasi, $status, $catatan);
                 $stmt->execute();
                 $stmt->close();
-
-                // Update Lamaran
+                
                 $koneksi->query("UPDATE lamaran SET status_lamaran = 'Wawancara' WHERE id_lamaran = $id_lamaran");
                 $koneksi->commit();
-
-                // Kirim Email
+             
                 $info = ['tanggal_indo' => date('d F Y', strtotime($tanggal)), 'jam' => $jam, 'lokasi' => $lokasi, 'catatan' => $catatan];
                 $sent = kirimEmailUndanganWawancara($d_user['email'], $d_user['nama_lengkap'], $d_user['posisi_dilamar'], $info);
                 
@@ -58,8 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             }
         }
     }
-
-    // 2. UPDATE
+ 
     if ($_POST['action'] == 'update') {
         $id_wawancara = $_POST['id_wawancara'];
         $lokasi       = $_POST['lokasi'];
@@ -68,8 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $tanggal      = $_POST['tanggal'];
         $jam          = $_POST['jam'];
         $jadwal_baru  = "$tanggal $jam";
-
-        // Ambil Data Lama
+  
         $q_old = "SELECT w.jadwal, w.lokasi, u.email, pp.nama_lengkap, l.posisi_dilamar 
                   FROM wawancara w 
                   JOIN lamaran l ON w.id_lamaran = l.id_lamaran 
@@ -82,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $stmt->bind_param("ssssi", $jadwal_baru, $lokasi, $status, $catatan, $id_wawancara);
         
         if ($stmt->execute()) {
-            // Cek Reschedule
+            
             if ((strtotime($old['jadwal']) !== strtotime($jadwal_baru)) || ($old['lokasi'] !== $lokasi)) {
                 $info = ['tanggal_indo' => date('d F Y', strtotime($tanggal)), 'jam' => $jam, 'lokasi' => $lokasi, 'catatan' => $catatan];
                 kirimEmailRescheduleWawancara($old['email'], $old['nama_lengkap'], $old['posisi_dilamar'], $info);
@@ -91,8 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         }
         $stmt->close();
     }
-
-    // 3. DELETE
+ 
     if ($_POST['action'] == 'delete') {
         $id = $_POST['id_wawancara'];
         $id_lam = $koneksi->query("SELECT id_lamaran FROM wawancara WHERE id_wawancara = $id")->fetch_assoc()['id_lamaran'];
@@ -107,7 +94,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
     exit();
 }
 
-// --- READ DATA ---
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 $query = "SELECT w.id_wawancara, w.id_lamaran, pp.nama_lengkap, l.posisi_dilamar,
             DATE_FORMAT(w.jadwal, '%d-%m-%Y') AS tanggal_formatted, 
@@ -131,8 +117,6 @@ if (!empty($search)) {
     $result = $koneksi->query($query . " ORDER BY w.jadwal ASC");
 }
 
-// Dropdown Pelamar (JOIN profil_pelamar)
-// UPDATE: Hanya menampilkan status 'Wawancara' yang belum memiliki jadwal
 $q_list = "SELECT l.id_lamaran, pp.nama_lengkap, l.posisi_dilamar 
            FROM lamaran l 
            JOIN user u ON l.id_pelamar = u.id_user 

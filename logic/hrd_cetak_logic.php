@@ -1,17 +1,14 @@
 <?php
-/**
- * Logic: Cetak Laporan Wawancara
- */
 
 if (!isset($koneksi)) require_once __DIR__ . '/../config/koneksi.php';
 
-// 1. Ambil Nama HRD
+
 $id_user = $_SESSION['id_user'] ?? 0;
 $nama_hrd = "HRD Manager";
 $res_hrd = $koneksi->query("SELECT username FROM user WHERE id_user = $id_user");
 if ($res_hrd->num_rows > 0) $nama_hrd = $res_hrd->fetch_assoc()['username'];
 
-// 2. Filter Data
+
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 $status_label = !empty($search) ? "Pencarian: \"$search\"" : "Semua Data";
 

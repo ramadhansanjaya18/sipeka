@@ -1,13 +1,8 @@
 <?php
-/**
- * Footer Template
- * Menutup struktur HTML utama dan memuat script.
- */
-
-// Pastikan helper tersedia (untuk menuActive)
 require_once __DIR__ . '/../helpers/view_helper.php';
 $current_page = getCurrentPage();
 ?>
+
     </main> <footer class="main-footer">
         <div class="wrapper-left">
             <div class="top-footer">

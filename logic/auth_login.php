@@ -1,7 +1,4 @@
 <?php
-/**
- * Logika Autentikasi Login Pelamar
- */
 if (isset($_SESSION['id_user'])) {
     if ($_SESSION['role'] == 'hrd') {
         header("Location: hrd/index.php");
@@ -26,8 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (empty($email) || empty($password)) {
         $error_message = "Email dan Password wajib diisi!";
-    } else {
-        // Ambil data login dari tabel user (menggunakan username, bukan nama_lengkap)
+    } else {    
         $stmt = $koneksi->prepare("SELECT id_user, username, password, role FROM user WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -40,10 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['id_user'] = $user['id_user'];
                 $_SESSION['username'] = $user['username']; 
                 $_SESSION['email'] = $email;
-                $_SESSION['role'] = $user['role'];
-                
-                // Ambil Nama Lengkap dari tabel profil_pelamar untuk tampilan UI
-                // Jika role bukan HRD (atau jika HRD juga punya profil di profil_pelamar)
+                $_SESSION['role'] = $user['role'];         
                 $stmt_profil = $koneksi->prepare("SELECT nama_lengkap FROM profil_pelamar WHERE id_user = ?");
                 $stmt_profil->bind_param("i", $user['id_user']);
                 $stmt_profil->execute();
@@ -52,7 +45,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $profil = $res_profil->fetch_assoc();
                     $_SESSION['nama_lengkap'] = $profil['nama_lengkap'];
                 } else {
-                    // Fallback jika belum ada profil (misal HRD lama), pakai username
                     $_SESSION['nama_lengkap'] = $user['username'];
                 }
                 $stmt_profil->close();

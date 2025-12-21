@@ -1,10 +1,7 @@
 <?php
-/**
- * Halaman Status Lamaran (View)
- */
 require_once 'templates/header.php';
-require_once 'config/auth_pelamar.php'; // Memastikan hanya pelamar yang bisa akses
-require_once 'logic/status_lamaran_logic.php'; // Memuat data $result_lamaran
+require_once 'config/auth_pelamar.php'; 
+require_once 'logic/status_lamaran_logic.php'; 
 ?>
 
 <link rel="stylesheet" href="assets/css/status.css?v=<?php echo time(); ?>">
@@ -23,14 +20,14 @@ require_once 'logic/status_lamaran_logic.php'; // Memuat data $result_lamaran
     <div class="timeline-container">
         <?php if ($result_lamaran && $result_lamaran->num_rows > 0): ?>
             <?php while ($lamaran = $result_lamaran->fetch_assoc()):
-                // Logic Presentasi Sederhana
+                
                 $status_clean = strtolower(str_replace(' ', '-', $lamaran['status_lamaran']));
                 $status_class = 'status-' . $status_clean;
                 
-                // Format Tanggal
+                
                 $tgl_lamar = date('d M Y, H:i', strtotime($lamaran['tanggal_lamaran']));
 
-                // Data untuk Modal JS
+                
                 $jadwal_db = $lamaran['jadwal'];
                 $belum_dijadwalkan = empty($jadwal_db);
 
@@ -148,12 +145,12 @@ require_once 'logic/status_lamaran_logic.php'; // Memuat data $result_lamaran
 </div>
 
 <?php
-// Tutup statement jika ada
+
 if (isset($stmt) && $stmt) $stmt->close();
 
-// Inject Script JS khusus
+
 $extra_js = 'assets/js/status_lamaran.js';
 require_once 'templates/footer.php';
-// Tutup koneksi via footer/init atau manual di sini jika diperlukan
+
 if (isset($koneksi)) $koneksi->close();
 ?>

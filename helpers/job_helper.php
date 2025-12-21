@@ -1,13 +1,7 @@
 <?php
-/**
- * Helper khusus untuk logika yang berkaitan dengan Lowongan/Pekerjaan.
- */
-
 function getJobIcon($posisi) {
     $posisi_lower = strtolower($posisi);
     $base_path = 'assets/img/beranda/';
-    
-    // Mapping kata kunci ke nama file gambar
     $icon_map = [
         'barista' => 'icon_barista.png',
         'waiter' => 'icon_waiter.png',

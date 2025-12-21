@@ -10,7 +10,6 @@
   --font-secondary: "Lora";
 }
 
-/* --- HERO SECTION --- */
 .hero-section {
   height: 500px;
   width: 100%;
@@ -45,7 +44,6 @@
   vertical-align: middle;
   text-align: center;
   background-color: var(--button-hero);
-  /* Tambahkan flex untuk perataan vertikal yang lebih baik */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -55,7 +53,6 @@
   background-color: #e9dfd2;
 }
 
-/* --- TENTANG SYJURA (top-contain & contain-syjura) --- */
 .top-contain {
   display: flex;
   justify-content: space-between;
@@ -87,7 +84,7 @@
 
 .container-right {
   padding: 50px;
-  width: 50%; /* Tambahkan width untuk desktop */
+  width: 50%;
 }
 
 .contain-syjura .container-right h1 {
@@ -97,6 +94,7 @@
   margin-bottom: 10px;
   font-weight: bold;
 }
+
 .contain-syjura .container-right p {
   font-size: 1.1rem;
   color: var(--dark-brown);
@@ -104,6 +102,7 @@
   font-weight: bold;
   margin-bottom: 20px;
 }
+
 .button-lamar-sekarang {
   display: flex;
   justify-content: center;
@@ -124,7 +123,6 @@
   font-weight: bold;
 }
 
-/* --- LOWONGAN TERBARU (new_job_container) --- */
 .new_job_container {
   padding: 50px 20px;
   background-color: var(--cream-bg);
@@ -135,24 +133,25 @@
   font-weight: bold;
   color: var(--dark-brown);
   margin-bottom: 30px;
-  text-align: center; /* Tambahkan text-align: center untuk konsistensi */
+  text-align: center;
 }
 
 .container_job {
   display: flex;
-  justify-content: center; /* Gunakan center agar kartu tetap di tengah */
+  justify-content: center;
   flex-wrap: wrap;
-  gap: 20px; /* Tambahkan gap antar kartu */
+  gap: 20px;
 }
+
 .card_job_new {
   padding: 30px;
   border-radius: 3px;
   display: flex;
   height: 320px;
-  max-width: 380px; /* Gunakan max-width agar lebih fleksibel */
+  max-width: 380px;
   background-color: var(--color-white);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Tambahkan shadow ringan */
-  flex-grow: 1; /* Biarkan kartu mengisi ruang yang tersedia */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex-grow: 1;
 }
 
 .contain_job {
@@ -174,9 +173,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: black; /* Ganti dari black ke dark-brown */
-  width: 100%; /* Ubah menjadi 100% untuk mengisi ruang */
-  max-width: 220px; /* Batasi max-width jika terlalu lebar */
+  background-color: black;
+  width: 100%;
+  max-width: 220px;
   height: 40px;
   border-radius: 5px;
   margin-top: auto;
@@ -190,10 +189,10 @@
   color: var(--color-white);
 }
 
-/* --- RECRUITMENT STEPS (container_recruitmen) --- */
 .container_recruitmen {
   display: flex;
 }
+
 .left_recruitmen {
   padding: 30px 70px 30px 130px;
   width: 50%;
@@ -211,19 +210,19 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  list-style: none; /* Hilangkan numbering bawaan karena sudah ada di teks */
+  list-style: none;
 }
 
 .recruitment-items {
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* Ganti dari center ke flex-start agar teks tidak di tengah */
-  padding-left: 20px; /* Tambahkan padding agar ada ruang */
+  justify-content: flex-start;
+  padding-left: 20px;
   width: 450px;
   height: 54px;
   border-radius: 10px;
   background-color: var(--dark-brown);
-  color: var(--color-white); /* Atur warna teks agar terlihat */
+  color: var(--color-white);
   font-weight: 500;
   font-family: var(--font-detail);
 }
@@ -265,7 +264,6 @@
   background-color: var(--dark-brown);
 }
 #recruit_3 {
-  /* background-image diset di file index.php */
   background-image: url("../img/beranda/gambar-barista2.png");
 }
 
@@ -275,11 +273,6 @@
   transform: scale(1.03);
 }
 
-/* ============================================= */
-/* ATURAN CSS RESPONSIVE                         */
-/* ============================================= */
-
-/* --- Media Query untuk Tablet (Max 1024px) --- */
 @media (max-width: 1024px) {
   /* Hero Section */
   .title-hero {
@@ -288,7 +281,6 @@
     text-align: center;
   }
 
-  /* Tentang Syjura */
   .contain-syjura {
     flex-direction: column;
   }
@@ -304,7 +296,6 @@
   }
 
   .contain-syjura .container-right p {
-    /* Hapus margin-bottom agar tidak terlalu jauh */
     margin-bottom: 15px;
   }
 
@@ -312,7 +303,6 @@
     margin: 0 auto;
   }
 
-  /* Recruitment Steps */
   .container_recruitmen {
     flex-direction: column;
   }

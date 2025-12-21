@@ -1,9 +1,6 @@
 <?php
-/**
- * Halaman Daftar Lowongan (View)
- */
 require_once 'templates/header.php';
-require_once 'logic/job_list.php'; // Memuat data $result_jobs
+require_once 'logic/job_list.php';
 ?>
 
 <div class="container">
@@ -44,6 +41,5 @@ require_once 'logic/job_list.php'; // Memuat data $result_jobs
 
 <?php
 require_once 'templates/footer.php';
-// Tutup koneksi jika diperlukan, atau biarkan otomatis
 if (isset($koneksi) && $koneksi) $koneksi->close();
 ?>

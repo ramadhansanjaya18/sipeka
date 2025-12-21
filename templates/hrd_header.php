@@ -1,11 +1,9 @@
 <?php
-/**
- * Header Template khusus halaman HRD
- */
 include_once __DIR__ . '/../config/init.php';
 include_once __DIR__ . '/../config/auth_hrd.php';
 include_once __DIR__ . '/../helpers/view_helper.php';
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>

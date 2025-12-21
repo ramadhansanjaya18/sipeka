@@ -1,9 +1,6 @@
 <?php
-/**
- * Halaman Detail Lowongan (View)
- */
 require_once 'templates/header.php';
-require_once 'logic/job_detail_logic.php'; // Memuat data $lowongan dan validasi pelamar
+require_once 'logic/job_detail_logic.php';
 ?>
 
 <div class="container job-detail-container">
@@ -89,9 +86,7 @@ require_once 'logic/job_detail_logic.php'; // Memuat data $lowongan dan validasi
 </div>
 
 <?php
-// Definisikan script tambahan sebelum footer dimuat
 $extra_js = 'assets/js/job_detail.js';
-
 require_once 'templates/footer.php';
 if (isset($koneksi) && $koneksi) $koneksi->close();
 ?>

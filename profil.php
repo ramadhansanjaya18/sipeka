@@ -1,10 +1,7 @@
 <?php
-/**
- * Halaman View Profil Pelamar
- */
 require_once 'templates/header.php';
 require_once 'config/auth_pelamar.php';
-require_once 'logic/profile_logic.php'; // Memuat logika utama
+require_once 'logic/profile_logic.php';
 ?>
 
 <div class="profile-container">
@@ -97,7 +94,7 @@ require_once 'logic/profile_logic.php'; // Memuat logika utama
             </div>
 
             <?php foreach ($upload_configs as $key => $config): ?>
-                <?php if ($key === 'foto_profil') continue; // Foto sudah di atas ?>
+                <?php if ($key === 'foto_profil') continue;?>
                 
                 <div class="profile-card cv-card">
                     <h2><?php echo htmlspecialchars($config['label'], ENT_QUOTES, 'UTF-8'); ?></h2>
@@ -144,6 +141,5 @@ require_once 'logic/profile_logic.php'; // Memuat logika utama
 
 <?php
 require_once 'templates/footer.php';
-// Tutup koneksi jika diperlukan
 if (isset($koneksi) && $koneksi) $koneksi->close();
 ?>

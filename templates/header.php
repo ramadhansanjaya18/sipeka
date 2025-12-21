@@ -1,18 +1,10 @@
 <?php
-/**
- * Header Template
- */
-
-// Panggil init (koneksi/session)
 require_once __DIR__ . '/../config/init.php';
-
-// Panggil Helper Tampilan
 require_once __DIR__ . '/../helpers/view_helper.php';
-
-// Inisialisasi variabel tampilan menggunakan helper
 $current_page = getCurrentPage();
 $active_css   = getPageCss($current_page);
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>

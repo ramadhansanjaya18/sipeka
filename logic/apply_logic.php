@@ -2,7 +2,6 @@
 include_once __DIR__ . '/config/init.php';
 include_once __DIR__ . '/config/auth_pelamar.php';
 
-// 1. Validasi ID Lowongan dari URL
 if (!isset($_GET['id']) || !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     $_SESSION['flash_message'] = ['type' => 'error', 'text' => 'Lowongan tidak valid.'];
     header("Location: index.php");
@@ -11,7 +10,6 @@ if (!isset($_GET['id']) || !filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
 $id_lowongan = (int)$_GET['id'];
 $id_pelamar = $_SESSION['id_user'];
 
-// 2. Cek Data Lowongan (Apakah ada dan Aktif?)
 $stmt_lowongan = $koneksi->prepare("SELECT posisi_lowongan, (CURDATE() BETWEEN tanggal_buka AND tanggal_tutup) AS is_active FROM lowongan WHERE id_lowongan = ?");
 $stmt_lowongan->bind_param("i", $id_lowongan);
 $stmt_lowongan->execute();
@@ -25,14 +23,12 @@ if ($result_lowongan->num_rows == 0) {
 $lowongan_data = $result_lowongan->fetch_assoc();
 $stmt_lowongan->close();
 
-// 3. --- CEK KELENGKAPAN PROFIL (SEMUA KOLOM WAJIB) ---
 $stmt_pelamar = $koneksi->prepare("SELECT * FROM profil_pelamar WHERE id_user = ?");
 $stmt_pelamar->bind_param("i", $id_pelamar);
 $stmt_pelamar->execute();
 $pelamar_data = $stmt_pelamar->get_result()->fetch_assoc();
 $stmt_pelamar->close();
 
-// Daftar kolom yang WAJIB diisi sesuai tabel profil_pelamar di sipeka (1).sql
 $required_fields = [
     'nama_lengkap'         => 'Nama Lengkap',
     'no_telepon'           => 'No. Telepon',
@@ -52,8 +48,7 @@ $required_fields = [
 $missing_data = [];
 
 if ($pelamar_data) {
-    foreach ($required_fields as $db_col => $label) {
-        // Cek jika null atau string kosong
+    foreach ($required_fields as $db_col => $label) {   
         if (empty($pelamar_data[$db_col]) || trim($pelamar_data[$db_col]) === '') {
             $missing_data[] = $label;
         }
@@ -62,24 +57,21 @@ if ($pelamar_data) {
     $missing_data[] = "Data Profil Belum Dibuat";
 }
 
-// Jika ada data yang kurang, tolak lamaran
 if (!empty($missing_data)) {
     $_SESSION['flash_message'] = [
         'type' => 'error', 
         'text' => 'Gagal melamar. Data profil belum lengkap: ' . implode(", ", $missing_data) . '.'
     ];
-    header("Location: profil.php"); // Arahkan user untuk melengkapi data
+    header("Location: profil.php"); 
     exit();
 }
 
-// 4. Cek Status Lowongan (Aktif/Tutup)
 if (!$lowongan_data['is_active']) {
     $_SESSION['flash_message'] = ['type' => 'error', 'text' => 'Lowongan ini sudah ditutup.'];
     header("Location: detail_lowongan.php?id=" . $id_lowongan);
     exit();
 }
 
-// 5. Cek Apakah User Sudah Pernah Melamar di Lowongan Ini
 $stmt_cek = $koneksi->prepare("SELECT id_lamaran FROM lamaran WHERE id_pelamar = ? AND id_lowongan = ?");
 $stmt_cek->bind_param("ii", $id_pelamar, $id_lowongan);
 $stmt_cek->execute();
@@ -90,7 +82,6 @@ if ($stmt_cek->get_result()->num_rows > 0) {
 }
 $stmt_cek->close();
 
-// 6. Proses Simpan Lamaran
 $status_default = "Diproses";
 $tanggal_lamaran = date("Y-m-d H:i:s");
 $posisi_dilamar = $lowongan_data['posisi_lowongan'];
