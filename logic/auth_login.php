@@ -9,8 +9,9 @@ if (isset($_SESSION['id_user'])) {
     }
 }
 
-$error_message = "";!
-$success_message = "";
+$error_message = "";
+!
+    $success_message = "";
 
 if (isset($_SESSION['register_success'])) {
     $success_message = $_SESSION['register_success'];
@@ -23,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (empty($email) || empty($password)) {
         $error_message = "Email dan Password wajib diisi!";
-    } else {    
+    } else {
         $stmt = $koneksi->prepare("SELECT id_user, username, password, role FROM user WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -34,9 +35,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if (password_verify($password, $user['password'])) {
                 $_SESSION['id_user'] = $user['id_user'];
-                $_SESSION['username'] = $user['username']; 
+                $_SESSION['username'] = $user['username'];
                 $_SESSION['email'] = $email;
-                $_SESSION['role'] = $user['role'];         
+                $_SESSION['role'] = $user['role'];
                 $stmt_profil = $koneksi->prepare("SELECT nama_lengkap FROM profil_pelamar WHERE id_user = ?");
                 $stmt_profil->bind_param("i", $user['id_user']);
                 $stmt_profil->execute();
@@ -52,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if ($user['role'] == 'hrd') {
                     header("Location: hrd/index.php");
                 } else {
-                    header("Location: index.php");
+                    header("Location: profil.php");
                 }
                 exit();
             } else {

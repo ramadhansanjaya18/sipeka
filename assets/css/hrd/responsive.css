@@ -4,10 +4,9 @@
   display: none;
   padding: 0.5rem 0.8rem;
   font-size: 1.2rem;
-  color: white;
-  background-color: var(--side-bg);
+  color: var(--side-bg);
+  background: transparent;
   border: none;
-  border-radius: 8px;
   cursor: pointer;
 }
 
